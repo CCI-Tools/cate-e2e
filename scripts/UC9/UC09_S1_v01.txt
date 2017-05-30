@@ -13,8 +13,8 @@ cate res open aero local.aerosol2_2007
 cate res set aero_coreg coregister ds_master=@cloud ds_slave=@aero
 
 #-select regon:
-cate res set cloud_sub subset_spatial ds=@cloud region=0,30,10,40
-cate res set aero_sub subset_spatial ds=@aero_coreg region=0,30,10,40
+cate res set cloud_sub subset_spatial ds=@cloud region=-13,42,20,60
+cate res set aero_sub subset_spatial ds=@aero_coreg region=-13,42,20,60
 
 #-calculate correlation:
 cate res set corr_out pearson_correlation ds_x=@aero_sub ds_y=@cloud_sub var_x=absorbing_aerosol_index var_y=cc_total file=corr.txt

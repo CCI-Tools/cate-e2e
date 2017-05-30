@@ -1,6 +1,0 @@
-cate ds copy esacci.CLOUD.mon.L3C.CLD_PRODUCTS.AVHRR.NOAA-17.AVHRR_NOAA.1-0.r1 -n cld_2007 -t 2007-01-01,2007-12-31
-cate ds copy esacci.AEROSOL.mon.L3.AAI.multi-sensor.multi-platform.ms_uvai.1-5-7.r1 -n aerosol2_2007 -t 2007-01-01,2007-12-31
-#esacci.AEROSOL.mon.L3C.AER_PRODUCTS.AATSR.Envisat.SU.4-21.r1 times out!
-#cate ds copy esacci.AEROSOL.mon.L3C.AER_PRODUCTS.ATSR-2.ERS-2.SU.4-21.r1 -n aerosol3_2007 -t 2007-01-01,2007-12-31 #empty does not load!
-
-

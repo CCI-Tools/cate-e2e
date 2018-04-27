@@ -1,8 +1,8 @@
 @echo off
 
 rem 1. load data:
-cate ds copy esacci.SOILMOISTURE.day.L3S.SSMV.multi-sensor.multi-platform.COMBINED.03-2.r1 --name SOILM_2006_2009_region_7_48_10_52 --time '2006-01-01,2009-12-31' --region '7,48,10,52' --vars 'sm'
-cate ds copy esacci.CLOUD.mon.L3C.CLD_PRODUCTS.multi-sensor.multi-platform.ATSR2-AATSR.2-0.r1 --name CLOUD_2006_2009_region_7_48_10_52 --time '2006-01-01,2009-12-31' --region '7,48,10,52' --vars 'cfc'
+cate ds copy esacci.SOILMOISTURE.day.L3S.SSMV.multi-sensor.multi-platform.COMBINED.03-2.r1 --name SOILM_2006_2009_region_7_48_10_52 --time "2006-01-01,2009-12-31" --region "7,48,10,52" --vars "sm"
+cate ds copy esacci.CLOUD.mon.L3C.CLD_PRODUCTS.multi-sensor.multi-platform.ATSR2-AATSR.2-0.r1 --name CLOUD_2006_2009_region_7_48_10_52 --time "2006-01-01,2009-12-31" --region "7,48,10,52" --vars "cfc"
 
 rmdir /S /Q uc02
 mkdir uc02
@@ -24,8 +24,8 @@ rem 4. Select timeseries:
 cate res set cloud_point tseries_point ds=@cloud_lta point=8.78,50.1 var="cfc"
 cate res set soilm_point tseries_point ds=@soilm_lta point=8.78,50.1 var="sm"
 
-rem 5. load stationdata (pointdata) 'read_csv'
-cate res set station read_csv file="../testdata/produkt_klima_Tageswerte_20050715_20151231_07341_vers002.txt" delimiter=";" index_col="time"
+rem 5. load stationdata (pointdata) "read_csv"
+cate res set station read_csv file="../../testdata/produkt_klima_Tageswerte_20050715_20151231_07341_vers002.txt" delimiter=";" index_col="time"
 
 rem 6. filter the stationdata (detection of outliers)
 cate res set station_outl detect_outliers ds=@station var="precipitation" threshold_low=0.00 threshold_high=100.00 quantiles=False

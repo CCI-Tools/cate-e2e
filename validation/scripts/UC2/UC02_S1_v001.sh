@@ -25,7 +25,7 @@ cate res set cloud_point tseries_point ds=@cloud_lta point=9.8974,53.4779 var="c
 cate res set soilm_point tseries_point ds=@soilm_lta point=9.8974,53.4779 var="sm"
 
 #5. load stationdata (pointdata) 'read_csv'
-cate res set station read_csv file="../../testdata/produkt_klima_tag_19620501_20161231_01981.txt" delimiter=";" index_col="time"
+cate res set station read_csv file="../../../testdata/produkt_klima_tag_19620501_20161231_01981.txt" delimiter=";" index_col="time"
 
 #6. filter the stationdata (detection of outliers)
 cate res set station_outl detect_outliers ds=@station var="precipitation" threshold_low=0.00 threshold_high=100.00 quantiles=False

@@ -29,10 +29,8 @@ cate res set anom_ghg anomaly_external ds=@ghg file="ghg_lta.nc"
 cate res set anom_temp anomaly_external ds=@temp file="temp_lta.nc"
 
 rem 6. Aggregate the anomalies to seasons
-cate res set anom_ghg_a adjust_temporal_attrs ds=@anom_ghg
-cate res set anom_temp_a adjust_temporal_attrs ds=@anom_temp
-cate res set anom_ghg_seasonal temporal_aggregation ds=@anom_ghg_a output_resolution="season"
-cate res set anom_temp_seasonal temporal_aggregation ds=@anom_temp_a output_resolution="season"
+cate res set anom_ghg_seasonal temporal_aggregation ds=@anom_ghg output_resolution="season"
+cate res set anom_temp_seasonal temporal_aggregation ds=@anom_temp output_resolution="season"
 
 rem 6. Plot seasonal anomaly:
 cate res set plot_1 plot_map ds=@anom_ghg_seasonal time="2008-03-01" region="-160,23,-69,50" file="ghg_spring_2008.jpg"

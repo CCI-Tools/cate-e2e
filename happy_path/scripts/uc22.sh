@@ -24,8 +24,8 @@ cate res set clouds_mean reduce ds=@clouds var="cfc" dim="lat"
 cate res set aerosol_mean reduce ds=@aerosol var="AOD550_mean" dim="lat"
 
 # Calculate eqatorial values as a fraction of the mean of the full dataset
-cate res set clouds_eq_fraction compute script="equatorial_fraction=clouds_equator.cfc/clouds_mean.cfc"
-cate res set aerosol_eq_fraction compute script="equatorial_fraction=aerosol_equator.AOD550_mean/aerosol_mean.AOD550_mean"
+cate res set clouds_eq_fraction compute_dataset script="equatorial_fraction=clouds_equator.cfc/clouds_mean.cfc"
+cate res set aerosol_eq_fraction compute_dataset script="equatorial_fraction=aerosol_equator.AOD550_mean/aerosol_mean.AOD550_mean"
 
 # Create the Hovmoeller plots
 cate res set plot_1 plot_hovmoeller ds=@clouds_eq_fraction var="equatorial_fraction" x_axis="lon" y_axis="time" contour="False" title="Clouds" file="clouds_hvm.png"

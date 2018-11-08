@@ -22,7 +22,7 @@ cate res set ozone_tot select_var ds=@ozone var=O3_du_tot
 cate res set cloud_cfc select_var ds=@cloud var=cfc
 
 rem Coregister "ozone_tot" with "cloud_cfc" and call the result "ozone_coreg"
-cate res set ozone_coreg coregister ds_master=@cloud_cfc ds_slave=@ozone_tot
+cate res set ozone_coreg coregister ds_master=@cloud_cfc ds_replica=@ozone_tot
 
 rem Create subsets of the "cloud_cfc" and "ozone_coreg" resources and assign it
 rem to new resources named "cloud_sub" and "ozone_sub"

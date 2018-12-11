@@ -14,7 +14,7 @@ cate res open aero local.aerosol2_20070101_20091229
 #cate ws run plot_map ds=@aero var=absorbing_aerosol_index file=./test_aero.png
 
 #-:co-register (does not work atm.)
-cate res set aero_coreg coregister ds_master=@cloud ds_slave=@aero
+cate res set aero_coreg coregister ds_master=@cloud ds_replica=@aero
 
 #-select region:
 cate res set cloud_sub subset_spatial ds=@cloud region=-13,42,20,60

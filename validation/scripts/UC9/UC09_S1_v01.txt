@@ -11,7 +11,7 @@ cate res open cloud local.cld_2007
 cate res open aero local.aerosol2_2007
 
 #-:co-register (does not work atm.)
-cate res set aero_coreg coregister ds_master=@cloud ds_slave=@aero
+cate res set aero_coreg coregister ds_master=@cloud ds_replica=@aero
 
 ##-select region:
 #cate res set cloud_sub subset_spatial ds=@cloud region=-13,42,20,60

@@ -34,6 +34,7 @@ install:
   - travis_retry pip install requests
   - travis_retry pip install pytest
   - travis_retry pip install xarray
+  - travis_retry pip install jdcal
   - cd ..
 script:
   - pytest -s --junitxml=ci/reports/`date +%F`.xml validation/python/test_data_support.py

@@ -18,7 +18,7 @@ before_install:
     hash -r
     conda config --set always_yes yes --set changeps1 no
     conda update -q conda
-    bash miniconda.sh -b -p $HOME/miniconda
+    bash miniconda.sh -u -b -p $HOME/miniconda
     conda info -a
 
 install:

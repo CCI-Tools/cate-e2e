@@ -28,6 +28,9 @@ before_install:
 install:
   - git clone https://github.com/CCI-Tools/cate.git
   - cd cate
+  - if test -e $HOME/miniconda/envs/cate-env; then
+    conda env remove cate-env
+    fi
   - conda env create
   - source activate cate-env
   - python setup.py install

@@ -14,7 +14,7 @@ before_install:
     - if test -e $HOME/miniconda/bin; then
       echo "miniconda installed already";
       else
-      rm -rf $HOME/miniconda
+      rm -rf $HOME/miniconda;
       mkdir -p $HOME/download;
       wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O $HOME/download/miniconda.sh;
       bash $HOME/download/miniconda.sh -u -b -p $HOME/miniconda;
@@ -29,9 +29,9 @@ install:
   - git clone https://github.com/CCI-Tools/cate.git
   - cd cate
   - if test -e $HOME/miniconda/envs/cate-env; then
-    conda env update -f environment.yml  --prune;
+    conda env update -f environment.yml --prune;
     else
-    conda env create -f environment.yml
+    conda env create -f environment.yml;
     fi
   - source activate cate-env
   - python setup.py install

@@ -28,11 +28,11 @@ before_install:
 install:
   - git clone https://github.com/CCI-Tools/cate.git
   - cd cate
-  #- if test -e $HOME/miniconda/envs/cate-env; then
-  #  conda env remove
-  #  fi
-  #- conda env create
-  - conda env update --file environment.yml  --prune
+  - if test -e $HOME/miniconda/envs/cate-env; then
+    conda env update -f environment.yml  --prune;
+    else
+    conda env create -f environment.yml
+    fi
   - source activate cate-env
   - python setup.py install
   - travis_retry pip install --upgrade pip

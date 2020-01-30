@@ -42,6 +42,7 @@ install:
   - travis_retry pip install jdcal
   - travis_retry pip install matplotlib
   - travis_retry pip install shapely
+  - travis_retry pip install geopandas
   - cd ..
 script:
   - pytest -s --junitxml=ci/reports/`date +%F`.xml validation/python/test_data_support.py

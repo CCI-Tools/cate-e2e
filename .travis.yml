@@ -2,13 +2,13 @@ language: python
 python:
   - '3.7'
 
-#cache:
-#  directories:
-#    - $HOME/download
-#    - $HOME/miniconda
+cache:
+  directories:
+    - $HOME/download
+    - $HOME/miniconda
 
-#before_cache:
-#    - rm -rf $HOME/miniconda/locks $HOME/miniconda/pkgs $HOME/miniconda/var $HOME/miniconda/conda-meta/history
+before_cache:
+    - rm -rf $HOME/miniconda/locks $HOME/miniconda/pkgs $HOME/miniconda/var $HOME/miniconda/conda-meta/history
 
 before_install:
     - if test -e $HOME/miniconda/bin; then

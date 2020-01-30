@@ -2,13 +2,13 @@ language: python
 python:
   - '3.7'
 
-cache:
-  directories:
-    - $HOME/download
-    - $HOME/miniconda
+#cache:
+#  directories:
+#    - $HOME/download
+#    - $HOME/miniconda
 
-before_cache:
-    - rm -rf $HOME/miniconda/locks $HOME/miniconda/pkgs $HOME/miniconda/var $HOME/miniconda/conda-meta/history
+#before_cache:
+#    - rm -rf $HOME/miniconda/locks $HOME/miniconda/pkgs $HOME/miniconda/var $HOME/miniconda/conda-meta/history
 
 before_install:
     - if test -e $HOME/miniconda/bin; then
@@ -22,7 +22,7 @@ before_install:
     - source "$HOME/miniconda/etc/profile.d/conda.sh"
     - hash -r
     - conda config --set always_yes yes --set changeps1 no
-    #- conda update -q conda
+    - conda update -q conda
     - conda info -a
 
 install:

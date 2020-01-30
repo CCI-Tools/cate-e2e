@@ -11,40 +11,32 @@ python:
 #    - rm -rf $HOME/miniconda/locks $HOME/miniconda/pkgs $HOME/miniconda/var $HOME/miniconda/conda-meta/history
 
 before_install:
-    - if test -e $HOME/miniconda/bin; then
-      echo "miniconda installed already";
-      else
-      rm -rf $HOME/miniconda;
-      mkdir -p $HOME/download;
-      wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O $HOME/download/miniconda.sh;
-      bash $HOME/download/miniconda.sh -u -b -p $HOME/miniconda;
-      fi
-    - source "$HOME/miniconda/etc/profile.d/conda.sh"
+    - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+    - bash $HOME/download/miniconda.sh -b -p $HOME/miniconda;
+    - export PATH="$HOME/miniconda/bin:$PATH"
     - hash -r
     - conda config --set always_yes yes --set changeps1 no
-    - conda update -q conda
+#    - conda update -q conda
     - conda info -a
 
 install:
   - git clone https://github.com/CCI-Tools/cate.git
   - cd cate
-  - if test -e $HOME/miniconda/envs/cate-env; then
-    conda env update -f environment.yml --prune;
-    else
-    conda env create -f environment.yml;
-    fi
+  - conda env create -f environment.yml;
+  - conda init bash
   - source activate cate-env
+  - conda list 
   - python setup.py install
-  - travis_retry pip install --upgrade pip
-  - travis_retry pip install requests
-  - travis_retry pip install pytest
-  - travis_retry pip install xarray
-  - travis_retry pip install jdcal
-  - travis_retry pip install matplotlib
-  - travis_retry pip install shapely
-  - travis_retry pip install geopandas
-  - travis_retry pip install pillow
-  - travis_retry conda install -c conda-forge cartopy -y
+#  - travis_retry pip install --upgrade pip
+#  - travis_retry pip install requests
+#  - travis_retry pip install pytest
+#  - travis_retry pip install xarray
+#  - travis_retry pip install jdcal
+#  - travis_retry pip install matplotlib
+#  - travis_retry pip install shapely
+#  - travis_retry pip install geopandas
+#  - travis_retry pip install pillow
+#  - travis_retry conda install -c conda-forge cartopy -y
   - cd ..
 script:
   - pytest -s --junitxml=ci/reports/`date +%F`.xml validation/python/test_data_support.py

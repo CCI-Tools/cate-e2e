@@ -44,8 +44,8 @@ def get_testchunk_dates(data_set, max_size=40 * 1024 * 1024, max_files=100):
         file_count += 1
         indx += 1
 
-    tend = data_set._file_list[indx - 1][2] #start date of a input file is 2
-    # because of randomisation of indecies - might happen that end date is before start date - swapping.
+    tend = data_set._file_list[indx - 1][2] #end date of a input file is 2
+    # sometimes end date is before start date - swapping. weird.
     if tend < tstart:
         tstart, tend = tend, tstart
     return (tstart, tend)

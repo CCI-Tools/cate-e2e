@@ -4,7 +4,7 @@ from cate.core.ds import DATA_STORE_REGISTRY
 from cate.core import ds
 import pytest
 
-data_store = DATA_STORE_REGISTRY.get_data_store('esa_cci_odp')
+data_store = DATA_STORE_REGISTRY.get_data_store('esa_cci_odp_os')
 data_sets = data_store.query()
 lds = DATA_STORE_REGISTRY.get_data_store('local')
 
@@ -24,13 +24,12 @@ def hr_size(size):
 
 def get_testchunk_dates(data_set, max_size=40 * 1024 * 1024, max_files=100):
     "assuming files are chunked in time"
-    data_set._init_file_list()
-    num_files = data_set.meta_info['number_of_files']
+    data_set.update_file_list()
+    num_files = len(data_set._file_list)
 
     # pick a random file index
     indx = random.randrange(0, num_files)
-    tstart = data_set._file_list[indx][2]
-
+    tstart = data_set._file_list[indx][1] #start date of a input file is 1
     tot_size = 0
     file_count = 0
     # increment index till tot_size reaches maximum allowed size
@@ -45,7 +44,10 @@ def get_testchunk_dates(data_set, max_size=40 * 1024 * 1024, max_files=100):
         file_count += 1
         indx += 1
 
-    tend = data_set._file_list[indx - 1][1]  # or 2?
+    tend = data_set._file_list[indx - 1][2] #start date of a input file is 2
+    # because of randomisation of indecies - might happen that end date is before start date - swapping.
+    if tend < tstart:
+        tstart, tend = tend, tstart
     return (tstart, tend)
 
 
@@ -54,16 +56,17 @@ def get_testchunk_dates(data_set, max_size=40 * 1024 * 1024, max_files=100):
 def remote_dataset(request, record_xml_attribute, record_property):
     dataset, time_range = request.param
     record_xml_attribute('dataset', dataset.id)
-    dkeys = ['cci_project', 'time_frequency', 'processing_level', 'data_type', 'sensor_id', 'version']
+    dkeys = ['cci_project', 'time_frequency', 'processing_level', 'data_type', 'sensor_id', 'product_version']
 
     for k in dkeys:
         record_xml_attribute(k, dataset.meta_info[k])
 
-    record_xml_attribute('files', dataset.meta_info['number_of_files'])
-    record_xml_attribute('access_protocols', dataset.protocols)
+    dataset.update_file_list()
+    record_xml_attribute('files', len(dataset._file_list))
+    # record_xml_attribute('access_protocols', dataset.protocols) # not in new odp metadata
     record_xml_attribute('time_coverage', tuple(t.strftime('%Y-%m-%d') for t in dataset.temporal_coverage()))
-    record_xml_attribute('size', hr_size(dataset.meta_info['size']))
-    record_xml_attribute('size_per_file', hr_size(dataset.meta_info['size'] / dataset.meta_info['number_of_files']))
+    # record_xml_attribute('size', hr_size(dataset.meta_info['size'])) # not in new odp general metadata
+    # record_xml_attribute('size_per_file', hr_size(dataset.meta_info['size'] / dataset.meta_info['number_of_files']))
 
     record_xml_attribute('test_time_coverage', tuple(t.strftime('%Y-%m-%d') for t in time_range))
     if not any(time_range):

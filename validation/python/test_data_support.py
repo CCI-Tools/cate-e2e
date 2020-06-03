@@ -4,6 +4,7 @@ import string
 from cate.core.ds import DATA_STORE_REGISTRY
 from cate.core import ds
 import pytest
+import time
 import csv
 from csv import DictWriter
 from datetime import datetime
@@ -13,8 +14,8 @@ data_sets = data_store.query()
 lds = DATA_STORE_REGISTRY.get_data_store('local')
 
 # header for CSV report
-header_row = ['dataset_collection', 'open_local', 'duration_open_local', 'open_remote',
-              'duration_open_remote', 'time_coverage_of_collection', 'testing_time_range',
+header_row = ['dataset_collection', 'open_local', 'duration_open_local_s', 'open_remote',
+              'duration_open_remote_s', 'time_coverage_of_collection', 'testing_time_range',
               'no_of_time_stamps_included', 'tot_no_of_files_in_collection', 'cci_project', 'time_frequency',
               'processing_level',
               'data_type', 'sensor_id', 'product_version']
@@ -128,17 +129,28 @@ def local_dataset(remote_dataset):
 # Tests
 
 def test_open_ds(remote_dataset, local_dataset):
-    # or equivalently ds.open_xarray_dataset)
-    dataset, time_range = remote_dataset
     try:
-        dataset.open_dataset(time_range=time_range)
+        # or equivalently ds.open_xarray_dataset)
+        tic = time.perf_counter()
+        dataset, time_range = remote_dataset
+        remote_ds = dataset.open_dataset(time_range=time_range)
+        toc = time.perf_counter()
         results_for_ds_collection['open_remote'] = 'sucess'
-    except ValueError as e:
+        results_for_ds_collection['duration_open_remote_s'] = f'{toc - tic: 0.4f}'
+        results_for_ds_collection['no_of_time_stamps_included'] = remote_ds.time.shape[0]
+
+    except Exception as e:
         results_for_ds_collection['open_remote'] = e
+        results_for_ds_collection['no_of_time_stamps_included'] = None
     try:
+        tic = time.perf_counter()
         ds.open_dataset(local_dataset)
+        toc = time.perf_counter()
         results_for_ds_collection['open_local'] = 'sucess'
-    except ValueError as e:
+        results_for_ds_collection['duration_open_local_s'] = f'{toc - tic: 0.4f}'
+    except Exception as e:
         results_for_ds_collection['open_local'] = e
-    update_csv(results_csv, header_row, results_for_ds_collection)
+        results_for_ds_collection['no_of_time_stamps_included'] = None
+    finally:
+        update_csv(results_csv, header_row, results_for_ds_collection)
     pass

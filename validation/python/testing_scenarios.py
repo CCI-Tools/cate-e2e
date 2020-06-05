@@ -25,7 +25,7 @@ with open("test_scenarios.csv") as csvfile:
 # header for CSV report
 header_row = ['dataset_collection', 'open_local', 'duration_open_local_s', 'open_remote',
               'duration_open_remote_s', 'time_coverage_of_collection', 'testing_time_range',
-              'spatial_subset', 'variables_included',
+              'spatial_subset', 'variables_subset',
               'no_of_time_stamps_included', 'tot_no_of_files_in_collection']
 
 results_csv = f'test_results_scenarios_{datetime.date(datetime.now())}.csv'
@@ -59,36 +59,32 @@ results_for_ds_collection = {}
 
 
 # Fixtures
-@pytest.fixture(scope="function", params=(dataset for dataset in data_sets))
+@pytest.fixture(scope="function", params=(line for line in data_sets))
 def remote_dataset(request, record_xml_attribute, record_property):
+    # leaving the xml stuff inside for the moment, might need it later.
+
     dataset = data_store.query(request.param['dataset_collection'])[0]
+    results_for_ds_collection['dataset_collection'] = dataset.id
+    record_xml_attribute('dataset', dataset.id)
+
     time_range_string = request.param['temporal_subset']
     time_range = get_time_range(time_range_string)
-    variables = ast.literal_eval(request.param['variables_subset'])
-    region = ast.literal_eval(request.param['spatial_subset'])
-    results_for_ds_collection['dataset_collection'] = dataset.id
-    # leaving the xml stuff inside for the moment, might need it later.
-    record_xml_attribute('dataset', dataset.id)
-    dkeys = ['cci_project', 'time_frequency', 'processing_level', 'data_type', 'sensor_id', 'product_version']
+    results_for_ds_collection['testing_time_range'] = tuple(t.strftime('%Y-%m-%d') for t in time_range)
+    record_xml_attribute('test_time_coverage', tuple(t.strftime('%Y-%m-%d') for t in time_range))
 
-    for k in dkeys:
-        record_xml_attribute(k, dataset.meta_info[k])
-        results_for_ds_collection[k] = dataset.meta_info[k]
+    variables = ast.literal_eval(request.param['variables_subset'])
+    results_for_ds_collection['variables_subset'] = variables
+
+    # region = ast.literal_eval(request.param['spatial_subset'])
+    region = None
+    results_for_ds_collection['spatial_subset'] = region
 
     dataset.update_file_list()
     record_xml_attribute('files', len(dataset._file_list))
     results_for_ds_collection['tot_no_of_files_in_collection'] = len(dataset._file_list)
-    # record_xml_attribute('access_protocols', dataset.protocols) # not in new odp metadata
     record_xml_attribute('time_coverage', tuple(t.strftime('%Y-%m-%d') for t in dataset.temporal_coverage()))
-    results_for_ds_collection['time_coverage_of_collection'] = tuple(
-        t.strftime('%Y-%m-%d') for t in dataset.temporal_coverage())
-    # record_xml_attribute('size', hr_size(dataset.meta_info['size'])) # not in new odp general metadata
-    # record_xml_attribute('size_per_file', hr_size(dataset.meta_info['size'] / dataset.meta_info['number_of_files']))
+    results_for_ds_collection['time_coverage_of_collection'] = tuple(t.strftime('%Y-%m-%d') for t in dataset.temporal_coverage())
 
-    record_xml_attribute('test_time_coverage', tuple(t.strftime('%Y-%m-%d') for t in time_range))
-    # record_xml_attribute('test_time_coverage', time_range)
-    results_for_ds_collection['testing_time_range'] = tuple(t.strftime('%Y-%m-%d') for t in time_range)
-    # results_for_ds_collection['testing_time_range'] = time_range
     if not any(time_range):
         pytest.skip('File size too large for test')
         results_for_ds_collection['open_local'] = 'File size too large for test'

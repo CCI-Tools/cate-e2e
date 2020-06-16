@@ -28,7 +28,7 @@ header_row = ['dataset_collection', 'open_local', 'duration_open_local_s', 'open
               'spatial_subset', 'variables_subset',
               'no_of_time_stamps_included', 'tot_no_of_files_in_collection']
 
-results_csv = f'test_results_scenarios_{datetime.date(datetime.now())}.csv'
+results_csv = f'test_data_support_scenarios_results_{datetime.date(datetime.now())}.csv'
 
 
 # Utility functions
@@ -76,7 +76,8 @@ def remote_dataset(request, record_xml_attribute, record_property):
     results_for_ds_collection['variables_subset'] = variables
 
     # region = ast.literal_eval(request.param['spatial_subset'])
-    region = None
+    region = request.param['spatial_subset'].replace('[', '').replace(']', '')
+    # region = None
     results_for_ds_collection['spatial_subset'] = region
 
     dataset.update_file_list()
@@ -116,7 +117,7 @@ def test_open_ds(remote_dataset, local_dataset):
     except Exception as e:
         results_for_ds_collection['open_remote'] = e
         results_for_ds_collection['no_of_time_stamps_included'] = None
-
+        results_for_ds_collection['duration_open_remote_s'] = None
     try:
         tic = time.perf_counter()
         ds.open_dataset(local_dataset)
@@ -126,6 +127,7 @@ def test_open_ds(remote_dataset, local_dataset):
     except Exception as e:
         results_for_ds_collection['open_local'] = e
         results_for_ds_collection['no_of_time_stamps_included'] = None
+        results_for_ds_collection['duration_open_local_s'] = None
     finally:
         update_csv(results_csv, header_row, results_for_ds_collection)
     pass

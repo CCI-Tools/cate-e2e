@@ -20,7 +20,7 @@ header_row = ['dataset_collection', 'open_local', 'duration_open_local_s', 'open
               'processing_level',
               'data_type', 'sensor_id', 'product_version']
 
-results_csv = f'test_results_{datetime.date(datetime.now())}.csv'
+results_csv = f'test_data_support_results_{datetime.date(datetime.now())}.csv'
 
 
 # Utility functions
@@ -142,6 +142,8 @@ def test_open_ds(remote_dataset, local_dataset):
     except Exception as e:
         results_for_ds_collection['open_remote'] = e
         results_for_ds_collection['no_of_time_stamps_included'] = None
+        results_for_ds_collection['duration_open_remote_s'] = None
+
     try:
         tic = time.perf_counter()
         ds.open_dataset(local_dataset)
@@ -151,6 +153,8 @@ def test_open_ds(remote_dataset, local_dataset):
     except Exception as e:
         results_for_ds_collection['open_local'] = e
         results_for_ds_collection['no_of_time_stamps_included'] = None
+        results_for_ds_collection['duration_open_local_s'] = None
+
     finally:
         update_csv(results_csv, header_row, results_for_ds_collection)
     pass

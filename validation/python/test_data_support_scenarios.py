@@ -2,6 +2,8 @@ import os
 import ast
 import random
 import string
+import sys
+
 from cate.core.ds import DATA_STORE_REGISTRY
 from cate.core import ds
 import pytest
@@ -111,23 +113,22 @@ def test_open_ds(remote_dataset, local_dataset):
         dataset, time_range, variables, region = remote_dataset
         remote_ds = dataset.open_dataset(time_range=time_range, var_names=variables, region=region)
         toc = time.perf_counter()
-        results_for_ds_collection['open_remote'] = 'sucess'
+        results_for_ds_collection['open_remote'] = 'success'
         results_for_ds_collection['duration_open_remote_s'] = f'{toc - tic: 0.4f}'
         results_for_ds_collection['no_of_time_stamps_included'] = remote_ds.time.shape[0]
-    except Exception as e:
-        results_for_ds_collection['open_remote'] = e
+    except:
+        results_for_ds_collection['open_remote'] = sys.exc_info()[0]
         results_for_ds_collection['no_of_time_stamps_included'] = None
         results_for_ds_collection['duration_open_remote_s'] = None
     try:
         tic = time.perf_counter()
         ds.open_dataset(local_dataset)
         toc = time.perf_counter()
-        results_for_ds_collection['open_local'] = 'sucess'
+        results_for_ds_collection['open_local'] = 'success'
         results_for_ds_collection['duration_open_local_s'] = f'{toc - tic: 0.4f}'
-    except Exception as e:
-        results_for_ds_collection['open_local'] = e
+    except:
+        results_for_ds_collection['open_local'] = sys.exc_info()[0]
         results_for_ds_collection['no_of_time_stamps_included'] = None
         results_for_ds_collection['duration_open_local_s'] = None
-    finally:
-        update_csv(results_csv, header_row, results_for_ds_collection)
-    pass
+    update_csv(results_csv, header_row, results_for_ds_collection)
+

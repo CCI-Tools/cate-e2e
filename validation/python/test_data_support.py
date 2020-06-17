@@ -55,8 +55,8 @@ def update_csv(results_csv, header_row, results_for_dataset_collection):
     append_dict_as_row(results_csv, results_for_dataset_collection, header_row)
 
 
-def get_testchunk_dates(data_set, max_size=40 * 1024 * 1024, max_files=100):
-    "assuming files are chunked in time"
+def get_testchunk_dates(data_set, max_size=40 * 1024 * 1024, max_files=10):
+    """assuming files are chunked in time"""
     data_set.update_file_list()
     num_files = len(data_set._file_list)
 
@@ -92,25 +92,16 @@ results_for_ds_collection = {}
 def remote_dataset(request, record_xml_attribute, record_property):
     dataset, time_range = request.param
     results_for_ds_collection['dataset_collection'] = dataset.id
-    # leaving the xml stuff inside for the moment, might need it later.
-    record_xml_attribute('dataset', dataset.id)
     dkeys = ['cci_project', 'time_frequency', 'processing_level', 'data_type', 'sensor_id', 'product_version']
 
     for k in dkeys:
-        record_xml_attribute(k, dataset.meta_info[k])
         results_for_ds_collection[k] = dataset.meta_info[k]
 
     dataset.update_file_list()
-    record_xml_attribute('files', len(dataset._file_list))
     results_for_ds_collection['tot_no_of_files_in_collection'] = len(dataset._file_list)
-    # record_xml_attribute('access_protocols', dataset.protocols) # not in new odp metadata
-    record_xml_attribute('time_coverage', tuple(t.strftime('%Y-%m-%d') for t in dataset.temporal_coverage()))
     results_for_ds_collection['time_coverage_of_collection'] = tuple(
         t.strftime('%Y-%m-%d') for t in dataset.temporal_coverage())
-    # record_xml_attribute('size', hr_size(dataset.meta_info['size'])) # not in new odp general metadata
-    # record_xml_attribute('size_per_file', hr_size(dataset.meta_info['size'] / dataset.meta_info['number_of_files']))
 
-    record_xml_attribute('test_time_coverage', tuple(t.strftime('%Y-%m-%d') for t in time_range))
     results_for_ds_collection['testing_time_range'] = tuple(t.strftime('%Y-%m-%d') for t in time_range)
     if not any(time_range):
         pytest.skip('File size too large for test')
@@ -137,12 +128,12 @@ def test_open_ds(remote_dataset, local_dataset):
         dataset, time_range = remote_dataset
         remote_ds = dataset.open_dataset(time_range=time_range)
         toc = time.perf_counter()
-        results_for_ds_collection['open_remote'] = 'sucess'
+        results_for_ds_collection['open_remote'] = 'success'
         results_for_ds_collection['duration_open_remote_s'] = f'{toc - tic: 0.4f}'
         results_for_ds_collection['no_of_time_stamps_included'] = remote_ds.time.shape[0]
 
     except:
-        results_for_ds_collection['open_remote'] = sys.exc_info()[0]
+        results_for_ds_collection['open_remote'] = sys.exc_info()[:2]
         results_for_ds_collection['no_of_time_stamps_included'] = None
         results_for_ds_collection['duration_open_remote_s'] = None
 
@@ -150,12 +141,10 @@ def test_open_ds(remote_dataset, local_dataset):
         tic = time.perf_counter()
         ds.open_dataset(local_dataset)
         toc = time.perf_counter()
-        results_for_ds_collection['open_local'] = 'sucess'
+        results_for_ds_collection['open_local'] = 'success'
         results_for_ds_collection['duration_open_local_s'] = f'{toc - tic: 0.4f}'
     except:
-        results_for_ds_collection['open_local'] = sys.exc_info()[0]
+        results_for_ds_collection['open_local'] = sys.exc_info()[:2]
         results_for_ds_collection['no_of_time_stamps_included'] = None
         results_for_ds_collection['duration_open_local_s'] = None
-
     update_csv(results_csv, header_row, results_for_ds_collection)
-

@@ -71,7 +71,8 @@ def remote_dataset(line):
     variables = ast.literal_eval(line['variables_subset'])
     results_for_ds_collection['variables_subset'] = variables
 
-    region = line['spatial_subset'].replace('[', '').replace(']', '')
+    # region = line['spatial_subset'].replace('[', '').replace(']', '')
+    region = line['spatial_subset']
     # region = None
     results_for_ds_collection['spatial_subset'] = region
 

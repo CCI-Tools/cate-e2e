@@ -27,6 +27,20 @@ The testing tool is called test_data_support.py and
     * time range constraint
     * region constraint
     * variables constraint 
+    
+   This test includes first CLI and GUI tests.
+    
+   **CLI: can open**  
+   Is given if the test 
+   1. does not throw an exception.
+   2. the returned value is an instance of xarray.Dataset (gridded) or geopandas.GeoDataFrame (vector).
+  
+   **GUI: can open, can display (on globe)**  
+   Is given if the test 
+   1. if **can open** is fulfilled.
+   2. returned value is an xarray.Dataset with the last two dimensions of a variable
+      being 'lat' and 'lon '; both lat and lon are 1D coord vars of size > 0
+   3. or returned value is an geopandas.GeoDataFrame.
 
 
 ## Output

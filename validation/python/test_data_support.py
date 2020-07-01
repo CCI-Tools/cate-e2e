@@ -61,7 +61,11 @@ def get_testchunk_dates(data_set, max_size=40 * 1024 * 1024, max_files=10):
     num_files = len(data_set._file_list)
 
     # pick a random file index
-    indx = random.randrange(0, num_files)
+    try:
+        indx = random.randrange(0, num_files)
+    except ValueError:
+        return None
+
     tstart = data_set._file_list[indx][1]  # start date of a input file is 1
     tot_size = 0
     file_count = 0

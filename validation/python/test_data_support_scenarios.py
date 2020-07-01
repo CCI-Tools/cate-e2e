@@ -3,6 +3,7 @@ import ast
 import random
 import string
 import sys
+import traceback
 
 import geopandas
 from cate.core.ds import DATA_STORE_REGISTRY
@@ -10,7 +11,7 @@ from cate.core import ds
 import time
 import csv
 from csv import DictWriter
-from datetime import datetime
+from datetime import datetime, timedelta
 import xarray as xr
 import multiprocessing as mp
 
@@ -140,11 +141,32 @@ def test_open_ds(data_sets):
             remote_ds.close()
 
         except:
-            results_for_ds_collection['open_remote'] = sys.exc_info()[:2]
-            results_for_ds_collection['no_of_time_stamps_included'] = None
-            results_for_ds_collection['duration_open_remote_s'] = None
-            results_for_ds_collection['open_via_CLI_from_remote'] = 'No'
-            results_for_ds_collection['open_via_GUI_from_remote'] = 'No'
+            track = traceback.format_exc()
+            if 'does not seem to have any datasets in given time range' in track:
+                try:
+                    tic = time.perf_counter()
+                    dataset, time_range, variables, region = remote_dataset(line)
+                    time_range = (time_range[0], time_range[1] + timedelta(days=2))
+                    remote_ds = dataset.open_dataset(time_range=time_range, var_names=variables, region=region)
+                    toc = time.perf_counter()
+                    results_for_ds_collection['open_remote'] = 'success after increasing time range'
+                    results_for_ds_collection['duration_open_remote_s'] = f'{toc - tic: 0.4f}'
+                    results_for_ds_collection['no_of_time_stamps_included'] = remote_ds.time.shape[0]
+                    results_for_ds_collection['open_via_CLI_from_remote'] = open_via_cli(remote_ds)
+                    results_for_ds_collection['open_via_GUI_from_remote'] = open_via_gui(remote_ds)
+                    remote_ds.close()
+                except:
+                    results_for_ds_collection['open_remote'] = f'failed after increasing time range {sys.exc_info()[:2]}'
+                    results_for_ds_collection['no_of_time_stamps_included'] = None
+                    results_for_ds_collection['duration_open_remote_s'] = None
+                    results_for_ds_collection['open_via_CLI_from_remote'] = 'No'
+                    results_for_ds_collection['open_via_GUI_from_remote'] = 'No'
+            else:
+                results_for_ds_collection['open_remote'] = sys.exc_info()[:2]
+                results_for_ds_collection['no_of_time_stamps_included'] = None
+                results_for_ds_collection['duration_open_remote_s'] = None
+                results_for_ds_collection['open_via_CLI_from_remote'] = 'No'
+                results_for_ds_collection['open_via_GUI_from_remote'] = 'No'
         try:
             tic = time.perf_counter()
             dataset, time_range, variables, region = remote_dataset(line)
@@ -159,17 +181,37 @@ def test_open_ds(data_sets):
             lds.remove_data_source(local_ds_string)
 
         except:
-            results_for_ds_collection['open_local'] = sys.exc_info()[:2]
-            results_for_ds_collection['no_of_time_stamps_included'] = None
-            results_for_ds_collection['duration_open_local_s'] = None
-            results_for_ds_collection['open_via_CLI_from_local'] = 'No'
-            results_for_ds_collection['open_via_GUI_from_local'] = 'No'
+            track = traceback.format_exc()
+            if 'does not seem to have any datasets in given time range' in track:
+                try:
+                    tic = time.perf_counter()
+                    dataset, time_range, variables, region = remote_dataset(line)
+                    time_range = (time_range[0], time_range[1] + timedelta(days=2))
+                    local_ds_string = local_dataset(dataset, time_range, variables, region)
+                    local_ds = ds.open_dataset(local_ds_string)
+                    toc = time.perf_counter()
+                    results_for_ds_collection['open_local'] = 'success after increasing time range'
+                    results_for_ds_collection['duration_open_local_s'] = f'{toc - tic: 0.4f}'
+                    results_for_ds_collection['open_via_CLI_from_local'] = open_via_cli(local_ds)
+                    results_for_ds_collection['open_via_GUI_from_local'] = open_via_gui(local_ds)
+                    local_ds.close()
+                    lds.remove_data_source(local_ds_string)
+                except:
+                    results_for_ds_collection['open_local'] = f'failed after increasing time range {sys.exc_info()[:2]}'
+                    results_for_ds_collection['no_of_time_stamps_included'] = None
+                    results_for_ds_collection['duration_open_local_s'] = None
+                    results_for_ds_collection['open_via_CLI_from_local'] = 'No'
+                    results_for_ds_collection['open_via_GUI_from_local'] = 'No'
+            else:
+                results_for_ds_collection['open_local'] = sys.exc_info()[:2]
+                results_for_ds_collection['no_of_time_stamps_included'] = None
+                results_for_ds_collection['duration_open_local_s'] = None
+                results_for_ds_collection['open_via_CLI_from_local'] = 'No'
+                results_for_ds_collection['open_via_GUI_from_local'] = 'No'
 
         update_csv(results_csv, header_row, results_for_ds_collection)
 
-
-# results = pool.apply(test_open_ds(data_sets))
-test_open_ds(data_sets)
-
-# pool.close()
 # test_open_ds(data_sets)
+
+results = pool.apply(test_open_ds(data_sets))
+pool.close()

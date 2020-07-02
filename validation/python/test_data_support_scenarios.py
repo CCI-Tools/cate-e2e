@@ -127,10 +127,10 @@ def open_via_gui(dataset):
 
 def test_open_ds(data_sets):
     for line in data_sets:
+        dataset, time_range, variables, region = remote_dataset(line)
+        tic = time.perf_counter()
         try:
             # or equivalently ds.open_xarray_dataset)
-            tic = time.perf_counter()
-            dataset, time_range, variables, region = remote_dataset(line)
             remote_ds = dataset.open_dataset(time_range=time_range, var_names=variables, region=region)
             toc = time.perf_counter()
             results_for_ds_collection['open_remote'] = 'success'
@@ -144,9 +144,8 @@ def test_open_ds(data_sets):
             track = traceback.format_exc()
             if 'does not seem to have any datasets in given time range' in track:
                 try:
-                    tic = time.perf_counter()
-                    dataset, time_range, variables, region = remote_dataset(line)
                     time_range = (time_range[0], time_range[1] + timedelta(days=2))
+                    results_for_ds_collection['testing_time_range'] = tuple(t.strftime('%Y-%m-%d') for t in time_range)
                     remote_ds = dataset.open_dataset(time_range=time_range, var_names=variables, region=region)
                     toc = time.perf_counter()
                     results_for_ds_collection['open_remote'] = 'success after increasing time range'
@@ -156,20 +155,22 @@ def test_open_ds(data_sets):
                     results_for_ds_collection['open_via_GUI_from_remote'] = open_via_gui(remote_ds)
                     remote_ds.close()
                 except:
+                    toc = time.perf_counter()
                     results_for_ds_collection['open_remote'] = f'failed after increasing time range {sys.exc_info()[:2]}'
                     results_for_ds_collection['no_of_time_stamps_included'] = None
-                    results_for_ds_collection['duration_open_remote_s'] = None
+                    results_for_ds_collection['duration_open_remote_s'] = f'{toc - tic: 0.4f}'
                     results_for_ds_collection['open_via_CLI_from_remote'] = 'No'
                     results_for_ds_collection['open_via_GUI_from_remote'] = 'No'
             else:
+                toc = time.perf_counter()
                 results_for_ds_collection['open_remote'] = sys.exc_info()[:2]
                 results_for_ds_collection['no_of_time_stamps_included'] = None
-                results_for_ds_collection['duration_open_remote_s'] = None
+                results_for_ds_collection['duration_open_remote_s'] = f'{toc - tic: 0.4f}'
                 results_for_ds_collection['open_via_CLI_from_remote'] = 'No'
                 results_for_ds_collection['open_via_GUI_from_remote'] = 'No'
+
+        tic = time.perf_counter()
         try:
-            tic = time.perf_counter()
-            dataset, time_range, variables, region = remote_dataset(line)
             local_ds_string = local_dataset(dataset, time_range, variables, region)
             local_ds = ds.open_dataset(local_ds_string)
             toc = time.perf_counter()
@@ -184,8 +185,6 @@ def test_open_ds(data_sets):
             track = traceback.format_exc()
             if 'does not seem to have any datasets in given time range' in track:
                 try:
-                    tic = time.perf_counter()
-                    dataset, time_range, variables, region = remote_dataset(line)
                     time_range = (time_range[0], time_range[1] + timedelta(days=2))
                     local_ds_string = local_dataset(dataset, time_range, variables, region)
                     local_ds = ds.open_dataset(local_ds_string)
@@ -197,15 +196,17 @@ def test_open_ds(data_sets):
                     local_ds.close()
                     lds.remove_data_source(local_ds_string)
                 except:
+                    toc = time.perf_counter()
                     results_for_ds_collection['open_local'] = f'failed after increasing time range {sys.exc_info()[:2]}'
                     results_for_ds_collection['no_of_time_stamps_included'] = None
-                    results_for_ds_collection['duration_open_local_s'] = None
+                    results_for_ds_collection['duration_open_local_s'] = f'{toc - tic: 0.4f}'
                     results_for_ds_collection['open_via_CLI_from_local'] = 'No'
                     results_for_ds_collection['open_via_GUI_from_local'] = 'No'
             else:
+                toc = time.perf_counter()
                 results_for_ds_collection['open_local'] = sys.exc_info()[:2]
                 results_for_ds_collection['no_of_time_stamps_included'] = None
-                results_for_ds_collection['duration_open_local_s'] = None
+                results_for_ds_collection['duration_open_local_s'] = f'{toc - tic: 0.4f}'
                 results_for_ds_collection['open_via_CLI_from_local'] = 'No'
                 results_for_ds_collection['open_via_GUI_from_local'] = 'No'
 

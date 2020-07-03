@@ -1,11 +1,14 @@
 import os
 import ast
 import random
+import shutil
 import string
 import sys
 import traceback
 
 import geopandas
+import os
+import glob
 from cate.core.ds import DATA_STORE_REGISTRY
 from cate.core import ds
 import time
@@ -93,6 +96,9 @@ def remote_dataset(line):
 
 
 def local_dataset(dataset, time_range, variables, region):
+    if len(lds.query()) > 0:
+        for local_dataset in lds.query():
+            lds.remove_data_source(local_dataset)
     rand_string = f"test{random.choice(string.ascii_lowercase)}"  # needed when tests run in parallel
     dataset.make_local(rand_string, time_range=time_range, var_names=variables, region=region)
     return f"local.{rand_string}"
@@ -108,18 +114,21 @@ def open_via_cli(dataset):
 
 def open_via_gui(dataset):
     if isinstance(dataset, xr.Dataset):
-        for var in dataset.variables:
-            if var not in dataset.coords:
-                if dataset[var].dims[-2:] == ('lat', 'lon'):
-                    if len(dataset.lat.shape) == 1 and len(dataset.lon.shape) == 1:
-                        if dataset.lat.size > 0 and dataset.lon.size > 0:
-                            return 'success'
+        if not any([var not in dataset.coords for var in dataset.variables]):
+            return 'Dataset empty'
+        else:
+            for var in dataset.variables:
+                if var not in dataset.coords:
+                    if dataset[var].dims[-2:] == ('lat', 'lon'):
+                        if len(dataset.lat.shape) == 1 and len(dataset.lon.shape) == 1:
+                            if dataset.lat.size > 0 and dataset.lon.size > 0:
+                                return 'success'
+                            else:
+                                return f'No, dataset.lat.size: {dataset.lat.size}, dataset.lon.size: {dataset.lon.size}.'
                         else:
-                            return f'No, dataset.lat.size: {dataset.lat.size}, dataset.lon.size: {dataset.lon.size}.'
+                            return f'No, dataset.lat.shape: {dataset.lat.shape}, dataset.lon.shape: {dataset.lon.shape}.'
                     else:
-                        return f'No, dataset.lat.shape: {dataset.lat.shape}, dataset.lon.shape: {dataset.lon.shape}.'
-                else:
-                    return f'No, last two dimensions of variable {var}: {dataset[var].dims[-2:]}.'
+                        return f'No, last two dimensions of variable {var}: {dataset[var].dims[-2:]}.'
     if isinstance(dataset, geopandas.GeoDataFrame):
         return 'success'
     return 'No, is neither an xr.Dataset or geopandas.GeoDataFrame.'

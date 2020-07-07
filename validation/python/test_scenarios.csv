@@ -129,7 +129,7 @@ esacci.SST.satellite-orbit-frequency.L2P.SSTskin.AVHRR-3.NOAA-19.AVHRR19_G.2-1.r
 esacci.SST.satellite-orbit-frequency.L2P.SSTskin.AVHRR-3.NOAA-17.AVHRR17_G.2-1.r1;('2002-07-10', '2002-07-11');['quality_level'];-115.9, 15.8,-115.8, 15.9
 esacci.SST.satellite-orbit-frequency.L2P.SSTskin.AVHRR-2.NOAA-12.AVHRR12_G.2-1.r1;('1991-09-16', '1991-09-17');['adjustment_alt'];-24.4, -36.9, -24.3, -36.8
 esacci.SST.satellite-orbit-frequency.L2P.SSTskin.AVHRR-2.NOAA-11.AVHRR11_G.2-1.r1;('1988-10-12', '1988-10-13');['sea_surface_temperature_retrieval_type'];-120.3, -78.4, -120.2, -78.3
-esacci.SST.satellite-orbit-frequency.L2P.SSTskin.AVHRR-2.NOAA-14.AVHRR14_G.2-1.r1;('1995-01-19', '1995-01-10');['quality_level', 'sses_bias'];70.9, -61.7, 71.0, -61.6
+esacci.SST.satellite-orbit-frequency.L2P.SSTskin.AVHRR-2.NOAA-14.AVHRR14_G.2-1.r1;('1995-01-19', '1995-01-20');['quality_level', 'sses_bias'];70.9, -61.7, 71.0, -61.6
 esacci.SST.satellite-orbit-frequency.L2P.SSTskin.AVHRR-3.NOAA-18.AVHRR18_G.2-1.r1;('2005-06-05', '2005-06-06');['sst_dtime', 'sea_surface_temperature_total_uncertainty'];-164.3, -53.4, -164.2, -53.3
 esacci.SST.satellite-orbit-frequency.L2P.SSTskin.AVHRR-2.NOAA-9.AVHRR09_G.2-1.r1;('1985-01-04', '1985-01-05');['sses_standard_deviation', 'sea_surface_temperature_retrieval_type'];118.7, -9.1, 118.8, -9.0
 esacci.SST.satellite-orbit-frequency.L2P.SSTskin.AVHRR-3.NOAA-16.AVHRR16_G.2-1.r1;('2003-06-01', '2003-06-02');['l2p_flags', 'empirical_adjustment'];-165.5, -32.0, -165.4, -31.9

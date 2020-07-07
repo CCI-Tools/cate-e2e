@@ -1,14 +1,11 @@
-import os
 import ast
 import random
-import shutil
 import string
 import sys
 import traceback
 
 import geopandas
 import os
-import glob
 from cate.core.ds import DATA_STORE_REGISTRY
 from cate.core import ds
 import time
@@ -76,8 +73,9 @@ def remote_dataset(line):
     results_for_ds_collection['dataset_collection'] = dataset.id
 
     time_range_string = line['temporal_subset']
-    time_range = get_time_range(time_range_string)
-    results_for_ds_collection['testing_time_range'] = tuple(t.strftime('%Y-%m-%d') for t in time_range)
+    time_range_1 = get_time_range(time_range_string)
+    time_range = tuple(t.strftime('%Y-%m-%d') for t in time_range_1)
+    results_for_ds_collection['testing_time_range'] = time_range
 
     variables = ast.literal_eval(line['variables_subset'])
     results_for_ds_collection['variables_subset'] = variables
@@ -165,7 +163,8 @@ def test_open_ds(data_sets):
                     remote_ds.close()
                 except:
                     toc = time.perf_counter()
-                    results_for_ds_collection['open_remote'] = f'failed after increasing time range {sys.exc_info()[:2]}'
+                    results_for_ds_collection[
+                        'open_remote'] = f'failed after increasing time range {sys.exc_info()[:2]}'
                     results_for_ds_collection['no_of_time_stamps_included'] = None
                     results_for_ds_collection['duration_open_remote_s'] = f'{toc - tic: 0.4f}'
                     results_for_ds_collection['open_via_CLI_from_remote'] = 'No'
@@ -220,6 +219,7 @@ def test_open_ds(data_sets):
                 results_for_ds_collection['open_via_GUI_from_local'] = 'No'
 
         update_csv(results_csv, header_row, results_for_ds_collection)
+
 
 # test_open_ds(data_sets)
 

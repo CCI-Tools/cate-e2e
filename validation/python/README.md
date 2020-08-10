@@ -1,10 +1,27 @@
-There are two kind of tests: 
+### Testing data access via Cate
 
-`pytest test_data_support.py` fetches all dataset collections from the OpenDataPortal via 
+There are three kind of tests: 
+
+**`test_data_support_os.py`** is currently the one used for testing - it fetches all dataset collections
+from the OpenDataPortal via opensearch. Based on the metadata for each dataset colletion, a time subset, 
+a random variable subset and a random spatial subset is made. Results are stored in  sorted_test_data_support_os_{date}.csv
+Collums:
+
+    ECV-Name
+    Dataset-ID
+    can open (1)
+    can visualise (2)
+    comment (3)
+
+(1): xcube store framework can open in-memory representation, can be utilised (analysed, processed, visualised) in own Python code, implies that variable, time range, bbox subsets are possible. Male local is possible. GUI can display metadata, subset of Cate operations applicable.
+(2): Cate GUI can display on globe, this means, at least one variable has dims "lat", "lon".
+(3): Justify/clarify a limited support (includes error message, why can open or can visualize failed)
+
+**`pytest test_data_support.py`** fetches all dataset collections from the OpenDataPortal via 
 opensearch and tests a random time range based on the dataset collection. The test results are written into 
 `test_data_support_results-date.csv`.
 
-`test_data_support_scenarios.py` uses specific scenarios which are defined for each dataset collection within the 
+**`test_data_support_scenarios.py`** uses specific scenarios which are defined for each dataset collection within the 
 `test_scenarios.csv`. Test results are written into `test_data_support_scenarios_results-date.csv`.
 For producing the test scenarios the code in `make_testing_scenarios_csv.ipynb` is used.
 NOTE: For esacci.OC.8-days.L3S.OC_PRODUCTS.multi-sensor.multi-platform.MERGED.3-1.sinusoidal the 

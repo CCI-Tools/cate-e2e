@@ -131,6 +131,14 @@ def test_open_ds(data_ids):
         comment_2 = None
         data_id = data.id
         summary_row = {'ECV-Name': data_id.split('.')[1], 'Dataset-ID': data_id}
+        if data_id == 'esacci.OC.8-days.L3S.OC_PRODUCTS.multi-sensor.multi-platform.MERGED.3-1.sinusoidal':
+            comment_1 = f'Dataset makes kernel die.'
+            comment_2 = f'Dataset makes kernel die.'
+            summary_row['can_open(1)'] = 'no'
+            summary_row['can_visualise(2)'] = 'no'
+            summary_row['comment'] = f'(1) {comment_1}; (2) {comment_2}'
+            update_csv(results_csv, header_row, summary_row)
+            continue
 
         try:
             data_source = store.query(ds_id=data_id)[0]

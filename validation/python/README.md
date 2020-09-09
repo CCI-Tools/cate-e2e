@@ -2,25 +2,47 @@
 
 There are three kind of tests: 
 
+####1.  `test_data_support_os.py` - currently used for testing
 **`test_data_support_os.py`** is currently the one used for testing - it fetches all dataset collections
-from the OpenDataPortal via opensearch. Based on the metadata for each dataset colletion, a time subset, 
-a random variable subset and a random spatial subset is made. Results are stored in  sorted_test_data_support_os_{date}.csv
-Collums:
+from the OpenDataPortal via opensearch. Results are stored in  sorted_test_data_support_os_{date}.csv
+Columns:
 
     ECV-Name
     Dataset-ID
-    can open (1)
-    can visualise (2)
-    comment (3)
+    can_open(1)
+    can_visualise(2)
+    comment
+    
+For one dataset collection at a time the following steps are done: 
 
-(1): xcube store framework can open in-memory representation, can be utilised (analysed, processed, visualised) in own Python code, implies that variable, time range, bbox subsets are possible. Male local is possible. GUI can display metadata, subset of Cate operations applicable.
-(2): Cate GUI can display on globe, this means, at least one variable has dims "lat", "lon".
-(3): Justify/clarify a limited support (includes error message, why can open or can visualize failed)
+1. Based on the metadata a 
+[time subset](https://github.com/CCI-Tools/cate-e2e/blob/529fb2bcb4702d4be4314684106f59428c429b0d/validation/python/test_data_support_os.py#L148), 
+a random [variable subset](https://github.com/CCI-Tools/cate-e2e/blob/529fb2bcb4702d4be4314684106f59428c429b0d/validation/python/test_data_support_os.py#L163) 
+and a [random spatial subset](https://github.com/CCI-Tools/cate-e2e/blob/529fb2bcb4702d4be4314684106f59428c429b0d/validation/python/test_data_support_os.py#L48)
+is made. The time subset is made based on the corresponding file list for each dataset collection. In case of no 
+file list for the dataset collection, `Has no file list.` is given as comment in the comment section. 
+2.  can_open(1) and can_visualise(2) are tested: 
 
+**can_open(1)**: 
+- xcube store framework can open in-memory representation, can be utilised (analysed, processed, visualised) 
+in own Python code, implies that variable, time range, bbox subsets are possible. 
+- Make local is possible. 
+- GUI can display metadata, subset of Cate operations applicable.
+
+**can_visualise(2)**: 
+- Cate GUI can display on globe, this means, at least one variable has dims "lat", "lon".
+
+**comment**:   
+- includes error message, why can_open(1) or can_visualise(2) failed 
+- Justify/clarify a limited support 
+
+
+#### 2. `pytest test_data_support.py` 
 **`pytest test_data_support.py`** fetches all dataset collections from the OpenDataPortal via 
 opensearch and tests a random time range based on the dataset collection. The test results are written into 
 `test_data_support_results-date.csv`.
 
+#### 3. `test_data_support_scenarios.py`
 **`test_data_support_scenarios.py`** uses specific scenarios which are defined for each dataset collection within the 
 `test_scenarios.csv`. Test results are written into `test_data_support_scenarios_results-date.csv`.
 For producing the test scenarios the code in `make_testing_scenarios_csv.ipynb` is used.

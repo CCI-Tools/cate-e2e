@@ -207,7 +207,11 @@ def test_open_ds(data_ids):
             summary_row['can_visualise(2)'] = 'no'
             comment_1 = comment_2 = f'Failed getting data description while executing store.query(ds_id={data_id})[0] with: {sys.exc_info()[:2]}'
 
-        summary_row['comment'] = f'(1) {comment_1}; (2) {comment_2}'
+        if comment_1:
+            comment_1 = f'(1) {comment_1}; '
+        if comment_2:
+            comment_2 = f'(2) {comment_2}; '
+        summary_row['comment'] = f'{comment_1} {comment_2}'
         update_csv(results_csv, header_row, summary_row)
 
 

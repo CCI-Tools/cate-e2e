@@ -82,7 +82,7 @@ def check_for_processing(cube, summary_row):
 
 
 def check_write_to_disc(summary_row, data_source, time_range, variables, region):
-    rand_string = f"test{random.choice(string.ascii_lowercase)}.zarr"  # needed when tests run in parallel
+    rand_string = f"test{random.choice(string.ascii_lowercase)}"  # needed when tests run in parallel
     try:
         data_source.make_local(rand_string, time_range=time_range, var_names=variables, region=region)
         local_ds = ds.open_dataset(f'local.{rand_string}')

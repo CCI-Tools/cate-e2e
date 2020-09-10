@@ -17,8 +17,6 @@ import multiprocessing as mp
 
 nest_asyncio.apply()
 
-pool = mp.Pool(mp.cpu_count())
-
 # header for CSV report
 header_row = ['ECV-Name', 'Dataset-ID', 'can_open(1)', 'can_visualise(2)', 'comment']
 
@@ -124,100 +122,105 @@ data_sets = store.query()
 lds = DATA_STORE_REGISTRY.get_data_store('local')
 
 
-def test_open_ds(data_ids):
-    for data in data_ids:
+def test_open_ds(data):
+    comment_1 = None
+    comment_2 = None
+    data_id = data.id
+    summary_row = {'ECV-Name': data_id.split('.')[1], 'Dataset-ID': data_id}
+    if data_id == 'esacci.OC.8-days.L3S.OC_PRODUCTS.multi-sensor.multi-platform.MERGED.3-1.sinusoidal':
+        comment_1 = f'Dataset makes kernel die.'
+        comment_2 = f'Dataset makes kernel die.'
+        summary_row['can_open(1)'] = 'no'
+        summary_row['can_visualise(2)'] = 'no'
+        summary_row['comment'] = f'(1) {comment_1}; (2) {comment_2}'
+        update_csv(results_csv, header_row, summary_row)
+        pass
 
-        comment_1 = None
-        comment_2 = None
-        data_id = data.id
-        summary_row = {'ECV-Name': data_id.split('.')[1], 'Dataset-ID': data_id}
-        if data_id == 'esacci.OC.8-days.L3S.OC_PRODUCTS.multi-sensor.multi-platform.MERGED.3-1.sinusoidal':
-            comment_1 = f'Dataset makes kernel die.'
-            comment_2 = f'Dataset makes kernel die.'
+    try:
+        data_source = store.query(ds_id=data_id)[0]
+        data_source.update_file_list()
+        if len(data_source._file_list) == 0:
+            comment_1 = f'Has no file list.'
+            comment_2 = f'Has no file list.'
             summary_row['can_open(1)'] = 'no'
             summary_row['can_visualise(2)'] = 'no'
             summary_row['comment'] = f'(1) {comment_1}; (2) {comment_2}'
             update_csv(results_csv, header_row, summary_row)
-            continue
-
+            pass
+        region = get_region(data_source)
         try:
-            data_source = store.query(ds_id=data_id)[0]
-            data_source.update_file_list()
-            region = get_region(data_source)
+            time_range = tuple(
+                t.strftime('%Y-%m-%d') for t in [data_source._file_list[0][1], data_source._file_list[1][2]])
+        except:
             try:
                 time_range = tuple(
-                    t.strftime('%Y-%m-%d') for t in [data_source._file_list[0][1], data_source._file_list[1][2]])
+                    t.strftime('%Y-%m-%d') for t in [data_source._file_list[0][1], data_source._file_list[0][2]])
             except:
-                try:
-                    time_range = tuple(
-                        t.strftime('%Y-%m-%d') for t in [data_source._file_list[0][1], data_source._file_list[0][2]])
-                except:
-                    comment_1 = f'Has no file list.'
-                    comment_2 = f'Has no file list.'
-                    summary_row['can_open(1)'] = 'no'
-                    summary_row['can_visualise(2)'] = 'no'
-                    summary_row['comment'] = f'(1) {comment_1}; (2) {comment_2}'
-                    update_csv(results_csv, header_row, summary_row)
-                    continue
+                time_range = None
 
-            var_list = []
-            s_not_to_be_in_var = ['longitude', 'latitude', 'lat', 'lon', 'bounds', 'bnds', 'date']
-            if len(data_source.meta_info['variables']) > 3:
-                while len(var_list) < 1:
-                    for var in random.choices(data_source.meta_info['variables'], k=2):
-                        if not (any(s_part in var['name'] for s_part in s_not_to_be_in_var)) and var[
-                            'name'] not in var_list:
-                            var_list.append(var['name'])
-            else:
-                for var in data_source.meta_info['variables']:
+        var_list = []
+        s_not_to_be_in_var = ['longitude', 'latitude', 'lat', 'lon', 'bounds', 'bnds', 'date']
+        if len(data_source.meta_info['variables']) > 3:
+            while len(var_list) < 1:
+                for var in random.choices(data_source.meta_info['variables'], k=2):
                     if not (any(s_part in var['name'] for s_part in s_not_to_be_in_var)) and var[
                         'name'] not in var_list:
                         var_list.append(var['name'])
+        else:
+            for var in data_source.meta_info['variables']:
+                if not (any(s_part in var['name'] for s_part in s_not_to_be_in_var)) and var[
+                    'name'] not in var_list:
+                    var_list.append(var['name'])
 
-            try:
-                print(f'Opening cube for data_id {data_id} with {var_list}.')
-                cube = data_source.open_dataset(time_range=time_range, var_names=var_list, region=region)
-                summary_row, comment_1 = check_for_processing(cube, summary_row)
-                summary_row, comment_2 = check_for_visualization(cube, summary_row)
-                cube.close()
-                summary_row, comment_1 = check_write_to_disc(summary_row, data_source, time_range, var_list, region)
-            except:
-                track = traceback.format_exc()
-                if 'does not seem to have any datasets in given time range' in track:
-                    try:
-                        time_range = (time_range[0], time_range[1] + timedelta(days=4))
-                        print(f'Opening cube for data_id {data_id} with {var_list}.')
-                        cube = data_source.open_dataset(time_range=time_range, var_names=var_list, region=region)
-                        summary_row, comment_1 = check_for_processing(cube, summary_row)
-                        summary_row, comment_2 = check_for_visualization(cube, summary_row)
-                        cube.close()
-                        summary_row, comment_1 = check_write_to_disc(summary_row, data_source, time_range, var_list,
-                                                                     region)
-                    except:
-                        summary_row['can_open(1)'] = 'no'
-                        summary_row['can_visualise(2)'] = 'no'
-                        comment_1 = comment_2 = sys.exc_info()[:2]
-                else:
+        try:
+            print(f'Opening cube for data_id {data_id} with {var_list}.')
+            cube = data_source.open_dataset(time_range=time_range, var_names=var_list, region=region)
+            summary_row, comment_1 = check_for_processing(cube, summary_row)
+            summary_row, comment_2 = check_for_visualization(cube, summary_row)
+            cube.close()
+            summary_row, comment_1 = check_write_to_disc(summary_row, data_source, time_range, var_list, region)
+        except:
+            track = traceback.format_exc()
+            if 'does not seem to have any datasets in given time range' in track:
+                try:
+                    time_range = (time_range[0], time_range[1] + timedelta(days=4))
+                    print(f'Opening cube for data_id {data_id} with {var_list}.')
+                    cube = data_source.open_dataset(time_range=time_range, var_names=var_list, region=region)
+                    summary_row, comment_1 = check_for_processing(cube, summary_row)
+                    summary_row, comment_2 = check_for_visualization(cube, summary_row)
+                    cube.close()
+                    summary_row, comment_1 = check_write_to_disc(summary_row, data_source, time_range, var_list,
+                                                                 region)
+                except:
                     summary_row['can_open(1)'] = 'no'
                     summary_row['can_visualise(2)'] = 'no'
                     comment_1 = comment_2 = sys.exc_info()[:2]
+            else:
+                summary_row['can_open(1)'] = 'no'
+                summary_row['can_visualise(2)'] = 'no'
+                comment_1 = comment_2 = sys.exc_info()[:2]
 
-        except:
-            summary_row['can_open(1)'] = 'no'
-            summary_row['can_visualise(2)'] = 'no'
-            comment_1 = comment_2 = f'Failed getting data description while executing store.query(ds_id={data_id})[0] with: {sys.exc_info()[:2]}'
-
+    except:
+        summary_row['can_open(1)'] = 'no'
+        summary_row['can_visualise(2)'] = 'no'
+        comment_1 = comment_2 = f'Failed getting data description while executing store.query(ds_id={data_id})[0] with: {sys.exc_info()[:2]}'
+    if comment_1 and (comment_1 == comment_2):
+        summary_row['comment'] = f'(1) & (2) {comment_1}'
+    else:
         if comment_1:
-            comment_1 = f'(1) {comment_1}; '
+            if comment_1 == comment_2:
+                summary_row['comment'] = f'(1) & (2) {comment_1}'
+            else:
+                comment_1 = f'(1) {comment_1}; '
         if comment_2:
             comment_2 = f'(2) {comment_2}; '
         summary_row['comment'] = f'{comment_1} {comment_2}'
-        update_csv(results_csv, header_row, summary_row)
+    update_csv(results_csv, header_row, summary_row)
 
 
-# test_open_ds(data_sets)
 
-results = pool.apply(test_open_ds(data_sets))
+pool = mp.Pool(mp.cpu_count())
+pool.map(test_open_ds, data_sets)
 pool.close()
 
 with open(results_csv, 'r', newline='') as f_input:

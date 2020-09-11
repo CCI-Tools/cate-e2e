@@ -134,7 +134,7 @@ def test_open_ds(data):
         summary_row['can_visualise(2)'] = 'no'
         summary_row['comment'] = f'(1) {comment_1}; (2) {comment_2}'
         update_csv(results_csv, header_row, summary_row)
-        pass
+        return
 
     try:
         data_source = store.query(ds_id=data_id)[0]
@@ -146,7 +146,7 @@ def test_open_ds(data):
             summary_row['can_visualise(2)'] = 'no'
             summary_row['comment'] = f'(1) {comment_1}; (2) {comment_2}'
             update_csv(results_csv, header_row, summary_row)
-            pass
+            return
         region = get_region(data_source)
         try:
             time_range = tuple(
@@ -216,7 +216,6 @@ def test_open_ds(data):
             comment_2 = f'(2) {comment_2}; '
         summary_row['comment'] = f'{comment_1} {comment_2}'
     update_csv(results_csv, header_row, summary_row)
-
 
 
 pool = mp.Pool(mp.cpu_count())

@@ -1,0 +1,304 @@
+ECV-Name,Dataset-ID,can_open(1),can_visualise(2),comment
+AEROSOL,esacci.AEROSOL.day.L3C.AER_PRODUCTS.AATSR.Envisat.ORAC.04-01-.r1,yes,yes, 
+AEROSOL,esacci.AEROSOL.day.L3C.AER_PRODUCTS.AATSR.Envisat.ORAC.04-01_seg-.r1,yes,yes, 
+AEROSOL,esacci.AEROSOL.day.L3C.AER_PRODUCTS.ATSR-2.ERS-2.ORAC.04-01-.r1,no,yes,"(1) Failed saving to disc with: (<class 'cate.core.ds.DataAccessError'>, DataAccessError('Failed to synchronize data source ""esacci.AEROSOL.day.L3C.AER_PRODUCTS.ATSR-2.ERS-2.ORAC.04-01-.r1"" for given time range, region, variable names: Unable to create file (unable to open file: name = \'/home/alicja/.cate/data_stores/local/local.testx/19950801-ESACCI-L3C_AEROSOL-AER_PRODUCTS-ATSR2-ERS2-ORAC-DAILY-fv04.01.nc\', errno = 2, error message = \'No such file or directory\', flags = 13, o_flags = 242)'));  "
+AEROSOL,esacci.AEROSOL.day.L3C.AER_PRODUCTS.ATSR-2.ERS-2.ORAC.04-01_seg-.r1,yes,yes, 
+AEROSOL,esacci.AEROSOL.day.L3C.AOD.MERIS.Envisat.MERIS_ENVISAT.2-2.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError('Could not find any dimension coordinates to use to order the datasets for concatenation'))"
+AEROSOL,esacci.AEROSOL.mon.L3C.AER_PRODUCTS.AATSR.Envisat.AATSR.04-01-.r1,yes,yes, 
+AEROSOL,esacci.AEROSOL.mon.L3C.AER_PRODUCTS.AATSR.Envisat.ORAC.04-01-.r1,yes,yes, 
+AEROSOL,esacci.AEROSOL.mon.L3C.AER_PRODUCTS.AATSR.Envisat.ORAC.04-01_seg-.r1,yes,yes, 
+AEROSOL,esacci.AEROSOL.mon.L3C.AOD.MERIS.Envisat.MERIS_ENVISAT.2-2.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError('Could not find any dimension coordinates to use to order the datasets for concatenation'))"
+AEROSOL,esacci.AEROSOL.satellite-orbit-frequency.L2P.AER_PRODUCTS.AATSR.Envisat.AATSR-ENVISAT-ENS.v2-6.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""arguments without labels along dimension 'pixel_number' cannot be aligned because they have different dimension sizes: {219730, 87581}""))"
+AEROSOL,esacci.AEROSOL.satellite-orbit-frequency.L2P.AER_PRODUCTS.AATSR.Envisat.AATSR.04-01.r1,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+AEROSOL,esacci.AEROSOL.satellite-orbit-frequency.L2P.AER_PRODUCTS.AATSR.Envisat.ORAC.04-01.r1,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+AEROSOL,esacci.AEROSOL.satellite-orbit-frequency.L2P.AER_PRODUCTS.AATSR.Envisat.SU.4-3.r1,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+AEROSOL,esacci.AEROSOL.satellite-orbit-frequency.L2P.AER_PRODUCTS.ATSR-2.ERS-2.ORAC.04-01.r1,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+AEROSOL,esacci.AEROSOL.satellite-orbit-frequency.L2P.AER_PRODUCTS.ATSR-2.Envisat.ATSR2-ENVISAT-ENS.v2-6.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError('Could not find any dimension coordinates to use to order the datasets for concatenation'))"
+AEROSOL,esacci.AEROSOL.satellite-orbit-frequency.L2P.AOD.MERIS.Envisat.MERIS_ENVISAT.2-2.r1,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+AEROSOL,esacci.AEROSOL.yr.L3C.AER_PRODUCTS.AATSR.Envisat.AATSR-ENVISAT-ENS_ANNUAL.v2-6.r1,yes,yes, 
+AEROSOL,esacci.AEROSOL.yr.L3C.AER_PRODUCTS.ATSR-2.Envisat.ATSR2-ENVISAT-ENS_ANNUAL.v2-6.r1,no,no,"(1) & (2) (<class 'IndexError'>, IndexError('list index out of range'))"
+BIOMASS,esacci.BIOMASS.yr.L4.AGB.multi-sensor.multi-platform.MERGED.1-0.r1,yes,yes, 
+CLOUD,esacci.CLOUD.mon.L3C.CLD_PRODUCTS.MODIS.Aqua.MODIS_AQUA.2-0.r1,yes,yes, 
+CLOUD,esacci.CLOUD.mon.L3C.CLD_PRODUCTS.MODIS.Terra.MODIS_TERRA.2-0.r1,yes,yes, 
+CLOUD,esacci.CLOUD.mon.L3C.CLD_PRODUCTS.multi-sensor.multi-platform.ATSR2-AATSR.3-0.r1,yes,yes, 
+CLOUD,esacci.CLOUD.mon.L3C.CLD_PRODUCTS.multi-sensor.multi-platform.AVHRR-AM.3-0.r1,yes,yes, 
+CLOUD,esacci.CLOUD.mon.L3C.CLD_PRODUCTS.multi-sensor.multi-platform.AVHRR-PM.3-0.r1,yes,yes, 
+CLOUD,esacci.CLOUD.mon.L3C.CLD_PRODUCTS.multi-sensor.multi-platform.MERIS-AATSR.2-0.r1,yes,yes, 
+FIRE,esacci.FIRE.mon.L3S.BA.MODIS.Terra.MODIS_TERRA.v5-1.pixel,no,no,(1) Has no file list.; (2) Has no file list.
+FIRE,esacci.FIRE.mon.L3S.BA.MSI-(Sentinel-2).Sentinel-2A.MSI.v1-1.pixel,no,no,(1) Has no file list.; (2) Has no file list.
+FIRE,esacci.FIRE.mon.L4.BA.MODIS.Terra.MODIS_TERRA.v5-1.grid,yes,yes, 
+FIRE,esacci.FIRE.mon.L4.BA.MSI-(Sentinel-2).Sentinel-2A.MSI.v1-1.grid,yes,yes, 
+GHG,esacci.GHG.satellite-orbit-frequency.L2.CH4.SCIAMACHY.Envisat.IMAP.v7-2.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError('Could not find any dimension coordinates to use to order the datasets for concatenation'))"
+GHG,esacci.GHG.satellite-orbit-frequency.L2.CH4.SCIAMACHY.Envisat.WFMD.v4-0.r1,no,no,"(1) & (2) (<class 'cate.core.ds.DataAccessError'>, DataAccessError('Failed to open data source ""esacci.GHG.satellite-orbit-frequency.L2.CH4.SCIAMACHY.Envisat.WFMD.v4-0.r1"" for given time range, region, variable names: [Errno -77] NetCDF: Access failure: b\'http://data.cci.ceda.ac.uk/thredds/dodsC/esacci/ghg/data/crdp_4/SCIAMACHY/CH4_SCI_WFMD/v4.0/2002/ESACCI-GHG-L2-CH4-SCIAMACHY-WFMD-20021001-fv1.nc#fillmismatch\''))"
+GHG,esacci.GHG.satellite-orbit-frequency.L2.CH4.TANSO-FTS.GOSAT.EMMA.ch4_v1-2.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError('Could not find any dimension coordinates to use to order the datasets for concatenation'))"
+GHG,esacci.GHG.satellite-orbit-frequency.L2.CH4.TANSO-FTS.GOSAT.OCFP.v2-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError('Could not find any dimension coordinates to use to order the datasets for concatenation'))"
+GHG,esacci.GHG.satellite-orbit-frequency.L2.CH4.TANSO-FTS.GOSAT.OCPR.v7-0.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError('Could not find any dimension coordinates to use to order the datasets for concatenation'))"
+GHG,esacci.GHG.satellite-orbit-frequency.L2.CH4.TANSO-FTS.GOSAT.SRFP.v2-3-8.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError('Could not find any dimension coordinates to use to order the datasets for concatenation'))"
+GHG,esacci.GHG.satellite-orbit-frequency.L2.CH4.TANSO-FTS.GOSAT.SRPR.v2-3-8.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError('Could not find any dimension coordinates to use to order the datasets for concatenation'))"
+GHG,esacci.GHG.satellite-orbit-frequency.L2.CH4.TROPOMI.Sentinel-5P.WFMD.v1-2.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError('Could not find any dimension coordinates to use to order the datasets for concatenation'))"
+GHG,esacci.GHG.satellite-orbit-frequency.L2.CO2.OCO.OCO-2.UNSPECIFIED.v08.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError('Could not find any dimension coordinates to use to order the datasets for concatenation'))"
+GHG,esacci.GHG.satellite-orbit-frequency.L2.CO2.SCIAMACHY.Envisat.BESD.v02-01-02.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError('Could not find any dimension coordinates to use to order the datasets for concatenation'))"
+GHG,esacci.GHG.satellite-orbit-frequency.L2.CO2.SCIAMACHY.Envisat.WFMD.v4-0.r1,no,no,"(1) & (2) (<class 'cate.core.ds.DataAccessError'>, DataAccessError('Failed to open data source ""esacci.GHG.satellite-orbit-frequency.L2.CO2.SCIAMACHY.Envisat.WFMD.v4-0.r1"" for given time range, region, variable names: [Errno -77] NetCDF: Access failure: b\'http://data.cci.ceda.ac.uk/thredds/dodsC/esacci/ghg/data/crdp_4/SCIAMACHY/CO2_SCI_WFMD/v4.0/2002/ESACCI-GHG-L2-CO2-SCIAMACHY-WFMD-20021001-fv1.nc#fillmismatch\''))"
+GHG,esacci.GHG.satellite-orbit-frequency.L2.CO2.TANSO-FTS.GOSAT.EMMA.v2-2c.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError('Could not find any dimension coordinates to use to order the datasets for concatenation'))"
+GHG,esacci.GHG.satellite-orbit-frequency.L2.CO2.TANSO-FTS.GOSAT.OCFP.v7-0-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError('Could not find any dimension coordinates to use to order the datasets for concatenation'))"
+GHG,esacci.GHG.satellite-orbit-frequency.L2.CO2.TANSO-FTS.GOSAT.SRFP.v2-3-8.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError('Could not find any dimension coordinates to use to order the datasets for concatenation'))"
+GHG,esacci.GHG.satellite-orbit-frequency.L2.CO2.multi-sensor.multi-platform.EMMA.v2-2a.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError('Could not find any dimension coordinates to use to order the datasets for concatenation'))"
+GHG,esacci.GHG.satellite-orbit-frequency.L2.CO2.multi-sensor.multi-platform.EMMA.v2-2b.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError('Could not find any dimension coordinates to use to order the datasets for concatenation'))"
+ICESHEETS,esacci.ICESHEETS.mon.IND.GMB.GRACE-instrument.GRACE.VARIOUS.1-3.greenland_gmb_time_series,no,no,(1) Has no file list.; (2) Has no file list.
+ICESHEETS,esacci.ICESHEETS.unspecified.L4.IV.SAR-C-(Sentinel-1).multi-platform.UNSPECIFIED.1-1.greenland_s1_250m_20150610_20170321_Helheim,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.L4.SEC.multi-sensor.multi-platform.UNSPECIFIED.0-1.greenland_sec_saral_altika,no,no,"(1) & (2) (<class 'cate.core.ds.DataAccessError'>, DataAccessError('Failed to open data source ""esacci.ICESHEETS.unspecified.L4.SEC.multi-sensor.multi-platform.UNSPECIFIED.0-1.greenland_sec_saral_altika"" for given time range, region, variable names: [Errno -47] NetCDF: NC_UNLIMITED in the wrong index: b\'http://data.cci.ceda.ac.uk/thredds/dodsC/esacci/ice_sheets_greenland/data/greenland_surface_elevation_change/saral-altika/v0.1/AltiKa-SEC_2013-2017.nc#fillmismatch\''))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.CFL.multi-sensor.multi-platform.UNSPECIFIED.v3-0.greenland,no,no,(1) Has no file list.; (2) Has no file list.
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.GLL.multi-sensor.multi-platform.UNSPECIFIED.v1-3.greenland,no,no,(1) Has no file list.; (2) Has no file list.
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.AMI-SAR.ERS-1.UNSPECIFIED.1-1.greenland_northern_drainage_basin_winter_1991_1992,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.AMI-SAR.ERS-2.UNSPECIFIED.1-1.greenland_margin_1995_1996,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.MSI-(Sentinel-2).Sentinel-2A.UNSPECIFIED.1-0.greenland_s2_50m_20160508_20160518_docker_smith,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.MSI-(Sentinel-2).multi-platform.UNSPECIFIED.1-1.greenland_s2_50m_seasonal_20170501_20170829_Helheim,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.MSI-(Sentinel-2).multi-platform.UNSPECIFIED.1-1.greenland_s2_50m_seasonal_20170501_20170914_Petermann,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.MSI-(Sentinel-2).multi-platform.UNSPECIFIED.1-1.greenland_s2_50m_seasonal_20170603_20170908_Jakobshavn,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.MSI-(Sentinel-2).multi-platform.UNSPECIFIED.1-1.greenland_s2_50m_seasonal_20170625_20170810_79Fjord,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.MSI-(Sentinel-2).multi-platform.UNSPECIFIED.1-1.greenland_s2_50m_seasonal_20170625_20170810_Zachariae,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.MSI-(Sentinel-2).multi-platform.UNSPECIFIED.1-1.greenland_s2_50m_seasonal_20170630_20170814_Hagen,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.MSI-(Sentinel-2).multi-platform.UNSPECIFIED.1-1.greenland_s2_50m_seasonal_20170715_20170814_Upernavik,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.MSI-(Sentinel-2).multi-platform.UNSPECIFIED.1-1.greenland_s2_50m_seasonal_20170721_20170820_Kangerdlugssuaq,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.MSI-(Sentinel-2).multi-platform.UNSPECIFIED.1-1.greenland_s2_50m_timeseries_20170501_20170829_Helheim,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.MSI-(Sentinel-2).multi-platform.UNSPECIFIED.1-1.greenland_s2_50m_timeseries_20170501_20170914_Petermann,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.MSI-(Sentinel-2).multi-platform.UNSPECIFIED.1-1.greenland_s2_50m_timeseries_20170603_20170908_Jakobshavn,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.MSI-(Sentinel-2).multi-platform.UNSPECIFIED.1-1.greenland_s2_50m_timeseries_20170625_20170810_79Fjord,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.MSI-(Sentinel-2).multi-platform.UNSPECIFIED.1-1.greenland_s2_50m_timeseries_20170625_20170810_Zachariae,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.MSI-(Sentinel-2).multi-platform.UNSPECIFIED.1-1.greenland_s2_50m_timeseries_20170630_20170814_Hagen,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.MSI-(Sentinel-2).multi-platform.UNSPECIFIED.1-1.greenland_s2_50m_timeseries_20170715_20170814_Upernavik,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.MSI-(Sentinel-2).multi-platform.UNSPECIFIED.1-1.greenland_s2_50m_timeseries_20170721_20170820_Kangerdlugssuaq,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.SAR-(RadarSat-2).RadarSat-2.UNSPECIFIED.1-0.greenland_map_winter_2013_2014,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.SAR-2000.multi-platform.UNSPECIFIED.1-0.greenland_csk_250m_timeseries_20120604_20141223_Jakobshavn,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.SAR-C-(Sentinel-1).Sentinel-1A.UNSPECIFIED.1-0.greenland_map_winter_2014_2015,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.SAR-C-(Sentinel-1).Sentinel-1A.UNSPECIFIED.1-2.greenland_map_winter_2015_2016,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.SAR-C-(Sentinel-1).multi-platform.UNSPECIFIED.1-0.greenland_map_winter_2016_2017,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.SAR-C-(Sentinel-1).multi-platform.UNSPECIFIED.1-0.greenland_map_winter_2017_2018,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.SAR-C-(Sentinel-1).multi-platform.UNSPECIFIED.1-1.greenland_s1_250m_20141010_20170317_Upernavik,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.SAR-C-(Sentinel-1).multi-platform.UNSPECIFIED.1-1.greenland_s1_250m_20141011_20170317_20150122_20170322_Hagen,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.SAR-C-(Sentinel-1).multi-platform.UNSPECIFIED.1-1.greenland_s1_250m_20141011_20170317_Jakobshavn,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.SAR-C-(Sentinel-1).multi-platform.UNSPECIFIED.1-1.greenland_s1_250m_20150118_20170321_Kangerlussuaq,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.SAR-C-(Sentinel-1).multi-platform.UNSPECIFIED.1-1.greenland_s1_250m_20150122_20170319_Petermann,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.SAR-C-(Sentinel-1).multi-platform.UNSPECIFIED.1-1.greenland_s1_250m_20150122_20170322_79-Fjord,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.SAR-C-(Sentinel-1).multi-platform.UNSPECIFIED.1-1.greenland_s1_250m_20150124_20170322_Storstroemmen,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.SAR-C-(Sentinel-1).multi-platform.UNSPECIFIED.1-1.greenland_s1_250m_20150126_20170322_Zachariae,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.multi-sensor.multi-platform.UNSPECIFIED.1-0.greenland_timeseries_Kangerlussuaq,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.multi-sensor.multi-platform.UNSPECIFIED.1-1.greenland_timeseries_2002_2010_Jakobshavn,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.multi-sensor.multi-platform.UNSPECIFIED.1-1.greenland_timeseries_Hagen,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.multi-sensor.multi-platform.UNSPECIFIED.1-1.greenland_timeseries_Helheim,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.multi-sensor.multi-platform.UNSPECIFIED.1-1.greenland_timeseries_Petermann,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.multi-sensor.multi-platform.UNSPECIFIED.1-1.greenland_timeseries_Storstrommen,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.multi-sensor.multi-platform.UNSPECIFIED.1-1.greenland_timeseries_Zachariae_79Fjord,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.multi-sensor.multi-platform.UNSPECIFIED.1-2.greenland_timeseries_1992_2010_Jakobshavn,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.unspecified.Unspecified.IV.multi-sensor.multi-platform.UNSPECIFIED.1-2.greenland_timeseries_Upernarvik,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.yr.Unspecified.GMB.GRACE-instrument.GRACE.UNSPECIFIED.1-2.greenland_gmb_mass_trends,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""conflicting sizes for dimension 'time': length 1 on 'time' and length 10 on 't'""))"
+ICESHEETS,esacci.ICESHEETS.yr.Unspecified.GMB.GRACE-instrument.GRACE.UNSPECIFIED.1-2.greenland_gmb_timeseries,no,no,(1) Has no file list.; (2) Has no file list.
+ICESHEETS,esacci.ICESHEETS.yr.Unspecified.GMB.GRACE-instrument.GRACE.UNSPECIFIED.1-3.greenland_gmb_mass_trends,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""conflicting sizes for dimension 'time': length 1 on 'time' and length 10 on 't'""))"
+ICESHEETS,esacci.ICESHEETS.yr.Unspecified.GMB.GRACE-instrument.GRACE.UNSPECIFIED.1-4.greenland_gmb_mass_trends,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""conflicting sizes for dimension 'time': length 1 on 'time' and length 11 on 't'""))"
+ICESHEETS,esacci.ICESHEETS.yr.Unspecified.GMB.GRACE-instrument.GRACE.UNSPECIFIED.1-4.greenland_gmb_time_series,no,no,(1) Has no file list.; (2) Has no file list.
+ICESHEETS,esacci.ICESHEETS.yr.Unspecified.GMB.GRACE-instrument.GRACE.UNSPECIFIED.1-5.greenland_gmb_mass_trends,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""conflicting sizes for dimension 'time': length 1 on 'time' and length 10 on 't'""))"
+ICESHEETS,esacci.ICESHEETS.yr.Unspecified.GMB.GRACE-instrument.GRACE.UNSPECIFIED.1-5.greenland_gmb_time_series,no,no,(1) Has no file list.; (2) Has no file list.
+ICESHEETS,esacci.ICESHEETS.yr.Unspecified.IV.PALSAR.ALOS.UNSPECIFIED.1-1.greenland_margin_2006_2011,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.yr.Unspecified.SEC.SIRAL.CryoSat-2.UNSPECIFIED.2-2.greenland_sec_cryosat_2yr,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.yr.Unspecified.SEC.SIRAL.CryoSat-2.UNSPECIFIED.2-2.greenland_sec_cryosat_5yr,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+ICESHEETS,esacci.ICESHEETS.yr.Unspecified.SEC.multi-sensor.multi-platform.UNSPECIFIED.1-2.r1,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+LAKES,esacci.LAKES.day.L3S.LK_PRODUCTS.multi-sensor.multi-platform.MERGED.v1-0.r1,yes,yes, 
+LC,esacci.LC.13-yrs.L4.WB.ASAR.Envisat.Map.4-0.r1,yes,yes, 
+LC,esacci.LC.yr.L4.LCCS.multi-sensor.multi-platform.Map.2-0-7.r1,yes,yes, 
+OC,esacci.OC.5-days.L3S.CHLOR_A.multi-sensor.multi-platform.MERGED.3-1.geographic,yes,yes, 
+OC,esacci.OC.5-days.L3S.CHLOR_A.multi-sensor.multi-platform.MERGED.3-1.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.5-days.L3S.CHLOR_A.multi-sensor.multi-platform.MERGED.4-2.geographic,yes,yes, 
+OC,esacci.OC.5-days.L3S.CHLOR_A.multi-sensor.multi-platform.MERGED.4-2.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.5-days.L3S.IOP.multi-sensor.multi-platform.MERGED.3-1.geographic,yes,yes, 
+OC,esacci.OC.5-days.L3S.IOP.multi-sensor.multi-platform.MERGED.3-1.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.5-days.L3S.IOP.multi-sensor.multi-platform.MERGED.4-2.geographic,yes,yes, 
+OC,esacci.OC.5-days.L3S.IOP.multi-sensor.multi-platform.MERGED.4-2.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.5-days.L3S.K_490.multi-sensor.multi-platform.MERGED.3-1.geographic,yes,yes, 
+OC,esacci.OC.5-days.L3S.K_490.multi-sensor.multi-platform.MERGED.3-1.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.5-days.L3S.K_490.multi-sensor.multi-platform.MERGED.4-2.geographic,yes,yes, 
+OC,esacci.OC.5-days.L3S.K_490.multi-sensor.multi-platform.MERGED.4-2.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.5-days.L3S.OC_PRODUCTS.multi-sensor.multi-platform.MERGED.3-1.geographic,yes,yes, 
+OC,esacci.OC.5-days.L3S.OC_PRODUCTS.multi-sensor.multi-platform.MERGED.3-1.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.5-days.L3S.OC_PRODUCTS.multi-sensor.multi-platform.MERGED.4-2.geographic,yes,yes, 
+OC,esacci.OC.5-days.L3S.OC_PRODUCTS.multi-sensor.multi-platform.MERGED.4-2.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.5-days.L3S.RRS.multi-sensor.multi-platform.MERGED.3-1.geographic,yes,yes, 
+OC,esacci.OC.5-days.L3S.RRS.multi-sensor.multi-platform.MERGED.3-1.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.5-days.L3S.RRS.multi-sensor.multi-platform.MERGED.4-2.geographic,yes,yes, 
+OC,esacci.OC.5-days.L3S.RRS.multi-sensor.multi-platform.MERGED.4-2.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.8-days.L3S.CHLOR_A.multi-sensor.multi-platform.MERGED.3-1.geographic,yes,yes, 
+OC,esacci.OC.8-days.L3S.CHLOR_A.multi-sensor.multi-platform.MERGED.3-1.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.8-days.L3S.CHLOR_A.multi-sensor.multi-platform.MERGED.4-2.geographic,yes,yes, 
+OC,esacci.OC.8-days.L3S.CHLOR_A.multi-sensor.multi-platform.MERGED.4-2.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.8-days.L3S.IOP.multi-sensor.multi-platform.MERGED.3-1.geographic,yes,yes, 
+OC,esacci.OC.8-days.L3S.IOP.multi-sensor.multi-platform.MERGED.3-1.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.8-days.L3S.IOP.multi-sensor.multi-platform.MERGED.4-2.geographic,yes,yes, 
+OC,esacci.OC.8-days.L3S.IOP.multi-sensor.multi-platform.MERGED.4-2.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.8-days.L3S.K_490.multi-sensor.multi-platform.MERGED.3-1.geographic,yes,yes, 
+OC,esacci.OC.8-days.L3S.K_490.multi-sensor.multi-platform.MERGED.3-1.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.8-days.L3S.K_490.multi-sensor.multi-platform.MERGED.4-2.geographic,yes,yes, 
+OC,esacci.OC.8-days.L3S.K_490.multi-sensor.multi-platform.MERGED.4-2.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.8-days.L3S.OC_PRODUCTS.multi-sensor.multi-platform.MERGED.3-1.geographic,yes,yes, 
+OC,esacci.OC.8-days.L3S.OC_PRODUCTS.multi-sensor.multi-platform.MERGED.3-1.sinusoidal,no,no,(1) Dataset makes kernel die.; (2) Dataset makes kernel die.
+OC,esacci.OC.8-days.L3S.OC_PRODUCTS.multi-sensor.multi-platform.MERGED.4-2.geographic,yes,yes, 
+OC,esacci.OC.8-days.L3S.OC_PRODUCTS.multi-sensor.multi-platform.MERGED.4-2.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.8-days.L3S.RRS.multi-sensor.multi-platform.MERGED.3-1.geographic,yes,yes, 
+OC,esacci.OC.8-days.L3S.RRS.multi-sensor.multi-platform.MERGED.3-1.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.8-days.L3S.RRS.multi-sensor.multi-platform.MERGED.4-2.geographic,yes,yes, 
+OC,esacci.OC.8-days.L3S.RRS.multi-sensor.multi-platform.MERGED.4-2.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.climatology.L4.OC_PRODUCTS.multi-sensor.multi-platform.UNSPECIFIED.4-2.r1,yes,yes, 
+OC,esacci.OC.day.L3S.CHLOR_A.multi-sensor.multi-platform.MERGED.3-1.geographic,yes,yes, 
+OC,esacci.OC.day.L3S.CHLOR_A.multi-sensor.multi-platform.MERGED.3-1.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.day.L3S.CHLOR_A.multi-sensor.multi-platform.MERGED.4-2.geographic,yes,yes, 
+OC,esacci.OC.day.L3S.CHLOR_A.multi-sensor.multi-platform.MERGED.4-2.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.day.L3S.IOP.multi-sensor.multi-platform.MERGED.3-1.geographic,yes,yes, 
+OC,esacci.OC.day.L3S.IOP.multi-sensor.multi-platform.MERGED.3-1.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.day.L3S.IOP.multi-sensor.multi-platform.MERGED.4-2.geographic,yes,yes, 
+OC,esacci.OC.day.L3S.IOP.multi-sensor.multi-platform.MERGED.4-2.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.day.L3S.K_490.multi-sensor.multi-platform.MERGED.3-1.geographic,yes,yes, 
+OC,esacci.OC.day.L3S.K_490.multi-sensor.multi-platform.MERGED.3-1.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.day.L3S.K_490.multi-sensor.multi-platform.MERGED.4-2.geographic,yes,yes, 
+OC,esacci.OC.day.L3S.K_490.multi-sensor.multi-platform.MERGED.4-2.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.day.L3S.OC_PRODUCTS.multi-sensor.multi-platform.MERGED.3-1.geographic,yes,yes, 
+OC,esacci.OC.day.L3S.OC_PRODUCTS.multi-sensor.multi-platform.MERGED.3-1.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.day.L3S.OC_PRODUCTS.multi-sensor.multi-platform.MERGED.4-2.geographic,yes,yes, 
+OC,esacci.OC.day.L3S.OC_PRODUCTS.multi-sensor.multi-platform.MERGED.4-2.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.day.L3S.RRS.multi-sensor.multi-platform.MERGED.3-1.geographic,yes,yes, 
+OC,esacci.OC.day.L3S.RRS.multi-sensor.multi-platform.MERGED.3-1.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.day.L3S.RRS.multi-sensor.multi-platform.MERGED.4-2.geographic,yes,yes, 
+OC,esacci.OC.day.L3S.RRS.multi-sensor.multi-platform.MERGED.4-2.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.mon.L3S.CHLOR_A.multi-sensor.multi-platform.MERGED.3-1.geographic,no,no,"(1) & (2) (<class 'IndexError'>, IndexError('list index out of range'))"
+OC,esacci.OC.mon.L3S.CHLOR_A.multi-sensor.multi-platform.MERGED.3-1.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.mon.L3S.CHLOR_A.multi-sensor.multi-platform.MERGED.4-2.geographic,yes,yes, 
+OC,esacci.OC.mon.L3S.CHLOR_A.multi-sensor.multi-platform.MERGED.4-2.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.mon.L3S.IOP.multi-sensor.multi-platform.MERGED.3-1.geographic,yes,yes, 
+OC,esacci.OC.mon.L3S.IOP.multi-sensor.multi-platform.MERGED.3-1.sinusoidal,no,no,"(1) & (2) (<class 'cate.core.ds.DataAccessError'>, DataAccessError('Failed to open data source ""esacci.OC.mon.L3S.IOP.multi-sensor.multi-platform.MERGED.3-1.sinusoidal"" for given time range, region, variable names: [Errno -70] NetCDF: DAP server error: b\'http://data.cci.ceda.ac.uk/thredds/dodsC/esacci/ocean_colour/data/v3.1-release/sinusoidal/netcdf/iop/monthly/v3.1/1997/ESACCI-OC-L3S-IOP-MERGED-1M_MONTHLY_4km_SIN_PML_OCx_QAA-199709-fv3.1.nc#fillmismatch\''))"
+OC,esacci.OC.mon.L3S.IOP.multi-sensor.multi-platform.MERGED.4-2.geographic,yes,yes, 
+OC,esacci.OC.mon.L3S.IOP.multi-sensor.multi-platform.MERGED.4-2.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.mon.L3S.K_490.multi-sensor.multi-platform.MERGED.3-1.geographic,yes,yes, 
+OC,esacci.OC.mon.L3S.K_490.multi-sensor.multi-platform.MERGED.3-1.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.mon.L3S.K_490.multi-sensor.multi-platform.MERGED.4-2.geographic,yes,yes, 
+OC,esacci.OC.mon.L3S.K_490.multi-sensor.multi-platform.MERGED.4-2.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.mon.L3S.OC_PRODUCTS.multi-sensor.multi-platform.MERGED.3-1.geographic,yes,yes, 
+OC,esacci.OC.mon.L3S.OC_PRODUCTS.multi-sensor.multi-platform.MERGED.3-1.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.mon.L3S.OC_PRODUCTS.multi-sensor.multi-platform.MERGED.4-2.geographic,no,yes,"(1) Failed saving to disc with: (<class 'cate.core.ds.DataAccessError'>, DataAccessError('Failed to synchronize data source ""esacci.OC.mon.L3S.OC_PRODUCTS.multi-sensor.multi-platform.MERGED.4-2.geographic"" for given time range, region, variable names: Unable to create file (unable to open file: name = \'/home/alicja/.cate/data_stores/local/local.testk/ESACCI-OC-L3S-OC_PRODUCTS-MERGED-1M_MONTHLY_4km_GEO_PML_OCx_QAA-199710-fv4.2.nc\', errno = 2, error message = \'No such file or directory\', flags = 13, o_flags = 242)'));  "
+OC,esacci.OC.mon.L3S.OC_PRODUCTS.multi-sensor.multi-platform.MERGED.4-2.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.mon.L3S.RRS.multi-sensor.multi-platform.MERGED.3-1.geographic,yes,yes, 
+OC,esacci.OC.mon.L3S.RRS.multi-sensor.multi-platform.MERGED.3-1.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OC,esacci.OC.mon.L3S.RRS.multi-sensor.multi-platform.MERGED.4-2.geographic,yes,yes, 
+OC,esacci.OC.mon.L3S.RRS.multi-sensor.multi-platform.MERGED.4-2.sinusoidal,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+OZONE,esacci.OZONE.day.L3S.TC.multi-sensor.multi-platform.MERGED.fv0100.r1,yes,yes, 
+OZONE,esacci.OZONE.mon.L3.LP.GOMOS.Envisat.GOMOS_ENVISAT.v0001.r1,yes,yes, 
+OZONE,esacci.OZONE.mon.L3.LP.MIPAS.Envisat.MIPAS_ENVISAT.v0001.r1,yes,yes, 
+OZONE,esacci.OZONE.mon.L3.LP.OSIRIS.ODIN.OSIRIS_ODIN.v0001.r1,yes,yes, 
+OZONE,esacci.OZONE.mon.L3.LP.SCIAMACHY.Envisat.SCIAMACHY_ENVISAT.v0001.r1,yes,yes, 
+OZONE,esacci.OZONE.mon.L3.LP.SMR.ODIN.MZM.v0001.r1,yes,yes, 
+OZONE,esacci.OZONE.mon.L3.LP.SMR.ODIN.SMR_ODIN.v0001.r1,yes,yes, 
+OZONE,esacci.OZONE.mon.L3.NP.multi-sensor.multi-platform.MERGED.fv0002.r1,no,yes,"(1) Failed saving to disc with: (<class 'cate.core.ds.DataAccessError'>, DataAccessError('Failed to synchronize data source ""esacci.OZONE.mon.L3.NP.multi-sensor.multi-platform.MERGED.fv0002.r1"" for given time range, region, variable names: Unable to create file (unable to open file: name = \'/home/alicja/.cate/data_stores/local/local.testr/ESACCI-OZONE-L3-NP-MERGED-KNMI-199702-fv0002.nc\', errno = 2, error message = \'No such file or directory\', flags = 13, o_flags = 242)'));  "
+PERMAFROST,esacci.PERMAFROST.yr.L4.ALT.multi-sensor.multi-platform.MODIS.01-0.r1,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+PERMAFROST,esacci.PERMAFROST.yr.L4.GTD.multi-sensor.multi-platform.MODIS.01-0.r1,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+PERMAFROST,esacci.PERMAFROST.yr.L4.PFR.multi-sensor.multi-platform.MODIS.01-0.r1,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+SEAICE,esacci.SEAICE.day.L4.SICONC.multi-sensor.multi-platform.AMSR_25kmEASE2.2-1.NH,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+SEAICE,esacci.SEAICE.day.L4.SICONC.multi-sensor.multi-platform.AMSR_25kmEASE2.2-1.SH,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+SEAICE,esacci.SEAICE.day.L4.SICONC.multi-sensor.multi-platform.AMSR_50kmEASE2.2-1.NH,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+SEAICE,esacci.SEAICE.day.L4.SICONC.multi-sensor.multi-platform.AMSR_50kmEASE2.2-1.SH,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+SEAICE,esacci.SEAICE.mon.L3C.SITHICK.RA-2.Envisat.NH25KMEASE2.2-0.r1,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+SEAICE,esacci.SEAICE.mon.L3C.SITHICK.RA-2.Envisat.SH50KMEASE2.2-0.r1,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+SEAICE,esacci.SEAICE.mon.L3C.SITHICK.SIRAL.CryoSat-2.NH25KMEASE2.2-0.r1,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+SEAICE,esacci.SEAICE.mon.L3C.SITHICK.SIRAL.CryoSat-2.SH50KMEASE2.2-0.r1,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+SEAICE,esacci.SEAICE.satellite-orbit-frequency.L2P.SITHICK.RA-2.Envisat.NH.2-0.r1,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+SEAICE,esacci.SEAICE.satellite-orbit-frequency.L2P.SITHICK.RA-2.Envisat.SH.2-0.r1,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+SEAICE,esacci.SEAICE.satellite-orbit-frequency.L2P.SITHICK.SIRAL.CryoSat-2.NH.2-0.r1,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+SEAICE,esacci.SEAICE.satellite-orbit-frequency.L2P.SITHICK.SIRAL.CryoSat-2.SH.2-0.r1,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+SEALEVEL,esacci.SEALEVEL.mon.IND.MSL.multi-sensor.multi-platform.MERGED.2-0.r1,yes,no," (2) Last two dimensions of variable global_msl_trend_error: ('time',).; "
+SEALEVEL,esacci.SEALEVEL.mon.IND.MSLAMPH.multi-sensor.multi-platform.MERGED.2-0.r1,yes,yes, 
+SEALEVEL,esacci.SEALEVEL.mon.IND.MSLTR.multi-sensor.multi-platform.MERGED.2-0.r1,yes,yes, 
+SEALEVEL,esacci.SEALEVEL.mon.L4.MSLA.multi-sensor.multi-platform.MERGED.2-0.r1,yes,yes, 
+SEALEVEL,esacci.SEALEVEL.satellite-orbit-frequency.L1.UNSPECIFIED.AltiKa.SARAL.UNSPECIFIED.v2-0.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError('Coordinate variable time is neither monotonically increasing nor monotonically decreasing on all datasets'))"
+SEALEVEL,esacci.SEALEVEL.satellite-orbit-frequency.L1.UNSPECIFIED.GFO-RA.GFO.UNSPECIFIED.v2-0.r1,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+SEALEVEL,esacci.SEALEVEL.satellite-orbit-frequency.L1.UNSPECIFIED.Poseidon-2.Jason-1.UNSPECIFIED.v2-0.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError('Coordinate variable time is neither monotonically increasing nor monotonically decreasing on all datasets'))"
+SEALEVEL,esacci.SEALEVEL.satellite-orbit-frequency.L1.UNSPECIFIED.Poseidon-3.Jason-2.UNSPECIFIED.v2-0.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError('Coordinate variable time is neither monotonically increasing nor monotonically decreasing on all datasets'))"
+SEALEVEL,esacci.SEALEVEL.satellite-orbit-frequency.L1.UNSPECIFIED.RA-2.Envisat.UNSPECIFIED.v2-0.r1,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+SEALEVEL,esacci.SEALEVEL.satellite-orbit-frequency.L1.UNSPECIFIED.RA.ERS-1.UNSPECIFIED.v2-0.r1,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+SEALEVEL,esacci.SEALEVEL.satellite-orbit-frequency.L1.UNSPECIFIED.RA.ERS-2.UNSPECIFIED.v2-0.r1,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+SEALEVEL,esacci.SEALEVEL.satellite-orbit-frequency.L1.UNSPECIFIED.SIRAL.CryoSat-2.UNSPECIFIED.v2-0.r1,no,no,"(1) & (2) (<class 'cate.core.types.ValidationError'>, ValidationError('Cannot apply regional subset. No (valid) geocoding found.'))"
+SEALEVEL,esacci.SEALEVEL.satellite-orbit-frequency.L1.UNSPECIFIED.SSALT.Topex-Poseidon.UNSPECIFIED.v2-0.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError('Coordinate variable time is neither monotonically increasing nor monotonically decreasing on all datasets'))"
+SEASTATE,esacci.SEASTATE.mon.L4.SWH.multi-sensor.multi-platform.MULTI_1M.1-1.r1,yes,yes, 
+SEASTATE,esacci.SEASTATE.satellite-orbit-frequency.L2P.SWH.AltiKa.SARAL.Saral.1-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+SEASTATE,esacci.SEASTATE.satellite-orbit-frequency.L2P.SWH.GFO-RA.GFO.GFO.1-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+SEASTATE,esacci.SEASTATE.satellite-orbit-frequency.L2P.SWH.NRA.Topex-Poseidon.Topex-Poseidon.1-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+SEASTATE,esacci.SEASTATE.satellite-orbit-frequency.L2P.SWH.NRA.Topex/Poseidon.Topex-Poseidon.1-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+SEASTATE,esacci.SEASTATE.satellite-orbit-frequency.L2P.SWH.Poseidon-2.Jason-1.Jason-1.1-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+SEASTATE,esacci.SEASTATE.satellite-orbit-frequency.L2P.SWH.Poseidon-3.Jason-2.Jason-2.1-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+SEASTATE,esacci.SEASTATE.satellite-orbit-frequency.L2P.SWH.Poseidon-3B.Jason-3.Jason-3.1-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+SEASTATE,esacci.SEASTATE.satellite-orbit-frequency.L2P.SWH.RA-2.Envisat.Envisat.1-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+SEASTATE,esacci.SEASTATE.satellite-orbit-frequency.L2P.SWH.RA.ERS-1.ERS-1.1-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+SEASTATE,esacci.SEASTATE.satellite-orbit-frequency.L2P.SWH.RA.ERS-2.ERS-2.1-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+SEASTATE,esacci.SEASTATE.satellite-orbit-frequency.L2P.SWH.SIRAL.CryoSat-2.CryoSat-2.1-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+SEASTATE,esacci.SEASTATE.satellite-orbit-frequency.L3.SWH.multi-sensor.multi-platform.MULTI_1D.1-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""dimensions or multi-index levels ['lat', 'lon'] do not exist""))"
+SEASURFACESALINITY,esacci.SEASURFACESALINITY.15-days.L4.SSS.multi-sensor.multi-platform.MERGED_OI_Monthly_CENTRED_15Day_25km.2-31.r1,yes,yes, 
+SEASURFACESALINITY,esacci.SEASURFACESALINITY.day.L4.SSS.multi-sensor.multi-platform.MERGED_OI_7DAY_RUNNINGMEAN_DAILY_25km.2-31.r1,yes,yes, 
+SNOW,esacci.SNOW.day.L3C.SWE.multi-sensor.multi-platform.MERGED.1-0.r1,yes,yes, 
+SOILMOISTURE,esacci.SOILMOISTURE.day.L3S.SSMS.multi-sensor.multi-platform.ACTIVE.04-7.r1,yes,yes, 
+SOILMOISTURE,esacci.SOILMOISTURE.day.L3S.SSMV.multi-sensor.multi-platform.COMBINED.04-7.r1,yes,yes, 
+SOILMOISTURE,esacci.SOILMOISTURE.day.L3S.SSMV.multi-sensor.multi-platform.PASSIVE.04-7.r1,yes,yes, 
+SST,esacci.SST.climatology.L4.SSTdepth.multi-sensor.multi-platform.OSTIA.2-1.r1,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.AATSR.Envisat.AATSR.2-1.day,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.AATSR.Envisat.AATSR.2-1.night,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.ATSR-2.ERS-2.ATSR2.2-1.day,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.ATSR-2.ERS-2.ATSR2.2-1.night,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.ATSR.ERS-1.ATSR1.2-1.day,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.ATSR.ERS-1.ATSR1.2-1.night,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.AVHRR-2.NOAA-11.AVHRR11_G.2-1.day,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.AVHRR-2.NOAA-11.AVHRR11_G.2-1.night,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.AVHRR-2.NOAA-12.AVHRR12_G.2-1.day,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.AVHRR-2.NOAA-12.AVHRR12_G.2-1.night,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.AVHRR-2.NOAA-14.AVHRR14_G.2-1.day,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.AVHRR-2.NOAA-14.AVHRR14_G.2-1.night,no,yes,"(1) Failed saving to disc with: (<class 'cate.core.ds.DataAccessError'>, DataAccessError('Failed to synchronize data source ""esacci.SST.day.L3C.SSTskin.AVHRR-2.NOAA-14.AVHRR14_G.2-1.night"" for given time range, region, variable names: Unable to create file (unable to open file: name = \'/home/alicja/.cate/data_stores/local/local.testv/19950119120000-ESACCI-L3C_GHRSST-SSTskin-AVHRR14_G-CDR2.1_night-v02.0-fv01.0.nc\', errno = 2, error message = \'No such file or directory\', flags = 13, o_flags = 242)'));  "
+SST,esacci.SST.day.L3C.SSTskin.AVHRR-2.NOAA-7.AVHRR07_G.2-1.day,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.AVHRR-2.NOAA-7.AVHRR07_G.2-1.night,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.AVHRR-2.NOAA-9.AVHRR09_G.2-1.day,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.AVHRR-2.NOAA-9.AVHRR09_G.2-1.night,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.AVHRR-3.Metop-A.AVHRRMTA_G.2-1.day,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.AVHRR-3.Metop-A.AVHRRMTA_G.2-1.night,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.AVHRR-3.NOAA-15.AVHRR15_G.2-1.day,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.AVHRR-3.NOAA-15.AVHRR15_G.2-1.night,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.AVHRR-3.NOAA-16.AVHRR16_G.2-1.day,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.AVHRR-3.NOAA-16.AVHRR16_G.2-1.night,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.AVHRR-3.NOAA-17.AVHRR17_G.2-1.day,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.AVHRR-3.NOAA-17.AVHRR17_G.2-1.night,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.AVHRR-3.NOAA-18.AVHRR18_G.2-1.day,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.AVHRR-3.NOAA-18.AVHRR18_G.2-1.night,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.AVHRR-3.NOAA-19.AVHRR19_G.2-1.day,yes,yes, 
+SST,esacci.SST.day.L3C.SSTskin.AVHRR-3.NOAA-19.AVHRR19_G.2-1.night,yes,yes, 
+SST,esacci.SST.day.L4.SSTdepth.multi-sensor.multi-platform.OSTIA.1-1.r1,yes,yes, 
+SST,esacci.SST.day.L4.SSTdepth.multi-sensor.multi-platform.OSTIA.2-1.anomaly,yes,yes, 
+SST,esacci.SST.day.L4.SSTdepth.multi-sensor.multi-platform.OSTIA.2-1.sst,yes,yes, 
+SST,esacci.SST.day.L4.SSTskin.Unspecified.Unspecified.GMPE.2-0.r1,no,yes,"(1) Failed saving to disc with: (<class 'KeyError'>, KeyError('geospatial_lat_max'));  "
+SST,esacci.SST.satellite-orbit-frequency.L2P.SSTskin.AATSR.Envisat.AATSR.2-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""arguments without labels along dimension 'nj' cannot be aligned because they have different dimension sizes: {40240, 40241, 40239}""))"
+SST,esacci.SST.satellite-orbit-frequency.L2P.SSTskin.ATSR-2.ERS-2.ATSR2.2-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""arguments without labels along dimension 'nj' cannot be aligned because they have different dimension sizes: {40240, 39814, 40239}""))"
+SST,esacci.SST.satellite-orbit-frequency.L2P.SSTskin.ATSR.ERS-1.ATSR1.2-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""arguments without labels along dimension 'nj' cannot be aligned because they have different dimension sizes: {40192, 15968, 30568, 40185, 40186, 40187}""))"
+SST,esacci.SST.satellite-orbit-frequency.L2P.SSTskin.AVHRR-2.NOAA-11.AVHRR11_G.2-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""arguments without labels along dimension 'nj' cannot be aligned because they have different dimension sizes: {13174, 10451, 12427, 13286}""))"
+SST,esacci.SST.satellite-orbit-frequency.L2P.SSTskin.AVHRR-2.NOAA-12.AVHRR12_G.2-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""arguments without labels along dimension 'nj' cannot be aligned because they have different dimension sizes: {13024, 10306, 13094, 12102, 12010, 13100, 12046, 11410, 11794, 12180, 13012, 12118, 12022, 12028, 13373}""))"
+SST,esacci.SST.satellite-orbit-frequency.L2P.SSTskin.AVHRR-2.NOAA-14.AVHRR14_G.2-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""arguments without labels along dimension 'nj' cannot be aligned because they have different dimension sizes: {12642, 8967, 12082, 12438, 13080}""))"
+SST,esacci.SST.satellite-orbit-frequency.L2P.SSTskin.AVHRR-2.NOAA-7.AVHRR07_G.2-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""arguments without labels along dimension 'nj' cannot be aligned because they have different dimension sizes: {12130, 13060, 13192, 12458, 12463, 12120, 12277, 11576, 13371, 8156, 13054}""))"
+SST,esacci.SST.satellite-orbit-frequency.L2P.SSTskin.AVHRR-2.NOAA-9.AVHRR09_G.2-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""arguments without labels along dimension 'nj' cannot be aligned because they have different dimension sizes: {12764, 13356, 13286}""))"
+SST,esacci.SST.satellite-orbit-frequency.L2P.SSTskin.AVHRR-3.Metop-A.AVHRRMTA_G.2-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""arguments without labels along dimension 'nj' cannot be aligned because they have different dimension sizes: {12103, 11688, 12108, 11953, 11798, 4286}""))"
+SST,esacci.SST.satellite-orbit-frequency.L2P.SSTskin.AVHRR-3.NOAA-15.AVHRR15_G.2-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""arguments without labels along dimension 'nj' cannot be aligned because they have different dimension sizes: {12040, 13162, 10482, 8948, 13239, 11992, 11930}""))"
+SST,esacci.SST.satellite-orbit-frequency.L2P.SSTskin.AVHRR-3.NOAA-16.AVHRR16_G.2-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""arguments without labels along dimension 'nj' cannot be aligned because they have different dimension sizes: {12256, 12962, 12070, 12422, 12140, 13070, 13134, 9010, 11444, 12116, 13142, 12340, 13140, 12154}""))"
+SST,esacci.SST.satellite-orbit-frequency.L2P.SSTskin.AVHRR-3.NOAA-17.AVHRR17_G.2-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""arguments without labels along dimension 'nj' cannot be aligned because they have different dimension sizes: {10210, 11728, 12312, 12282, 12252, 9886}""))"
+SST,esacci.SST.satellite-orbit-frequency.L2P.SSTskin.AVHRR-3.NOAA-18.AVHRR18_G.2-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""arguments without labels along dimension 'nj' cannot be aligned because they have different dimension sizes: {10240, 12490, 12140, 11120, 13110, 11960}""))"
+SST,esacci.SST.satellite-orbit-frequency.L2P.SSTskin.AVHRR-3.NOAA-19.AVHRR19_G.2-1.r1,no,no,"(1) & (2) (<class 'ValueError'>, ValueError(""arguments without labels along dimension 'nj' cannot be aligned because they have different dimension sizes: {11940, 12390, 12238, 12147, 10260, 13110, 11070}""))"
+SST,esacci.SST.satellite-orbit-frequency.L3U.SSTskin.AATSR.Envisat.AATSR.2-1.r1,yes,yes, 
+SST,esacci.SST.satellite-orbit-frequency.L3U.SSTskin.ATSR-2.ERS-2.ATSR2.2-1.r1,yes,yes, 
+SST,esacci.SST.satellite-orbit-frequency.L3U.SSTskin.ATSR.ERS-1.ATSR1.2-1.r1,yes,yes, 
+SST,esacci.SST.satellite-orbit-frequency.L3U.SSTskin.AVHRR-2.NOAA-11.AVHRR11_G.2-1.r1,yes,yes, 
+SST,esacci.SST.satellite-orbit-frequency.L3U.SSTskin.AVHRR-2.NOAA-12.AVHRR12_G.2-1.r1,yes,yes, 
+SST,esacci.SST.satellite-orbit-frequency.L3U.SSTskin.AVHRR-2.NOAA-14.AVHRR14_G.2-1.r1,yes,yes, 
+SST,esacci.SST.satellite-orbit-frequency.L3U.SSTskin.AVHRR-2.NOAA-7.AVHRR07_G.2-1.r1,yes,yes, 
+SST,esacci.SST.satellite-orbit-frequency.L3U.SSTskin.AVHRR-2.NOAA-9.AVHRR09_G.2-1.r1,yes,yes, 
+SST,esacci.SST.satellite-orbit-frequency.L3U.SSTskin.AVHRR-3.Metop-A.AVHRRMTA_G.2-1.r1,yes,yes, 
+SST,esacci.SST.satellite-orbit-frequency.L3U.SSTskin.AVHRR-3.NOAA-15.AVHRR15_G.2-1.r1,yes,yes, 
+SST,esacci.SST.satellite-orbit-frequency.L3U.SSTskin.AVHRR-3.NOAA-16.AVHRR16_G.2-1.r1,yes,yes, 
+SST,esacci.SST.satellite-orbit-frequency.L3U.SSTskin.AVHRR-3.NOAA-17.AVHRR17_G.2-1.r1,yes,yes, 
+SST,esacci.SST.satellite-orbit-frequency.L3U.SSTskin.AVHRR-3.NOAA-18.AVHRR18_G.2-1.r1,yes,yes, 
+SST,esacci.SST.satellite-orbit-frequency.L3U.SSTskin.AVHRR-3.NOAA-19.AVHRR19_G.2-1.r1,yes,yes, 

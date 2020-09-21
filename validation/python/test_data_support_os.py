@@ -230,3 +230,88 @@ with open(f'sorted_{results_csv}', 'w', newline='') as f_output:
     csv_output = csv.DictWriter(f_output, fieldnames=csv_input.fieldnames)
     csv_output.writeheader()
     csv_output.writerows(data)
+
+
+# creating summary csv
+def read_all_result_rows(path, header_row):
+    test_data_sets_list = []
+    with open(path) as csvfile:
+        reader = csv.DictReader(csvfile, fieldnames=header_row, delimiter=',')
+        firstline = True
+        for row in reader:
+            if firstline:  # skip first line
+                firstline = False
+                continue
+            test_data_sets_list.append(row)
+    return test_data_sets_list
+
+
+def get_list_of_ecvs(data_sets):
+    ecvs = []
+    for dataset in data_sets:
+        if dataset['ECV-Name'] in ecvs:
+            continue
+        else:
+            ecvs.append(dataset['ECV-Name'])
+    ecvs.append('ALL_ECVS')
+    return ecvs
+
+
+def count_success_fail(data_sets, ecv):
+    open_success = 0
+    open_fail = 0
+    visualize_success = 0
+    visualize_fail = 0
+
+    if 'ALL_ECVS' not in ecv:
+        for dataset in data_sets:
+            if ecv in dataset['ECV-Name']:
+                if 'yes' in dataset['can_open(1)']:
+                    open_success += 1
+                else:
+                    open_fail += 1
+
+                if 'yes' in dataset['can_visualise(2)']:
+                    visualize_success += 1
+                else:
+                    visualize_fail += 1
+        total_number_of_datasets = sum([open_success, open_fail])
+    else:
+        for dataset in data_sets:
+            if 'yes' in dataset['can_open(1)']:
+                open_success += 1
+            else:
+                open_fail += 1
+
+            if 'yes' in dataset['can_visualise(2)']:
+                visualize_success += 1
+            else:
+                visualize_fail += 1
+        total_number_of_datasets = len(data_sets)
+
+    open_success_percentage = 100 * open_success / total_number_of_datasets
+    visualize_success_percentage = 100 * visualize_success / total_number_of_datasets
+
+    summary_row_new = {'ecv': ecv,
+                       'open_success': open_success,
+                       'open_fail': open_fail,
+                       'visualize_success': visualize_success,
+                       'visualize_fail': visualize_fail,
+                       'open_success_percentage': open_success_percentage,
+                       'visualize_success_percentage': visualize_success_percentage,
+                       'total_number_of_datasets': total_number_of_datasets
+                       }
+
+    return summary_row_new
+
+
+test_data_sets = read_all_result_rows(f'sorted_{results_csv}', header_row)
+ecvs = get_list_of_ecvs(test_data_sets)
+
+summary_csv = f'sorted_{results_csv}_summary.csv'
+header_summary = ['ecv', 'open_success', 'open_fail', 'visualize_success', 'visualize_fail',
+                  'open_success_percentage', 'visualize_success_percentage', 'total_number_of_datasets']
+
+for ecv in ecvs:
+    results_summary_row = count_success_fail(test_data_sets, ecv)
+    update_csv(summary_csv, header_summary, results_summary_row)

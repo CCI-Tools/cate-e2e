@@ -308,10 +308,35 @@ def count_success_fail(data_sets, ecv):
 test_data_sets = read_all_result_rows(f'sorted_{results_csv}', header_row)
 ecvs = get_list_of_ecvs(test_data_sets)
 
-summary_csv = f'sorted_{results_csv}_summary.csv'
+summary_csv = f'sorted_test_data_support_os_{datetime.date(datetime.now())}_summary.csv'
 header_summary = ['ecv', 'open_success', 'open_fail', 'visualize_success', 'visualize_fail',
                   'open_success_percentage', 'visualize_success_percentage', 'total_number_of_datasets']
 
 for ecv in ecvs:
     results_summary_row = count_success_fail(test_data_sets, ecv)
     update_csv(summary_csv, header_summary, results_summary_row)
+
+
+## creating lists with successful and failing dsrid's in order to use those for excluding the failing ones in cate.
+def create_lists_of_working_and_failing_ds(data_sets):
+    visualize_success_list = []
+    visualize_fail_list = []
+
+    for dataset in data_sets:
+        if 'yes' in dataset['can_visualise(2)']:
+            visualize_success_list.append(dataset['Dataset-ID'])
+        else:
+            visualize_fail_list.append(dataset['Dataset-ID'])
+
+    return visualize_success_list, visualize_fail_list
+
+
+visualize_success_list, visualize_fail_list = create_lists_of_working_and_failing_ds(test_data_sets)
+
+with open(f'DrsID_success_list_{datetime.date(datetime.now())}.txt', 'w') as f:
+    for item in visualize_success_list:
+        f.write("%s\n" % item)
+
+with open(f'DrsID_fail_list_{datetime.date(datetime.now())}.txt', 'w') as f:
+    for item in visualize_fail_list:
+        f.write("%s\n" % item)

@@ -4,6 +4,7 @@ import traceback
 
 import numpy as np
 from cate.core import DATA_STORE_REGISTRY, ds
+from cate.core.ds import DataAccessError
 
 from xcube.core.dsio import rimraf
 import nest_asyncio
@@ -51,6 +52,10 @@ def get_region(dataset):
         indx = indx - 1
     if indy == float(dataset.meta_info['bbox_maxy']):
         indy = indy - 1
+    if indx == float(dataset.meta_info['bbox_minx']):
+        indx = indx + 1
+    if indy == float(dataset.meta_info['bbox_miny']):
+        indy = indy + 1
     if indx > 0 and indy > 0:
         region = f'{"{:.1f}".format(indx)}, {"{:.1f}".format(indy)}, {"{:.1f}".format((indx + 0.1))}, {"{:.1f}".format((indy + 0.1))}'
     elif indx < 0 and indy < 0:
@@ -60,11 +65,6 @@ def get_region(dataset):
     elif indy < 0:
         region = f'{"{:.1f}".format(indx)}, {"{:.1f}".format((indy - 0.1))}, {"{:.1f}".format((indx + 0.1))}, {"{:.1f}".format(indy)}'
     return region
-
-
-def clean_up(random_string):
-    if random_string.endswith('.zarr'):
-        rimraf(random_string)
 
 
 def check_for_processing(cube, summary_row):
@@ -80,13 +80,16 @@ def check_for_processing(cube, summary_row):
 
 
 def check_write_to_disc(summary_row, data_source, time_range, variables, region):
-    rand_string = f"test{random.choice(string.ascii_lowercase)}"  # needed when tests run in parallel
+    rand_string = f"test{random.choice(string.ascii_lowercase)}{random.choice(string.octdigits)}"  # needed when tests run in parallel
     try:
         data_source.make_local(rand_string, time_range=time_range, var_names=variables, region=region)
         local_ds = ds.open_dataset(f'local.{rand_string}')
         local_ds.close()
         summary_row['can_open(1)'] = 'yes'
         comment_1 = ''
+    except DataAccessError:
+        summary_row['can_open(1)'] = 'no'
+        comment_1 = f'local.{rand_string}: Failed saving to disc with: {sys.exc_info()[:2]}'
     except:
         summary_row['can_open(1)'] = 'no'
         comment_1 = f'Failed saving to disc with: {sys.exc_info()[:2]}'
@@ -151,7 +154,7 @@ def test_open_ds(data):
         try:
             time_range = tuple(
                 t.strftime('%Y-%m-%d') for t in [data_source._file_list[0][1], data_source._file_list[1][2]])
-        except:
+        except IndexError:
             try:
                 time_range = tuple(
                     t.strftime('%Y-%m-%d') for t in [data_source._file_list[0][1], data_source._file_list[0][2]])
@@ -159,7 +162,8 @@ def test_open_ds(data):
                 time_range = None
 
         var_list = []
-        s_not_to_be_in_var = ['longitude', 'latitude', 'lat', 'lon', 'bounds', 'bnds', 'date']
+        s_not_to_be_in_var = ['longitude', 'latitude', 'lat', 'lon',
+                              'bounds', 'bnds', 'date', 'Longitude', 'Latitude']
         if len(data_source.meta_info['variables']) > 3:
             while len(var_list) < 1:
                 for var in random.choices(data_source.meta_info['variables'], k=2):
@@ -173,18 +177,18 @@ def test_open_ds(data):
                     var_list.append(var['name'])
 
         try:
-            print(f'Opening cube for data_id {data_id} with {var_list}.')
+            print(f'Opening cube for data_id {data_id} with {var_list} and region {region} and time range {time_range}.')
             cube = data_source.open_dataset(time_range=time_range, var_names=var_list, region=region)
             summary_row, comment_1 = check_for_processing(cube, summary_row)
             summary_row, comment_2 = check_for_visualization(cube, summary_row)
             cube.close()
             summary_row, comment_1 = check_write_to_disc(summary_row, data_source, time_range, var_list, region)
-        except:
+        except ValueError:
             track = traceback.format_exc()
-            if 'does not seem to have any datasets in given time range' in track:
+            if 'Can not select a region outside dataset boundaries.' in track:
                 try:
-                    time_range = (time_range[0], time_range[1] + timedelta(days=4))
-                    print(f'Opening cube for data_id {data_id} with {var_list}.')
+                    region = '141.6, -18.7, 141.7, -18.6'
+                    print(f'Opening cube for data_id {data_id} with {var_list} and region {region}.')
                     cube = data_source.open_dataset(time_range=time_range, var_names=var_list, region=region)
                     summary_row, comment_1 = check_for_processing(cube, summary_row)
                     summary_row, comment_2 = check_for_visualization(cube, summary_row)
@@ -199,7 +203,36 @@ def test_open_ds(data):
                 summary_row['can_open(1)'] = 'no'
                 summary_row['can_visualise(2)'] = 'no'
                 comment_1 = comment_2 = sys.exc_info()[:2]
-
+        except IndexError:
+            print(f'Index error happening at stage 2. for {data_id}')
+            summary_row['can_open(1)'] = 'no'
+            summary_row['can_visualise(2)'] = 'no'
+            comment_1 = comment_2 = sys.exc_info()[:2]
+        except:
+            track = traceback.format_exc()
+            if 'does not seem to have any datasets in given time range' in track:
+                try:
+                    time_range = (time_range[0], time_range[1] + timedelta(days=4))
+                    print(f'Opening cube for data_id {data_id} with {var_list}.')
+                    cube = data_source.open_dataset(time_range=time_range, var_names=var_list, region=region)
+                    summary_row, comment_1 = check_for_processing(cube, summary_row)
+                    summary_row, comment_2 = check_for_visualization(cube, summary_row)
+                    cube.close()
+                    summary_row, comment_1 = check_write_to_disc(summary_row, data_source, time_range, var_list,
+                                                                 region)
+                except IndexError:
+                    print(f'Index error happening at stage 3. for {data_id}')
+                    summary_row['can_open(1)'] = 'no'
+                    summary_row['can_visualise(2)'] = 'no'
+                    comment_1 = comment_2 = sys.exc_info()[:2]
+                except:
+                    summary_row['can_open(1)'] = 'no'
+                    summary_row['can_visualise(2)'] = 'no'
+                    comment_1 = comment_2 = sys.exc_info()[:2]
+            else:
+                summary_row['can_open(1)'] = 'no'
+                summary_row['can_visualise(2)'] = 'no'
+                comment_1 = comment_2 = sys.exc_info()[:2]
     except:
         summary_row['can_open(1)'] = 'no'
         summary_row['can_visualise(2)'] = 'no'

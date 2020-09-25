@@ -68,7 +68,12 @@ def get_region(dataset):
 
 
 def check_for_processing(cube, summary_row):
-    var = list(cube.data_vars)[0]
+    try:
+        var = list(cube.data_vars)[0]
+    except IndexError:
+        summary_row['can_open(1)'] = 'no'
+        comment_1 = f'Failed at getting first variable from list {list(cube.data_vars)}: {sys.exc_info()[:2]}'
+        return summary_row, comment_1
     try:
         np.sum(cube[var])
         summary_row['can_open(1)'] = 'yes'
@@ -79,7 +84,10 @@ def check_for_processing(cube, summary_row):
     return summary_row, comment_1
 
 
-def check_write_to_disc(summary_row, data_source, time_range, variables, region):
+def check_write_to_disc(summary_row, comment_1, data_source, time_range, variables, region):
+    if comment_1 is not None:
+        return summary_row, comment_1
+
     rand_string = f"test{random.choice(string.ascii_lowercase)}{random.choice(string.octdigits)}"  # needed when tests run in parallel
     try:
         data_source.make_local(rand_string, time_range=time_range, var_names=variables, region=region)
@@ -97,10 +105,12 @@ def check_write_to_disc(summary_row, data_source, time_range, variables, region)
     return summary_row, comment_1
 
 
-def check_for_visualization(cube, summary_row):
+def check_for_visualization(cube, summary_row, variables):
     var_with_lat_lon_right_order = []
+    vars = []
     comment_2 = None
     for var in cube.data_vars:
+        vars.append(var)
         if cube[var].dims[-2:] == ('lat', 'lon'):
             if len(cube.lat.shape) == 1 and len(cube.lon.shape) == 1:
                 if cube.lat.size > 0 and cube.lon.size > 0:
@@ -116,7 +126,10 @@ def check_for_visualization(cube, summary_row):
         comment_2 = ''
     else:
         summary_row['can_visualise(2)'] = 'no'
-
+        if len(vars) == 0:
+            comment_2 = f'Dataset has none of the requested variables: {variables}.'
+        if comment_2 is None:
+            comment_2 = f'None of  variables: {vars} has lat and lon in correct order.'
     return summary_row, comment_2
 
 
@@ -131,11 +144,10 @@ def test_open_ds(data):
     data_id = data.id
     summary_row = {'ECV-Name': data_id.split('.')[1], 'Dataset-ID': data_id}
     if data_id == 'esacci.OC.8-days.L3S.OC_PRODUCTS.multi-sensor.multi-platform.MERGED.3-1.sinusoidal':
-        comment_1 = f'Dataset makes kernel die.'
-        comment_2 = f'Dataset makes kernel die.'
+        comment_1 = comment_2 = f'Dataset makes kernel die.'
         summary_row['can_open(1)'] = 'no'
         summary_row['can_visualise(2)'] = 'no'
-        summary_row['comment'] = f'(1) {comment_1}; (2) {comment_2}'
+        summary_row['comment'] = f'(1) & (2) {comment_1}'
         update_csv(results_csv, header_row, summary_row)
         return
 
@@ -143,11 +155,10 @@ def test_open_ds(data):
         data_source = store.query(ds_id=data_id)[0]
         data_source.update_file_list()
         if len(data_source._file_list) == 0:
-            comment_1 = f'Has no file list.'
-            comment_2 = f'Has no file list.'
+            comment_1 = comment_2 = f'Has no file list.'
             summary_row['can_open(1)'] = 'no'
             summary_row['can_visualise(2)'] = 'no'
-            summary_row['comment'] = f'(1) {comment_1}; (2) {comment_2}'
+            summary_row['comment'] = f'(1) & (2) {comment_1}'
             update_csv(results_csv, header_row, summary_row)
             return
         region = get_region(data_source)
@@ -177,12 +188,29 @@ def test_open_ds(data):
                     var_list.append(var['name'])
 
         try:
-            print(f'Opening cube for data_id {data_id} with {var_list} and region {region} and time range {time_range}.')
+            print(
+                f'Opening cube for data_id {data_id} with {var_list} and region {region} and time range {time_range}.')
             cube = data_source.open_dataset(time_range=time_range, var_names=var_list, region=region)
+            vars_in_cube = []
+            for var in var_list:
+                if var in cube.data_vars:
+                    vars_in_cube.append(var)
+            if len(vars_in_cube) == 0:
+                comment_1 = comment_2 = f'Requested variables {var_list} for subsetting are not in dataset.'
+                summary_row['can_open(1)'] = 'no'
+                summary_row['can_visualise(2)'] = 'no'
+                summary_row['comment'] = f'(1) & (2) {comment_1}'
+                update_csv(results_csv, header_row, summary_row)
+                return
+            print(f'Checking cube for data_id {data_id} for processing.')
             summary_row, comment_1 = check_for_processing(cube, summary_row)
-            summary_row, comment_2 = check_for_visualization(cube, summary_row)
+            print(f'Checking cube for data_id {data_id} for visualization.')
+            summary_row, comment_2 = check_for_visualization(cube, summary_row, var_list)
+            print(f'Closing cube for data_id {data_id}')
             cube.close()
-            summary_row, comment_1 = check_write_to_disc(summary_row, data_source, time_range, var_list, region)
+            print(f'Checking cube {data_id} for writing to disk.')
+            summary_row, comment_1 = check_write_to_disc(summary_row, comment_1, data_source, time_range, var_list,
+                                                         region)
         except ValueError:
             track = traceback.format_exc()
             if 'Can not select a region outside dataset boundaries.' in track:
@@ -191,9 +219,10 @@ def test_open_ds(data):
                     print(f'Opening cube for data_id {data_id} with {var_list} and region {region}.')
                     cube = data_source.open_dataset(time_range=time_range, var_names=var_list, region=region)
                     summary_row, comment_1 = check_for_processing(cube, summary_row)
-                    summary_row, comment_2 = check_for_visualization(cube, summary_row)
+                    summary_row, comment_2 = check_for_visualization(cube, summary_row, var_list)
                     cube.close()
-                    summary_row, comment_1 = check_write_to_disc(summary_row, data_source, time_range, var_list,
+                    summary_row, comment_1 = check_write_to_disc(summary_row, comment_1, data_source, time_range,
+                                                                 var_list,
                                                                  region)
                 except:
                     summary_row['can_open(1)'] = 'no'
@@ -216,9 +245,10 @@ def test_open_ds(data):
                     print(f'Opening cube for data_id {data_id} with {var_list}.')
                     cube = data_source.open_dataset(time_range=time_range, var_names=var_list, region=region)
                     summary_row, comment_1 = check_for_processing(cube, summary_row)
-                    summary_row, comment_2 = check_for_visualization(cube, summary_row)
+                    summary_row, comment_2 = check_for_visualization(cube, summary_row, var_list)
                     cube.close()
-                    summary_row, comment_1 = check_write_to_disc(summary_row, data_source, time_range, var_list,
+                    summary_row, comment_1 = check_write_to_disc(summary_row, comment_1, data_source, time_range,
+                                                                 var_list,
                                                                  region)
                 except IndexError:
                     print(f'Index error happening at stage 3. for {data_id}')

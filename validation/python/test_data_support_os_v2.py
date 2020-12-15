@@ -397,7 +397,7 @@ def count_success_fail(data_sets, ecv):
 test_data_sets = read_all_result_rows(f'sorted_{results_csv}', header_row)
 ecvs = get_list_of_ecvs(test_data_sets)
 
-summary_csv = f'sorted_test_data_support_os_{datetime.date(datetime.now())}_summary.csv'
+summary_csv = f'sorted_test_data_support_os_v2_{datetime.date(datetime.now())}_summary.csv'
 header_summary = ['ecv', 'open_success', 'open_fail','cache_success', 'cache_fail', 'visualize_success', 'visualize_fail',
                   'open_success_percentage', 'cache_success_percentage', 'visualize_success_percentage', 'total_number_of_datasets']
 

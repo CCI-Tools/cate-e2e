@@ -418,14 +418,14 @@ def create_lists_of_working_and_failing_ds(data_sets):
         if 'yes' in dataset['map(3)']:
             verify_flags.append('map')
 
-        dict_with_verify_flags[dataset['Dataset-ID']] = {'verify_flags':verify_flags}
+        dict_with_verify_flags[dataset['Dataset-ID']] = {'verification_flags':verify_flags}
 
     return dict_with_verify_flags
 
 
 dict_with_verify_flags = create_lists_of_working_and_failing_ds(test_data_sets)
 
-with open(f'DrsID_verify_flags{datetime.date(datetime.now())}.json', 'w') as f:
+with open(f'DrsID_verification_flags_{datetime.date(datetime.now())}.json', 'w') as f:
     json.dump(dict_with_verify_flags, f, indent=4)
 
 

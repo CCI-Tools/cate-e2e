@@ -406,8 +406,7 @@ for ecv in ecvs:
     update_csv(summary_csv, header_summary, results_summary_row)
 
 
-## creating lists with successful and failing dsrid's in order to use those for excluding the failing ones in cate.
-def create_lists_of_working_and_failing_ds(data_sets):
+def create_dict_of_ids_with_verification_flags(data_sets):
     dict_with_verify_flags = {}
     for dataset in data_sets:
         verify_flags = []
@@ -423,7 +422,7 @@ def create_lists_of_working_and_failing_ds(data_sets):
     return dict_with_verify_flags
 
 
-dict_with_verify_flags = create_lists_of_working_and_failing_ds(test_data_sets)
+dict_with_verify_flags = create_dict_of_ids_with_verification_flags(test_data_sets)
 
 with open(f'DrsID_verification_flags_{datetime.date(datetime.now())}.json', 'w') as f:
     json.dump(dict_with_verify_flags, f, indent=4)

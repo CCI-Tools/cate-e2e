@@ -1,58 +1,8 @@
-### Testing data access via Cate
-
-There are three kind of tests: 
-
-####1.  `test_data_support_os.py` - currently used for testing
-**`test_data_support_os.py`** is currently the one used for testing - it fetches all dataset collections
-from the OpenDataPortal via opensearch. Results are stored in  sorted_test_data_support_os_{date}.csv
-Columns:
-
-    ECV-Name
-    Dataset-ID
-    can_open(1)
-    can_visualise(2)
-    comment
-    
-For one dataset collection at a time the following steps are done: 
-
-1. Based on the metadata a 
-[time subset](https://github.com/CCI-Tools/cate-e2e/blob/529fb2bcb4702d4be4314684106f59428c429b0d/validation/python/test_data_support_os.py#L148), 
-a random [variable subset](https://github.com/CCI-Tools/cate-e2e/blob/529fb2bcb4702d4be4314684106f59428c429b0d/validation/python/test_data_support_os.py#L163) 
-and a [random spatial subset](https://github.com/CCI-Tools/cate-e2e/blob/529fb2bcb4702d4be4314684106f59428c429b0d/validation/python/test_data_support_os.py#L48)
-is made. The time subset is made based on the corresponding file list for each dataset collection. In case of no 
-file list for the dataset collection, `Has no file list.` is given as comment in the comment section. 
-2.  can_open(1) and can_visualise(2) are tested: 
-
-**can_open(1)**: 
-- xcube store framework can open in-memory representation, can be utilised (analysed, processed, visualised) 
-in own Python code, implies that variable, time range, bbox subsets are possible. 
-- Make local is possible. 
-- GUI can display metadata, subset of Cate operations applicable.
-
-**can_visualise(2)**: 
-- Cate GUI can display on globe, this means, at least one variable has dims "lat", "lon".
-
-**comment**:   
-- includes error message, why can_open(1) or can_visualise(2) failed 
-- Justify/clarify a limited support 
+use it as `pytest --junitxml=test.xml test_data_support.py`
 
 
-#### 2. `pytest test_data_support.py` 
-**`pytest test_data_support.py`** fetches all dataset collections from the OpenDataPortal via 
-opensearch and tests a random time range based on the dataset collection. The test results are written into 
-`test_data_support_results-date.csv`.
-
-#### 3. `test_data_support_scenarios.py`
-**`test_data_support_scenarios.py`** uses specific scenarios which are defined for each dataset collection within the 
-`test_scenarios.csv`. Test results are written into `test_data_support_scenarios_results-date.csv`.
-For producing the test scenarios the code in `make_testing_scenarios_csv.ipynb` is used.
-NOTE: For esacci.OC.8-days.L3S.OC_PRODUCTS.multi-sensor.multi-platform.MERGED.3-1.sinusoidal the 
-testing time range was manually adjusted, because tests resulted in memory error, so it was 
-adjusted to '1997-09-04', '1997-09-04'.
-The following are not included in the test scenarios, because they are esri shape files, tar.gz files and png's:
-* esacci.ICESHEETS.mon.IND.GMB.GRACE-instrument.GRACE.VARIOUS.1-3.time_series
-* esacci.FIRE.mon.L3S.BA.MSI-(Sentinel-2).Sentinel-2A.MSI.v1-1.pixel
-* esacci.FIRE.mon.L3S.BA.MODIS.Terra.MODIS_TERRA.v5-1.pixel
-* esacci.ICESHEETS.satellite-orbit-frequency.L4.GLL.multi-sensor.multi-platform.VARIOUS.v1-3.r1
-* esacci.ICESHEETS.yr.L4.CFL.multi-sensor.multi-platform.VARIOUS.v3-0.r1
-
+#
+#with x-dist plugin can be run parallely
+#pip install pytest-xdist
+#pytest -n --junitxml=test.xml
+#but reporting to xml seems different 

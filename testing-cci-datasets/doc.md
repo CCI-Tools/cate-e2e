@@ -42,7 +42,7 @@ There are 3 categories which are tested:
 
 * Test report: 
    * CSV following the pattern `sorted_test_cci_data_support_{datetime.date(datetime.now())}.csv`
-   * Summary CSV following the pattern `sorted_test_cci_data_support_{datetime.date(datetime.now())}_summary.csv`
+   * Summary CSV following the pattern `summary_sorted_test_cci_data_support_{datetime.date(datetime.now())}.csv`
    * Json file `DrsID_verification_flags_{datetime.date(datetime.now())}.json`
    
 1. Content of report:

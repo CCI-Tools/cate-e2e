@@ -7,7 +7,6 @@ import numpy as np
 from cate.core import DATA_STORE_REGISTRY, ds
 from cate.core.ds import DataAccessError
 
-from xcube.core.dsio import rimraf
 import nest_asyncio
 
 from datetime import datetime, timedelta
@@ -46,25 +45,29 @@ def update_csv(results_csv, header_row, results_for_dataset_collection):
 
 
 def get_region(dataset):
-    indx = random.uniform(float(dataset.meta_info['bbox_minx']), float(dataset.meta_info['bbox_maxx']))
-    indy = random.uniform(float(dataset.meta_info['bbox_miny']), float(dataset.meta_info['bbox_maxy']))
-    region = None
-    if indx == float(dataset.meta_info['bbox_maxx']):
-        indx = indx - 1
-    if indy == float(dataset.meta_info['bbox_maxy']):
-        indy = indy - 1
-    if indx == float(dataset.meta_info['bbox_minx']):
+    bbox_maxx = dataset.meta_info['bbox_maxx']
+    bbox_minx = dataset.meta_info['bbox_minx']
+    bbox_maxy = dataset.meta_info['bbox_maxy']
+    bbox_miny = dataset.meta_info['bbox_miny']
+    indx = random.uniform(float(bbox_minx), float(bbox_maxx))
+    indy = random.uniform(float(bbox_miny), float(bbox_maxy))
+    if indx == float(bbox_maxx):
+        if indx > 0:
+            indx = indx - 1
+        else:
+            indx = indx + 1
+    if indy == float(bbox_maxy):
+        if indy > 0:
+            indy = indy - 1
+        else:
+            indy = indy + 1
+    if indx == float(bbox_minx):
         indx = indx + 1
-    if indy == float(dataset.meta_info['bbox_miny']):
+    if indy == float(bbox_miny):
         indy = indy + 1
-    if indx > 0 and indy > 0:
-        region = f'{"{:.1f}".format(indx)}, {"{:.1f}".format(indy)}, {"{:.1f}".format((indx + 0.1))}, {"{:.1f}".format((indy + 0.1))}'
-    elif indx < 0 and indy < 0:
-        region = f'{"{:.1f}".format((indx - 0.1))}, {"{:.1f}".format((indy - 0.1))}, {"{:.1f}".format(indx)}, {"{:.1f}".format(indy)}'
-    elif indx < 0:
-        region = f'{"{:.1f}".format((indx - 0.1))}, {"{:.1f}".format(indy)},{"{:.1f}".format(indx)}, {"{:.1f}".format((indy + 0.1))}'
-    elif indy < 0:
-        region = f'{"{:.1f}".format(indx)}, {"{:.1f}".format((indy - 0.1))}, {"{:.1f}".format((indx + 0.1))}, {"{:.1f}".format(indy)}'
+    region = [float("{:.1f}".format(indx)), float("{:.1f}".format(indy)), float(
+        "{:.1f}".format((indx + 0.1))), float("{:.1f}".format((indy + 0.1)))]
+
     return region
 
 
@@ -397,9 +400,11 @@ def count_success_fail(data_sets, ecv):
 test_data_sets = read_all_result_rows(f'sorted_{results_csv}', header_row)
 ecvs = get_list_of_ecvs(test_data_sets)
 
-summary_csv = f'sorted_{results_csv}_summary.csv'
-header_summary = ['ecv', 'open_success', 'open_fail','cache_success', 'cache_fail', 'visualize_success', 'visualize_fail',
-                  'open_success_percentage', 'cache_success_percentage', 'visualize_success_percentage', 'total_number_of_datasets']
+summary_csv = f'summary_sorted_{results_csv}'
+header_summary = ['ecv', 'open_success', 'open_fail', 'cache_success', 'cache_fail', 'visualize_success',
+                  'visualize_fail',
+                  'open_success_percentage', 'cache_success_percentage', 'visualize_success_percentage',
+                  'total_number_of_datasets']
 
 for ecv in ecvs:
     results_summary_row = count_success_fail(test_data_sets, ecv)
@@ -417,7 +422,7 @@ def create_dict_of_ids_with_verification_flags(data_sets):
         if 'yes' in dataset['map(3)']:
             verify_flags.append('map')
 
-        dict_with_verify_flags[dataset['Dataset-ID']] = {'verification_flags':verify_flags}
+        dict_with_verify_flags[dataset['Dataset-ID']] = {'verification_flags': verify_flags}
 
     return dict_with_verify_flags
 
@@ -426,5 +431,3 @@ dict_with_verify_flags = create_dict_of_ids_with_verification_flags(test_data_se
 
 with open(f'DrsID_verification_flags_{datetime.date(datetime.now())}.json', 'w') as f:
     json.dump(dict_with_verify_flags, f, indent=4)
-
-

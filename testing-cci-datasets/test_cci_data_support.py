@@ -19,7 +19,7 @@ import multiprocessing as mp
 nest_asyncio.apply()
 
 # header for CSV report
-header_row = ['ECV-Name', 'Dataset-ID', 'open(1)', 'cache(2)', 'map(3)', 'comment']
+header_row = ['ECV-Name', 'Dataset-ID', 'supported', 'open(1)', 'cache(2)', 'map(3)', 'comment']
 
 results_csv = f'test_cci_data_support_{datetime.date(datetime.now())}.csv'
 
@@ -71,7 +71,7 @@ def get_region(dataset):
     return region
 
 
-def check_for_processing(cube, summary_row):
+def check_for_processing(cube, summary_row, time_range):
     try:
         var = list(cube.data_vars)[0]
     except IndexError:
@@ -80,6 +80,8 @@ def check_for_processing(cube, summary_row):
         return summary_row, comment_1
     try:
         np.sum(cube[var])
+        print(f"The requested time range is {time_range}. The cubes actual first time stamp is {cube.time.min()} "
+              f"and last {cube.time.max()}.")
         summary_row['open(1)'] = 'yes'
         comment_1 = ''
     except:
@@ -137,6 +139,24 @@ def check_for_visualization(cube, summary_row, variables):
     return summary_row, comment_3
 
 
+def check_for_support(data_id):
+    if 'sinusoidal' in data_id:
+        supported = False
+        reason = f"There is no support for sinusoidal datasets, please use the equivalent dataset with 'geographic' in" \
+                 f" the dataset_id."
+    else:
+        supported = True
+        reason = None
+    return supported, reason
+
+
+def _all_tests_no(summary_row):
+    summary_row['open(1)'] = 'no'
+    summary_row['cache(2)'] = 'no'
+    summary_row['map(3)'] = 'no'
+    return summary_row
+
+
 store = DATA_STORE_REGISTRY.get_data_store('esa_cci_odp_os')
 data_sets = store.query()
 lds = DATA_STORE_REGISTRY.get_data_store('local')
@@ -148,20 +168,22 @@ def test_open_ds(data):
     comment_3 = None
     data_id = data.id
     summary_row = {'ECV-Name': data_id.split('.')[1], 'Dataset-ID': data_id}
-    if data_id == 'esacci.OC.8-days.L3S.OC_PRODUCTS.multi-sensor.multi-platform.MERGED.3-1.sinusoidal':
-        comment_1 = comment_2 = f'Dataset makes kernel die.'
-        summary_row['open(1)'] = 'no'
-        summary_row['map(3)'] = 'no'
-        summary_row['comment'] = f'(1) & (2) & (3) {comment_1}'
+    supported, reason = check_for_support(data_id)
+    if not supported:
+        summary_row['supported'] = 'no'
+        _all_tests_no(summary_row)
+        summary_row['comment'] = reason
         update_csv(results_csv, header_row, summary_row)
         return
+    else:
+        summary_row['supported'] = 'yes'
+
     try:
         data_source = store.query(ds_id=data_id)[0]
         data_source.update_file_list()
         if len(data_source._file_list) == 0:
-            comment_1 = comment_2 = f'Has no file list.'
-            summary_row['open(1)'] = 'no'
-            summary_row['map(3)'] = 'no'
+            comment_1 = f'Has no file list.'
+            _all_tests_no(summary_row)
             summary_row['comment'] = f'(1) & (2) & (3) {comment_1}'
             update_csv(results_csv, header_row, summary_row)
             return
@@ -200,15 +222,13 @@ def test_open_ds(data):
                 if var in cube.data_vars:
                     vars_in_cube.append(var)
             if len(vars_in_cube) == 0:
-                comment_1 = comment_2 = f'Requested variables {var_list} for subsetting are not in dataset.'
-                summary_row['open(1)'] = 'no'
-                summary_row['cache(2)'] = 'no'
-                summary_row['map(3)'] = 'no'
+                comment_1 = f'Requested variables {var_list} for subset are not in dataset.'
+                _all_tests_no(summary_row)
                 summary_row['comment'] = f'(1) & (2) & (3) {comment_1}'
                 update_csv(results_csv, header_row, summary_row)
                 return
             print(f'Checking cube for data_id {data_id} for processing.')
-            summary_row, comment_1 = check_for_processing(cube, summary_row)
+            summary_row, comment_1 = check_for_processing(cube, summary_row, time_range)
             print(f'Checking cube for data_id {data_id} for visualization.')
             summary_row, comment_3 = check_for_visualization(cube, summary_row, var_list)
             print(f'Closing cube for data_id {data_id}')
@@ -223,27 +243,21 @@ def test_open_ds(data):
                     region = '141.6, -18.7, 141.7, -18.6'
                     print(f'Opening cube for data_id {data_id} with {var_list} and region {region}.')
                     cube = data_source.open_dataset(time_range=time_range, var_names=var_list, region=region)
-                    summary_row, comment_1 = check_for_processing(cube, summary_row)
+                    summary_row, comment_1 = check_for_processing(cube, summary_row, time_range)
                     summary_row, comment_3 = check_for_visualization(cube, summary_row, var_list)
                     cube.close()
                     summary_row, comment_2 = check_write_to_disc(summary_row, comment_2, data_source, time_range,
                                                                  var_list,
                                                                  region)
                 except:
-                    summary_row['open(1)'] = 'no'
-                    summary_row['cache(2)'] = 'no'
-                    summary_row['map(3)'] = 'no'
+                    _all_tests_no(summary_row)
                     comment_1 = comment_2 = comment_3 = sys.exc_info()[:2]
             else:
-                summary_row['open(1)'] = 'no'
-                summary_row['cache(2)'] = 'no'
-                summary_row['map(3)'] = 'no'
+                _all_tests_no(summary_row)
                 comment_1 = comment_2 = comment_3 = sys.exc_info()[:2]
         except IndexError:
             print(f'Index error happening at stage 2. for {data_id}')
-            summary_row['open(1)'] = 'no'
-            summary_row['cache(2)'] = 'no'
-            summary_row['map(3)'] = 'no'
+            _all_tests_no(summary_row)
             comment_1 = comment_2 = comment_3 = sys.exc_info()[:2]
         except:
             track = traceback.format_exc()
@@ -252,7 +266,7 @@ def test_open_ds(data):
                     time_range = (time_range[0], time_range[1] + timedelta(days=4))
                     print(f'Opening cube for data_id {data_id} with {var_list}.')
                     cube = data_source.open_dataset(time_range=time_range, var_names=var_list, region=region)
-                    summary_row, comment_1 = check_for_processing(cube, summary_row)
+                    summary_row, comment_1 = check_for_processing(cube, summary_row, time_range)
                     summary_row, comment_3 = check_for_visualization(cube, summary_row, var_list)
                     cube.close()
                     summary_row, comment_2 = check_write_to_disc(summary_row, comment_2, data_source, time_range,
@@ -260,24 +274,16 @@ def test_open_ds(data):
                                                                  region)
                 except IndexError:
                     print(f'Index error happening at stage 3. for {data_id}')
-                    summary_row['open(1)'] = 'no'
-                    summary_row['cache(2)'] = 'no'
-                    summary_row['map(3)'] = 'no'
+                    _all_tests_no(summary_row)
                     comment_1 = comment_2 = comment_3 = sys.exc_info()[:2]
                 except:
-                    summary_row['open(1)'] = 'no'
-                    summary_row['cache(2)'] = 'no'
-                    summary_row['map(3)'] = 'no'
+                    _all_tests_no(summary_row)
                     comment_1 = comment_2 = comment_3 = sys.exc_info()[:2]
             else:
-                summary_row['open(1)'] = 'no'
-                summary_row['cache(2)'] = 'no'
-                summary_row['map(3)'] = 'no'
+                _all_tests_no(summary_row)
                 comment_1 = comment_2 = comment_3 = sys.exc_info()[:2]
     except:
-        summary_row['open(1)'] = 'no'
-        summary_row['cache(2)'] = 'no'
-        summary_row['map(3)'] = 'no'
+        _all_tests_no(summary_row)
         comment_1 = comment_2 = comment_3 = f'Failed getting data description while executing store.query(ds_id={data_id})[0] with: {sys.exc_info()[:2]}'
     if comment_1 and (comment_1 == comment_3):
         summary_row['comment'] = f'(1) & (2) & (3) {comment_1}'
@@ -299,14 +305,19 @@ pool = mp.Pool(mp.cpu_count())
 pool.map(test_open_ds, data_sets)
 pool.close()
 
-with open(results_csv, 'r', newline='') as f_input:
-    csv_input = csv.DictReader(f_input)
-    data = sorted(csv_input, key=lambda row: (row['Dataset-ID']))
 
-with open(f'sorted_{results_csv}', 'w', newline='') as f_output:
-    csv_output = csv.DictWriter(f_output, fieldnames=csv_input.fieldnames)
-    csv_output.writeheader()
-    csv_output.writerows(data)
+def sort_csv(input_csv, output_csv):
+    with open(input_csv, 'r', newline='') as f_input:
+        csv_input = csv.DictReader(f_input)
+        data = sorted(csv_input, key=lambda row: (row['Dataset-ID']))
+
+    with open(output_csv, 'w', newline='') as f_output:
+        csv_output = csv.DictWriter(f_output, fieldnames=csv_input.fieldnames)
+        csv_output.writeheader()
+        csv_output.writerows(data)
+
+
+sort_csv(results_csv, f'sorted_{results_csv}')
 
 
 # creating summary csv
@@ -335,6 +346,8 @@ def get_list_of_ecvs(data_sets):
 
 
 def count_success_fail(data_sets, ecv):
+    supported = 0
+    not_supported = 0
     open_success = 0
     open_fail = 0
     cache_success = 0
@@ -345,6 +358,29 @@ def count_success_fail(data_sets, ecv):
     if 'ALL_ECVS' not in ecv:
         for dataset in data_sets:
             if ecv in dataset['ECV-Name']:
+                if 'yes' in dataset['supported']:
+                    supported += 1
+                    if 'yes' in dataset['open(1)']:
+                        open_success += 1
+                    else:
+                        open_fail += 1
+
+                    if 'yes' in dataset['cache(2)']:
+                        cache_success += 1
+                    else:
+                        cache_fail += 1
+
+                    if 'yes' in dataset['map(3)']:
+                        visualize_success += 1
+                    else:
+                        visualize_fail += 1
+                else:
+                    not_supported += 1
+        total_number_of_datasets = sum([supported, not_supported])
+    else:
+        for dataset in data_sets:
+            if 'yes' in dataset['supported']:
+                supported += 1
                 if 'yes' in dataset['open(1)']:
                     open_success += 1
                 else:
@@ -359,35 +395,23 @@ def count_success_fail(data_sets, ecv):
                     visualize_success += 1
                 else:
                     visualize_fail += 1
-        total_number_of_datasets = sum([open_success, open_fail])
-    else:
-        for dataset in data_sets:
-            if 'yes' in dataset['open(1)']:
-                open_success += 1
             else:
-                open_fail += 1
-
-            if 'yes' in dataset['cache(2)']:
-                cache_success += 1
-            else:
-                cache_fail += 1
-
-            if 'yes' in dataset['map(3)']:
-                visualize_success += 1
-            else:
-                visualize_fail += 1
+                not_supported += 1
         total_number_of_datasets = len(data_sets)
 
-    open_success_percentage = 100 * open_success / total_number_of_datasets
-    visualize_success_percentage = 100 * visualize_success / total_number_of_datasets
-    cache_success_percentage = 100 * cache_success / total_number_of_datasets
+    supported_percentage = 100 * supported / total_number_of_datasets
+    open_success_percentage = 100 * open_success / (total_number_of_datasets - not_supported)
+    visualize_success_percentage = 100 * visualize_success / (total_number_of_datasets - not_supported)
+    cache_success_percentage = 100 * cache_success / (total_number_of_datasets - not_supported)
     summary_row_new = {'ecv': ecv,
+                       'supported': supported,
                        'open_success': open_success,
                        'open_fail': open_fail,
                        'cache_success': cache_success,
                        'cache_fail': cache_fail,
                        'visualize_success': visualize_success,
                        'visualize_fail': visualize_fail,
+                       'supported_percentage': supported_percentage,
                        'open_success_percentage': open_success_percentage,
                        'visualize_success_percentage': visualize_success_percentage,
                        'cache_success_percentage': cache_success_percentage,
@@ -397,14 +421,33 @@ def count_success_fail(data_sets, ecv):
     return summary_row_new
 
 
+def create_list_of_failed(test_data_sets, failed_csv, header_row):
+    for dataset in test_data_sets:
+        if dataset['supported'] == 'yes' and (dataset['open(1)'] == 'no' or
+                                              dataset['cache(2)'] == 'no' or
+                                              dataset['map(3)'] == 'no'):
+            update_csv(failed_csv, header_row, dataset)
+
+
 test_data_sets = read_all_result_rows(f'sorted_{results_csv}', header_row)
+
 ecvs = get_list_of_ecvs(test_data_sets)
+failed_csv = f'failed_{results_csv}'
+create_list_of_failed(test_data_sets, failed_csv, header_row)
+sort_csv(failed_csv, f'sorted_{failed_csv}')
+with open(results_csv, 'r', newline='') as f_input:
+    csv_input = csv.DictReader(f_input)
+    data = sorted(csv_input, key=lambda row: (row['Dataset-ID']))
+
+with open(f'sorted_{results_csv}', 'w', newline='') as f_output:
+    csv_output = csv.DictWriter(f_output, fieldnames=csv_input.fieldnames)
+    csv_output.writeheader()
+    csv_output.writerows(data)
 
 summary_csv = f'summary_sorted_{results_csv}'
-header_summary = ['ecv', 'open_success', 'open_fail', 'cache_success', 'cache_fail', 'visualize_success',
-                  'visualize_fail',
-                  'open_success_percentage', 'cache_success_percentage', 'visualize_success_percentage',
-                  'total_number_of_datasets']
+header_summary = ['ecv', 'supported', 'open_success', 'open_fail', 'cache_success', 'cache_fail', 'visualize_success',
+                  'visualize_fail', 'supported_percentage', 'open_success_percentage', 'cache_success_percentage',
+                  'visualize_success_percentage', 'total_number_of_datasets']
 
 for ecv in ecvs:
     results_summary_row = count_success_fail(test_data_sets, ecv)
@@ -431,3 +474,13 @@ dict_with_verify_flags = create_dict_of_ids_with_verification_flags(test_data_se
 
 with open(f'DrsID_verification_flags_{datetime.date(datetime.now())}.json', 'w') as f:
     json.dump(dict_with_verify_flags, f, indent=4)
+
+if os.path.exists(results_csv):
+    os.remove(results_csv)
+else:
+    print(f"The file {results_csv} does not exist.")
+
+if os.path.exists(failed_csv):
+    os.remove(failed_csv)
+else:
+    print(f"The file {failed_csv} does not exist.")

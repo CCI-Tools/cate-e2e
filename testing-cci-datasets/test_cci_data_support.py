@@ -1,5 +1,6 @@
 import json
 import random
+import signal
 import string
 import traceback
 
@@ -23,6 +24,18 @@ header_row = ['ECV-Name', 'Dataset-ID', 'supported', 'open(1)', 'cache(2)', 'map
 
 results_csv = f'test_cci_data_support_{datetime.date(datetime.now())}.csv'
 
+
+# time out in order to cancel datasets which are taking longer than a certain time
+TIMEOUT_TIME = 120
+
+
+class TimeOutException(Exception):
+    pass
+
+
+def alarm_handler(signum, frame):
+    print("ALARM signal received")
+    raise TimeOutException(f'Time out after {TIMEOUT_TIME} seconds.')
 
 # Utility functions
 
@@ -72,25 +85,35 @@ def get_region(dataset):
 
 
 def check_for_processing(cube, summary_row, time_range):
+    signal.signal(signal.SIGALRM, alarm_handler)
+    signal.alarm(TIMEOUT_TIME)
     try:
-        var = list(cube.data_vars)[0]
-    except IndexError:
+        try:
+            var = list(cube.data_vars)[0]
+        except IndexError:
+            summary_row['open(1)'] = 'no'
+            comment_1 = f'Failed at getting first variable from list {list(cube.data_vars)}: {sys.exc_info()[:2]}'
+            return summary_row, comment_1
+        try:
+            np.sum(cube[var])
+            print(f"The requested time range is {time_range}. The cubes actual first time stamp is {cube.time.min()} "
+                  f"and last {cube.time.max()}.")
+            summary_row['open(1)'] = 'yes'
+            comment_1 = ''
+        except:
+            summary_row['open(1)'] = 'no'
+            comment_1 = f'Failed executing np.sum(cube[{var}]): {sys.exc_info()[:2]}'
+    except TimeOutException:
         summary_row['open(1)'] = 'no'
-        comment_1 = f'Failed at getting first variable from list {list(cube.data_vars)}: {sys.exc_info()[:2]}'
-        return summary_row, comment_1
-    try:
-        np.sum(cube[var])
-        print(f"The requested time range is {time_range}. The cubes actual first time stamp is {cube.time.min()} "
-              f"and last {cube.time.max()}.")
-        summary_row['open(1)'] = 'yes'
-        comment_1 = ''
-    except:
-        summary_row['open(1)'] = 'no'
-        comment_1 = f'Failed executing np.sum(cube[{var}]): {sys.exc_info()[:2]}'
+        comment_1 = sys.exc_info()[:2]
+    signal.alarm(0)
+
     return summary_row, comment_1
 
 
 def check_write_to_disc(summary_row, comment_2, data_source, time_range, variables, region):
+    signal.signal(signal.SIGALRM, alarm_handler)
+    signal.alarm(TIMEOUT_TIME)
     if comment_2 is not None:
         return summary_row, comment_2
 
@@ -100,42 +123,54 @@ def check_write_to_disc(summary_row, comment_2, data_source, time_range, variabl
         local_ds = ds.open_dataset(f'local.{rand_string}')
         local_ds.close()
         summary_row['cache(2)'] = 'yes'
-        comment_1 = ''
+        comment_2 = ''
     except DataAccessError:
         summary_row['cache(2)'] = 'no'
-        comment_1 = f'local.{rand_string}: Failed saving to disc with: {sys.exc_info()[:2]}'
+        comment_2 = f'local.{rand_string}: Failed saving to disc with: {sys.exc_info()[:2]}'
+    except TimeOutException:
+        summary_row['cache(2)'] = 'no'
+        comment_2 = sys.exc_info()[:2]
     except:
         summary_row['cache(2)'] = 'no'
-        comment_1 = f'Failed saving to disc with: {sys.exc_info()[:2]}'
+        comment_2 = f'Failed saving to disc with: {sys.exc_info()[:2]}'
     lds.remove_data_source(f"local.{rand_string}")
-    return summary_row, comment_1
+    signal.alarm(0)
+
+    return summary_row, comment_2
 
 
 def check_for_visualization(cube, summary_row, variables):
     var_with_lat_lon_right_order = []
     vars = []
     comment_3 = None
-    for var in cube.data_vars:
-        vars.append(var)
-        if cube[var].dims[-2:] == ('lat', 'lon'):
-            if len(cube.lat.shape) == 1 and len(cube.lon.shape) == 1:
-                if cube.lat.size > 0 and cube.lon.size > 0:
-                    var_with_lat_lon_right_order.append(var)
+    signal.signal(signal.SIGALRM, alarm_handler)
+    signal.alarm(TIMEOUT_TIME)
+    try:
+        for var in cube.data_vars:
+            vars.append(var)
+            if cube[var].dims[-2:] == ('lat', 'lon'):
+                if len(cube.lat.shape) == 1 and len(cube.lon.shape) == 1:
+                    if cube.lat.size > 0 and cube.lon.size > 0:
+                        var_with_lat_lon_right_order.append(var)
+                    else:
+                        comment_3 = f'cube.lat.size: {cube.lat.size}, cube.lon.size: {cube.lon.size}.'
                 else:
-                    comment_3 = f'cube.lat.size: {cube.lat.size}, cube.lon.size: {cube.lon.size}.'
+                    comment_3 = f'cube.lat.shape: {cube.lat.shape}, cube.lon.shape: {cube.lon.shape}.'
             else:
-                comment_3 = f'cube.lat.shape: {cube.lat.shape}, cube.lon.shape: {cube.lon.shape}.'
+                comment_3 = f'Last two dimensions of variable {var}: {cube[var].dims[-2:]}.'
+        if len(var_with_lat_lon_right_order) > 0:
+            summary_row['map(3)'] = 'yes'
+            comment_3 = ''
         else:
-            comment_3 = f'Last two dimensions of variable {var}: {cube[var].dims[-2:]}.'
-    if len(var_with_lat_lon_right_order) > 0:
-        summary_row['map(3)'] = 'yes'
-        comment_3 = ''
-    else:
+            summary_row['map(3)'] = 'no'
+            if len(vars) == 0:
+                comment_3 = f'Dataset has none of the requested variables: {variables}.'
+            if comment_3 is None:
+                comment_3 = f'None of  variables: {vars} has lat and lon in correct order.'
+    except TimeOutException:
         summary_row['map(3)'] = 'no'
-        if len(vars) == 0:
-            comment_3 = f'Dataset has none of the requested variables: {variables}.'
-        if comment_3 is None:
-            comment_3 = f'None of  variables: {vars} has lat and lon in correct order.'
+        comment_3 = sys.exc_info()[:2]
+    signal.alarm(0)
     return summary_row, comment_3
 
 
@@ -301,9 +336,10 @@ def test_open_ds(data):
     update_csv(results_csv, header_row, summary_row)
 
 
-pool = mp.Pool(mp.cpu_count())
-pool.map(test_open_ds, data_sets)
-pool.close()
+with mp.Pool(mp.cpu_count() - 1, maxtasksperchild=1) as pool:
+    pool.map(test_open_ds, data_sets)
+    pool.close()
+    pool.join()
 
 
 def sort_csv(input_csv, output_csv):

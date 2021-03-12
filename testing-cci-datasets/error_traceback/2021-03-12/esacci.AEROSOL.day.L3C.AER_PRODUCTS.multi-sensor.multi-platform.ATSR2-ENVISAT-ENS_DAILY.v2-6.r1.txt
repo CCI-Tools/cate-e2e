@@ -1,0 +1,31 @@
+[2021-03-12 09:08:32] Request: 
+data_source.open_dataset(time_range=('1995-08-01', '1995-08-03'), var_names=['Aerosol optical depth at 550 nm', 'AOD550'], region=[153.9, 78.0, 154.0, 78.1])
+
+Traceback (most recent call last):
+  File "/home/alicja/Desktop/projects/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 300, in test_open_ds
+    cube = data_source.open_dataset(time_range=time_range, var_names=var_list, region=region)
+  File "/home/alicja/Desktop/projects/cate/cate/ds/esa_cci_odp.py", line 1250, in open_dataset
+    return open_xarray_dataset(files, region=region, var_names=var_names, monitor=monitor)
+  File "/home/alicja/Desktop/projects/cate/cate/core/ds.py", line 790, in open_xarray_dataset
+    ds = subset_spatial_impl(ds, region)
+  File "/home/alicja/Desktop/projects/cate/cate/core/opimpl.py", line 967, in subset_spatial_impl
+    retset = ds.sel(**indexers)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/dataset.py", line 2185, in sel
+    result = self.isel(indexers=pos_indexers, drop=drop)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/dataset.py", line 2046, in isel
+    var_value = var_value.isel(var_indexers)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/variable.py", line 1120, in isel
+    return self[key]
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/variable.py", line 768, in __getitem__
+    dims, indexer, new_order = self._broadcast_indexes(key)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/variable.py", line 607, in _broadcast_indexes
+    return self._broadcast_indexes_basic(key)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/variable.py", line 635, in _broadcast_indexes_basic
+    return dims, BasicIndexer(key), None
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/indexing.py", line 384, in __init__
+    k = as_integer_slice(k)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/indexing.py", line 359, in as_integer_slice
+    start = as_integer_or_none(value.start)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/indexing.py", line 355, in as_integer_or_none
+    return None if value is None else operator.index(value)
+TypeError: 'numpy.float64' object cannot be interpreted as an integer

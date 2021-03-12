@@ -1,0 +1,13 @@
+[2021-03-12 09:04:11] Request: 
+data_source.open_dataset(time_range=('2017-05-01', '2017-05-01'), var_names=['x', 'land_ice_surface_northing_velocity'], region=[-27.9, 81.6, -27.8, 81.7])
+
+Traceback (most recent call last):
+  File "/home/alicja/Desktop/projects/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 300, in test_open_ds
+    cube = data_source.open_dataset(time_range=time_range, var_names=var_list, region=region)
+  File "/home/alicja/Desktop/projects/cate/cate/ds/esa_cci_odp.py", line 1250, in open_dataset
+    return open_xarray_dataset(files, region=region, var_names=var_names, monitor=monitor)
+  File "/home/alicja/Desktop/projects/cate/cate/core/ds.py", line 790, in open_xarray_dataset
+    ds = subset_spatial_impl(ds, region)
+  File "/home/alicja/Desktop/projects/cate/cate/core/opimpl.py", line 898, in subset_spatial_impl
+    raise ValidationError('Cannot apply regional subset. No (valid) geocoding found.')
+cate.core.types.ValidationError: Cannot apply regional subset. No (valid) geocoding found.

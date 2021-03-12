@@ -1,0 +1,21 @@
+[2021-03-12 09:07:44] Request: 
+data_source.open_dataset(time_range=('1991-08-01', '1991-08-02'), var_names=['swh_adjusted', 'cycle_number'], region=[-106.7, 49.7, -106.6, 49.8])
+
+Traceback (most recent call last):
+  File "/home/alicja/Desktop/projects/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 300, in test_open_ds
+    cube = data_source.open_dataset(time_range=time_range, var_names=var_list, region=region)
+  File "/home/alicja/Desktop/projects/cate/cate/ds/esa_cci_odp.py", line 1250, in open_dataset
+    return open_xarray_dataset(files, region=region, var_names=var_names, monitor=monitor)
+  File "/home/alicja/Desktop/projects/cate/cate/core/ds.py", line 790, in open_xarray_dataset
+    ds = subset_spatial_impl(ds, region)
+  File "/home/alicja/Desktop/projects/cate/cate/core/opimpl.py", line 967, in subset_spatial_impl
+    retset = ds.sel(**indexers)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/dataset.py", line 2183, in sel
+    self, indexers=indexers, method=method, tolerance=tolerance
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/coordinates.py", line 398, in remap_label_indexers
+    obj, v_indexers, method=method, tolerance=tolerance
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/indexing.py", line 254, in remap_label_indexers
+    dim_indexers = get_dim_indexers(data_obj, indexers)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/indexing.py", line 220, in get_dim_indexers
+    raise ValueError(f"dimensions or multi-index levels {invalid!r} do not exist")
+ValueError: dimensions or multi-index levels ['lat', 'lon'] do not exist

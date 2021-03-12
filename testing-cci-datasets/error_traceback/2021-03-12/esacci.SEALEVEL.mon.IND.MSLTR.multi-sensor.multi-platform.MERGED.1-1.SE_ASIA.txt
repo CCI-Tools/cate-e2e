@@ -1,0 +1,107 @@
+[2021-03-12 09:27:34] Request: 
+data_source.open_dataset(time_range=('2020-06-03', '2020-06-03'), var_names=['local_sla_trend_error', 'distance_to_coast'], region=None)
+
+Traceback (most recent call last):
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/file_manager.py", line 199, in _acquire_with_cache_info
+    file = self._cache[self._key]
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/lru_cache.py", line 53, in __getitem__
+    value = self._cache[key]
+KeyError: [<class 'netCDF4._netCDF4.Dataset'>, ('https://data.cci.ceda.ac.uk/thredds/dodsC/esacci/sea_level/data/XTRACK_ALES_SLA/Trends_SelectedSites/v1.1_202006/ESACCI-SEALEVEL-IND-MSLTR-MERGED-SE_ASIA_JA_012_04-20200603-fv01.1.nc#fillmismatch',), 'r', (('clobber', True), ('diskless', False), ('format', 'NETCDF4'), ('persist', False))]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/alicja/Desktop/projects/cate/cate/ds/esa_cci_odp.py", line 1250, in open_dataset
+    return open_xarray_dataset(files, region=region, var_names=var_names, monitor=monitor)
+  File "/home/alicja/Desktop/projects/cate/cate/core/ds.py", line 782, in open_xarray_dataset
+    **kwargs)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/api.py", line 951, in open_mfdataset
+    datasets = [preprocess(ds) for ds in datasets]
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/api.py", line 951, in <listcomp>
+    datasets = [preprocess(ds) for ds in datasets]
+  File "/home/alicja/Desktop/projects/cate/cate/core/ds.py", line 759, in preprocess
+    norm_ds = normalize_missing_time(normalize_coord_vars(raw_ds))
+  File "/home/alicja/Desktop/projects/cate/cate/core/opimpl.py", line 401, in normalize_missing_time
+    if isinstance(ds.time.values[0], datetime) or isinstance(ds.time.values[0], np.datetime64):
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/dataarray.py", line 628, in values
+    return self.variable.values
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/variable.py", line 512, in values
+    return _as_array_or_item(self._data)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/variable.py", line 274, in _as_array_or_item
+    data = np.asarray(data)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/numpy/core/_asarray.py", line 102, in asarray
+    return array(a, dtype, copy=False, order=order)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/dask/array/core.py", line 1448, in __array__
+    x = self.compute()
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/dask/base.py", line 281, in compute
+    (result,) = compute(self, traverse=False, **kwargs)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/dask/base.py", line 563, in compute
+    results = schedule(dsk, keys, **kwargs)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/dask/threaded.py", line 84, in get
+    **kwargs
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/dask/local.py", line 487, in get_async
+    raise_exception(exc, tb)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/dask/local.py", line 317, in reraise
+    raise exc
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/dask/local.py", line 222, in execute_task
+    result = _execute_task(task, data)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/dask/core.py", line 121, in _execute_task
+    return func(*(_execute_task(a, cache) for a in args))
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/dask/array/core.py", line 106, in getter
+    c = np.asarray(c)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/numpy/core/_asarray.py", line 102, in asarray
+    return array(a, dtype, copy=False, order=order)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/indexing.py", line 503, in __array__
+    return np.asarray(self.array, dtype=dtype)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/numpy/core/_asarray.py", line 102, in asarray
+    return array(a, dtype, copy=False, order=order)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/indexing.py", line 663, in __array__
+    return np.asarray(self.array, dtype=dtype)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/numpy/core/_asarray.py", line 102, in asarray
+    return array(a, dtype, copy=False, order=order)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/indexing.py", line 568, in __array__
+    return np.asarray(array[self.key], dtype=None)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/numpy/core/_asarray.py", line 102, in asarray
+    return array(a, dtype, copy=False, order=order)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/coding/variables.py", line 70, in __array__
+    return self.func(self.array)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/coding/times.py", line 187, in decode_cf_datetime
+    num_dates = np.asarray(num_dates)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/numpy/core/_asarray.py", line 102, in asarray
+    return array(a, dtype, copy=False, order=order)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/coding/variables.py", line 70, in __array__
+    return self.func(self.array)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/coding/variables.py", line 138, in _apply_mask
+    data = np.asarray(data, dtype=dtype)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/numpy/core/_asarray.py", line 102, in asarray
+    return array(a, dtype, copy=False, order=order)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/indexing.py", line 568, in __array__
+    return np.asarray(array[self.key], dtype=None)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/netCDF4_.py", line 73, in __getitem__
+    key, self.shape, indexing.IndexingSupport.OUTER, self._getitem
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/indexing.py", line 853, in explicit_indexing_adapter
+    result = raw_indexing_method(raw_key.tuple)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/netCDF4_.py", line 84, in _getitem
+    original_array = self.get_array(needs_lock=False)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/netCDF4_.py", line 63, in get_array
+    ds = self.datastore._acquire(needs_lock)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/netCDF4_.py", line 367, in _acquire
+    with self._manager.acquire_context(needs_lock) as root:
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/contextlib.py", line 112, in __enter__
+    return next(self.gen)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/file_manager.py", line 187, in acquire_context
+    file, cached = self._acquire_with_cache_info(needs_lock)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/file_manager.py", line 205, in _acquire_with_cache_info
+    file = self._opener(*self._args, **kwargs)
+  File "netCDF4/_netCDF4.pyx", line 2291, in netCDF4._netCDF4.Dataset.__init__
+  File "netCDF4/_netCDF4.pyx", line 1855, in netCDF4._netCDF4._ensure_nc_success
+OSError: [Errno -68] NetCDF: I/O failure: b'https://data.cci.ceda.ac.uk/thredds/dodsC/esacci/sea_level/data/XTRACK_ALES_SLA/Trends_SelectedSites/v1.1_202006/ESACCI-SEALEVEL-IND-MSLTR-MERGED-SE_ASIA_JA_012_04-20200603-fv01.1.nc#fillmismatch'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/alicja/Desktop/projects/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 282, in test_open_ds
+    cube = data_source.open_dataset(time_range=time_range, var_names=var_list)
+  File "/home/alicja/Desktop/projects/cate/cate/ds/esa_cci_odp.py", line 1259, in open_dataset
+    cause=e) from e
+cate.core.ds.DataAccessError: Failed to open data source "esacci.SEALEVEL.mon.IND.MSLTR.multi-sensor.multi-platform.MERGED.1-1.SE_ASIA" for given time range, variable names: [Errno -68] NetCDF: I/O failure: b'https://data.cci.ceda.ac.uk/thredds/dodsC/esacci/sea_level/data/XTRACK_ALES_SLA/Trends_SelectedSites/v1.1_202006/ESACCI-SEALEVEL-IND-MSLTR-MERGED-SE_ASIA_JA_012_04-20200603-fv01.1.nc#fillmismatch'

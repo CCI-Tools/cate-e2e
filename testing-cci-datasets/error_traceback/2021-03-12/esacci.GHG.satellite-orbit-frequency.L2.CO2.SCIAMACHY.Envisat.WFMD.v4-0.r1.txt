@@ -1,0 +1,47 @@
+[2021-03-12 09:03:55] Request: 
+data_source.open_dataset(time_range=('2002-10-01', '2002-10-02'), var_names=['xco2', 'scene_number'], region=None)
+
+Traceback (most recent call last):
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/file_manager.py", line 199, in _acquire_with_cache_info
+    file = self._cache[self._key]
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/lru_cache.py", line 53, in __getitem__
+    value = self._cache[key]
+KeyError: [<class 'netCDF4._netCDF4.Dataset'>, ('https://data.cci.ceda.ac.uk/thredds/dodsC/esacci/ghg/data/crdp_4/SCIAMACHY/CO2_SCI_WFMD/v4.0/2002/ESACCI-GHG-L2-CO2-SCIAMACHY-WFMD-20021001-fv1.nc#fillmismatch',), 'r', (('clobber', True), ('diskless', False), ('format', 'NETCDF4'), ('persist', False))]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/alicja/Desktop/projects/cate/cate/ds/esa_cci_odp.py", line 1250, in open_dataset
+    return open_xarray_dataset(files, region=region, var_names=var_names, monitor=monitor)
+  File "/home/alicja/Desktop/projects/cate/cate/core/ds.py", line 753, in open_xarray_dataset
+    chunks = get_spatial_ext_chunk_sizes(files[0])
+  File "/home/alicja/Desktop/projects/cate/cate/core/ds.py", line 804, in get_spatial_ext_chunk_sizes
+    ds = xr.open_dataset(ds_or_path, decode_times=False)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/api.py", line 572, in open_dataset
+    store = opener(filename_or_obj, **extra_kwargs, **backend_kwargs)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/netCDF4_.py", line 364, in open
+    return cls(manager, group=group, mode=mode, lock=lock, autoclose=autoclose)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/netCDF4_.py", line 314, in __init__
+    self.format = self.ds.data_model
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/netCDF4_.py", line 373, in ds
+    return self._acquire()
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/netCDF4_.py", line 367, in _acquire
+    with self._manager.acquire_context(needs_lock) as root:
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/contextlib.py", line 112, in __enter__
+    return next(self.gen)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/file_manager.py", line 187, in acquire_context
+    file, cached = self._acquire_with_cache_info(needs_lock)
+  File "/home/alicja/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/file_manager.py", line 205, in _acquire_with_cache_info
+    file = self._opener(*self._args, **kwargs)
+  File "netCDF4/_netCDF4.pyx", line 2291, in netCDF4._netCDF4.Dataset.__init__
+  File "netCDF4/_netCDF4.pyx", line 1855, in netCDF4._netCDF4._ensure_nc_success
+OSError: [Errno -77] NetCDF: Access failure: b'https://data.cci.ceda.ac.uk/thredds/dodsC/esacci/ghg/data/crdp_4/SCIAMACHY/CO2_SCI_WFMD/v4.0/2002/ESACCI-GHG-L2-CO2-SCIAMACHY-WFMD-20021001-fv1.nc#fillmismatch'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/alicja/Desktop/projects/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 282, in test_open_ds
+    cube = data_source.open_dataset(time_range=time_range, var_names=var_list)
+  File "/home/alicja/Desktop/projects/cate/cate/ds/esa_cci_odp.py", line 1259, in open_dataset
+    cause=e) from e
+cate.core.ds.DataAccessError: Failed to open data source "esacci.GHG.satellite-orbit-frequency.L2.CO2.SCIAMACHY.Envisat.WFMD.v4-0.r1" for given time range, variable names: [Errno -77] NetCDF: Access failure: b'https://data.cci.ceda.ac.uk/thredds/dodsC/esacci/ghg/data/crdp_4/SCIAMACHY/CO2_SCI_WFMD/v4.0/2002/ESACCI-GHG-L2-CO2-SCIAMACHY-WFMD-20021001-fv1.nc#fillmismatch'

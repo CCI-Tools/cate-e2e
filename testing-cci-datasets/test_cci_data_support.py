@@ -2,25 +2,28 @@ import csv
 import json
 import multiprocessing as mp
 import os
+import pandas as pd
 import random
 import signal
 import string
 import sys
 import traceback
-from datetime import datetime, timedelta
+from datetime import datetime
 from itertools import repeat
 
 import nest_asyncio
 import numpy as np
-from cate.core import DATA_STORE_REGISTRY, ds
+from cate.core import DATA_STORE_POOL
+from cate.core import open_dataset
 from cate.core.ds import DataAccessError
+from xcube.core.store import TYPE_SPECIFIER_CUBE
+from xcube.core.store import TYPE_SPECIFIER_DATASET
+from xcube.core.store import DataStoreError
 
 nest_asyncio.apply()
 
 # header for CSV report
 header_row = ['ECV-Name', 'Dataset-ID', 'supported', 'open(1)', 'open_bbox(2)', 'cache(3)', 'map(4)', 'comment']
-
-results_csv = f'test_cci_data_support_{datetime.date(datetime.now())}.csv'
 
 # Not supported vector data:
 vector_data = ['esacci.ICESHEETS.mon.IND.GMB.GRACE-instrument.GRACE.VARIOUS.1-3.greenland_gmb_time_series',
@@ -63,11 +66,13 @@ def update_csv(results_csv, header_row, results_for_dataset_collection):
     append_dict_as_row(results_csv, results_for_dataset_collection, header_row)
 
 
-def get_region(dataset):
-    bbox_maxx = dataset.meta_info['bbox_maxx']
-    bbox_minx = dataset.meta_info['bbox_minx']
-    bbox_maxy = dataset.meta_info['bbox_maxy']
-    bbox_miny = dataset.meta_info['bbox_miny']
+def get_region(data_descriptor):
+    if data_descriptor.bbox is None:
+        return None
+    bbox_minx = data_descriptor.bbox[0]
+    bbox_miny = data_descriptor.bbox[1]
+    bbox_maxx = data_descriptor.bbox[2]
+    bbox_maxy = data_descriptor.bbox[3]
     indx = random.uniform(float(bbox_minx), float(bbox_maxx))
     indy = random.uniform(float(bbox_miny), float(bbox_maxy))
     if indx == float(bbox_maxx):
@@ -90,21 +95,23 @@ def get_region(dataset):
     return region
 
 
-def check_for_processing(cube, summary_row, time_range):
+def check_for_processing(dataset, summary_row, time_range):
     signal.signal(signal.SIGALRM, alarm_handler)
     signal.alarm(TIMEOUT_TIME)
     try:
         try:
-            var = list(cube.data_vars)[0]
+            var = list(dataset.data_vars)[0]
         except IndexError:
             summary_row['open_bbox(2)'] = 'no'
-            comment_1 = f'Failed at getting first variable from list {list(cube.data_vars)}: {sys.exc_info()[:2]}'
+            comment_1 = f'Failed at getting first variable from list ' \
+                        f'{list(dataset.data_vars)}: {sys.exc_info()[:2]}'
             return summary_row, comment_1
         try:
-            np.sum(cube[var])
-            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] The requested time range is {time_range}. '
-                  f'The cubes actual first time stamp is {cube.time.min()} '
-                  f'and last {cube.time.max()}.')
+            np.sum(dataset[var])
+            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
+                  f'The requested time range is {time_range}. '
+                  f'The cubes actual first time stamp is {dataset.time.min()} '
+                  f'and last {dataset.time.max()}.')
             summary_row['open_bbox(2)'] = 'yes'
             comment_1 = ''
         except:
@@ -118,16 +125,21 @@ def check_for_processing(cube, summary_row, time_range):
     return summary_row, comment_1
 
 
-def check_write_to_disc(summary_row, comment_2, data_source, time_range, variables, region, lds):
+def check_write_to_disc(summary_row, comment_2, data_id, time_range, variables, region, lds):
     signal.signal(signal.SIGALRM, alarm_handler)
     signal.alarm(TIMEOUT_TIME)
     if comment_2 is not None:
         return summary_row, comment_2
 
-    rand_string = f"test{random.choice(string.ascii_lowercase)}{random.choice(string.octdigits)}"  # needed when tests run in parallel
+    # needed for when tests run in parallel
+    rand_string = f"test{random.choice(string.ascii_lowercase)}{random.choice(string.octdigits)}"
+    local_ds_id = f'local.{rand_string}'
     try:
-        data_source.make_local(rand_string, time_range=time_range, var_names=variables, region=region)
-        local_ds = ds.open_dataset(f'local.{rand_string}')
+        local_ds, local_ds_id = open_dataset(dataset_id=data_id,
+                                   time_range=time_range,
+                                   var_names=variables,
+                                   region=region,
+                                   force_local=True)
         local_ds.close()
         summary_row['cache(3)'] = 'yes'
         comment_2 = ''
@@ -140,7 +152,7 @@ def check_write_to_disc(summary_row, comment_2, data_source, time_range, variabl
     except:
         summary_row['cache(3)'] = 'no'
         comment_2 = f'Failed saving to disc with: {sys.exc_info()[:2]}'
-    lds.remove_data_source(f"local.{rand_string}")
+    lds.delete_data(local_ds_id)
     signal.alarm(0)
 
     return summary_row, comment_2
@@ -205,7 +217,7 @@ def check_for_support(data_id):
     return supported, reason
 
 
-def _all_tests_no(summary_row, comment_1, open_wo_subset_only=False):
+def _all_tests_no(summary_row, comment_1, results_csv, open_wo_subset_only=False):
     summary_row['open_bbox(2)'] = 'no'
     summary_row['cache(3)'] = 'no'
     summary_row['map(4)'] = 'no'
@@ -218,151 +230,136 @@ def _all_tests_no(summary_row, comment_1, open_wo_subset_only=False):
     update_csv(results_csv, header_row, summary_row)
 
 
-def test_open_ds(data, store, lds):
+def test_open_ds(data_id, store, lds, results_csv):
     comment_1 = None
     comment_2 = None
     comment_3 = None
     open_wo_subset_only = False
-    data_id = data.id
     summary_row = {'ECV-Name': data_id.split('.')[1], 'Dataset-ID': data_id}
 
     supported, reason = check_for_support(data_id)
     if not supported:
         summary_row['supported'] = 'no'
         comment_1 = reason
-        _all_tests_no(summary_row, comment_1)
+        _all_tests_no(summary_row, comment_1, results_csv)
         return
     else:
         summary_row['supported'] = 'yes'
 
+    type_specifier = None
+    type_specifiers_for_data = store.get_type_specifiers_for_data(data_id)
+    preferred_type_specifiers = [TYPE_SPECIFIER_CUBE, TYPE_SPECIFIER_DATASET]
+    for preferred_type_specifier in preferred_type_specifiers:
+        for type_specifier_for_data in type_specifiers_for_data:
+            if preferred_type_specifier.is_satisfied_by(type_specifier_for_data):
+                type_specifier = type_specifier_for_data
+                break
+    if type_specifier is None:
+        comment_1 = f'Testing only supports datasets. For "{data_id}", ' \
+                    f'only available type specifiers "{type_specifiers_for_data}" were found.'
+        _all_tests_no(summary_row, comment_1, results_csv)
+        return
     try:
-        data_source = store.query(ds_id=data_id)[0]
-    except:
+        data_descriptor = store.describe_data(data_id=data_id, type_specifier=type_specifier)
+    except DataStoreError:
         comment_1 = f'Failed getting data description while executing ' \
-                    f'store.query(ds_id={data_id})[0] with: {sys.exc_info()[:2]}'
-        _all_tests_no(summary_row, comment_1)
+                    f'store.describe_data(data_id=data_id, type_specifier=type_specifier) ' \
+                    f'with: {sys.exc_info()[:2]}'
+        _all_tests_no(summary_row, comment_1, results_csv)
         return
 
-    data_source.update_file_list()
-    if len(data_source._file_list) == 0:
-        comment_1 = f'Has no file list.'
-        _all_tests_no(summary_row, comment_1)
-        return
-    region = get_region(data_source)
-    try:
-        time_range = tuple(
-            t.strftime('%Y-%m-%d') for t in [data_source._file_list[0][1], data_source._file_list[1][2]])
-    except IndexError:
-        try:
-            time_range = tuple(
-                t.strftime('%Y-%m-%d') for t in [data_source._file_list[0][1], data_source._file_list[0][2]])
-        except:
-            time_range = None
-    except:
-        time_range = None
+    region = get_region(data_descriptor)
+    time_range = data_descriptor.time_range
+    if time_range is not None and data_descriptor.dims is not None \
+            and 'time' in data_descriptor.dims and data_descriptor.dims['time'] > 2:
+        if data_descriptor.time_period:
+            # we have to use this weird notation so pandas interpretes the data correctly
+            time_delta = pd.Timedelta(int(data_descriptor.time_period[:-1]),
+                                      data_descriptor.time_period[-1])
+        else:
+            time_delta = pd.Timedelta('10D')
+            print(f'Dataset "{data_id}" has no regular time period. '
+                  f'Use a time range of 10 days.')
+        time_start = pd.Timestamp(time_range[0])
+        time_end = time_start + time_delta
+        time_range = (time_start.strftime('%Y-%m-%d'), time_end.strftime('%Y-%m-%d'))
 
     var_list = []
-    s_not_to_be_in_var = ['longitude', 'latitude', 'lat', 'lon',
-                          'bounds', 'bnds', 'date', 'Longitude', 'Latitude']
-    if len(data_source.meta_info['variables']) > 3:
+    if len(data_descriptor.data_vars) > 3:
         while len(var_list) < 1:
-            for var in random.choices(data_source.meta_info['variables'], k=2):
-                if not (any(s_part in var['name'] for s_part in s_not_to_be_in_var)) and var[
-                    'name'] not in var_list:
-                    var_list.append(var['name'])
+            for var in random.choices(list(data_descriptor.data_vars.keys()), k=2):
+                var_list.append(var)
     else:
-        for var in data_source.meta_info['variables']:
-            if not (any(s_part in var['name'] for s_part in s_not_to_be_in_var)) and var[
-                'name'] not in var_list:
-                var_list.append(var['name'])
+        var_list = list(data_descriptor.data_vars.keys())
 
     try:
-        print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Opening cube for data_id {data_id} with {var_list} '
-              f'and time range {time_range}.')
-        cube = data_source.open_dataset(time_range=time_range, var_names=var_list)
+        print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Opening cube for '
+              f'data_id {data_id} with {var_list} and time range {time_range}.')
+        dataset, _ = open_dataset(dataset_id=data_id,
+                               time_range=time_range,
+                               var_names=var_list,
+                               force_local=False)
         vars_in_cube = []
         for var in var_list:
-            if var in cube.data_vars:
+            if var in dataset.data_vars:
                 vars_in_cube.append(var)
         if len(vars_in_cube) == 0:
             comment_1 = f'Requested variables {var_list} for subset are not in dataset.'
-            _all_tests_no(summary_row, comment_1, open_wo_subset_only)
+            _all_tests_no(summary_row, comment_1, results_csv, open_wo_subset_only)
             return
         summary_row['open(1)'] = 'yes'
         open_wo_subset_only = True
     except:
         traceback_file_url = generate_traceback_file(data_id, time_range, var_list, None)
-        _all_tests_no(summary_row, traceback_file_url, open_wo_subset_only)
+        _all_tests_no(summary_row, traceback_file_url, results_csv, open_wo_subset_only)
         return
     try:
-        print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Opening cube for data_id {data_id} with {var_list} '
-              f'and region {region} and time range {time_range}.')
-        cube = data_source.open_dataset(time_range=time_range, var_names=var_list, region=region)
+        print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Opening cube for data_id '
+              f'{data_id} with {var_list} and region {region} and time range {time_range}.')
+        dataset, _ = open_dataset(dataset_id=data_id,
+                                  time_range=time_range,
+                                  var_names=var_list,
+                                  region=region,
+                                  force_local=False)
         summary_row['open(1)'] = 'yes'
         open_wo_subset_only = False
     except ValueError:
-        track = traceback.format_exc()
-        if 'Can not select a region outside dataset boundaries.' in track:
-            try:
-                region = '141.6, -18.7, 141.7, -18.6'
-                print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Opening cube for data_id {data_id} with '
-                      f'{var_list} and region {region}.')
-                cube = data_source.open_dataset(time_range=time_range, var_names=var_list, region=region)
-                open_wo_subset_only = False
-            except:
-                traceback_file_url = generate_traceback_file(data_id, time_range, var_list, region)
-                _all_tests_no(summary_row, traceback_file_url, open_wo_subset_only)
-                return
-        else:
-            traceback_file_url = generate_traceback_file(data_id, time_range, var_list, region)
-            _all_tests_no(summary_row, traceback_file_url, open_wo_subset_only)
-            return
-    except IndexError:
-        print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Index error happening at stage 2. for {data_id}')
         traceback_file_url = generate_traceback_file(data_id, time_range, var_list, region)
-        _all_tests_no(summary_row, traceback_file_url, open_wo_subset_only)
+        _all_tests_no(summary_row, traceback_file_url, results_csv, open_wo_subset_only)
+        return
+    except IndexError:
+        print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
+              f'Index error happening at stage 2. for {data_id}')
+        traceback_file_url = generate_traceback_file(data_id, time_range, var_list, region)
+        _all_tests_no(summary_row, traceback_file_url, results_csv, open_wo_subset_only)
         return
     except:
-        track = traceback.format_exc()
-        if 'does not seem to have any datasets in given time range' in track:
-            try:
-                time_range = (time_range[0], time_range[1] + timedelta(days=4))
-                print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Opening cube for data_id {data_id} '
-                      f'with {var_list}.')
-                cube = data_source.open_dataset(time_range=time_range, var_names=var_list, region=region)
-                open_wo_subset_only = False
-            except IndexError:
-                print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Index error happening at stage 3. '
-                      f'for {data_id}')
-                traceback_file_url = generate_traceback_file(data_id, time_range, var_list, region)
-                _all_tests_no(summary_row, traceback_file_url, open_wo_subset_only)
-                return
-            except:
-                traceback_file_url = generate_traceback_file(data_id, time_range, var_list, region)
-                _all_tests_no(summary_row, traceback_file_url, open_wo_subset_only)
-                return
-        else:
-            traceback_file_url = generate_traceback_file(data_id, time_range, var_list, region)
-            _all_tests_no(summary_row, traceback_file_url, open_wo_subset_only)
-            return
+        traceback_file_url = generate_traceback_file(data_id, time_range, var_list, region)
+        _all_tests_no(summary_row, traceback_file_url, results_csv, open_wo_subset_only)
+        return
 
     vars_in_cube = []
     for var in var_list:
-        if var in cube.data_vars:
+        if var in dataset.data_vars:
             vars_in_cube.append(var)
     if len(vars_in_cube) == 0:
         comment_1 = f'Requested variables {var_list} for subset are not in dataset.'
-        _all_tests_no(summary_row, comment_1, open_wo_subset_only)
+        _all_tests_no(summary_row, comment_1, results_csv, open_wo_subset_only)
         return
 
-    print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Checking cube for data_id {data_id} for processing.')
-    summary_row, comment_1 = check_for_processing(cube, summary_row, time_range)
-    print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Checking cube for data_id {data_id} for visualization.')
-    summary_row, comment_3 = check_for_visualization(cube, summary_row, var_list)
-    print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Closing cube for data_id {data_id}')
-    cube.close()
-    print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Checking cube {data_id} for writing to disk.')
-    summary_row, comment_2 = check_write_to_disc(summary_row, comment_2, data_source, time_range, var_list, region, lds)
+    print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
+          f'Checking dataset for data_id {data_id} for processing.')
+    summary_row, comment_1 = check_for_processing(dataset, summary_row, time_range)
+    print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
+          f'Checking dataset for data_id {data_id} for visualization.')
+    summary_row, comment_3 = check_for_visualization(dataset, summary_row, var_list)
+    print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
+          f'Closing dataset for data_id {data_id}')
+    dataset.close()
+    print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
+          f'Checking dataset {data_id} for writing to disk.')
+    summary_row, comment_2 = check_write_to_disc(summary_row, comment_2, data_id, time_range,
+                                                 var_list, region, lds)
 
     if comment_1 and (comment_1 == comment_3):
         summary_row['comment'] = f'{comment_1}'
@@ -387,10 +384,12 @@ def generate_traceback_file(data_id, time_range, var_list, region):
     traceback_file = f'{dir_for_traceback}/{data_id}.txt'
     with open(traceback_file, 'a') as trace_f:
         trace_f.write(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Request: \n'
-                      f'data_source.open_dataset(time_range={time_range}, var_names={var_list}, region={region})\n')
+                      f'open_dataset(datasetid={data_id}, time_range={time_range}, '
+                      f'var_names={var_list}, region={region})\n')
         trace_f.write('\n')
         trace_f.write(traceback.format_exc())
-    traceback_file_url = f'https://github.com/CCI-Tools/cate-e2e/blob/master/testing-cci-datasets/{traceback_file}'
+    traceback_file_url = \
+        f'https://github.com/CCI-Tools/cate-e2e/blob/master/testing-cci-datasets/{traceback_file}'
     return traceback_file_url
 
 
@@ -498,8 +497,10 @@ def count_success_fail(data_sets, ecv):
 
     supported_percentage = 100 * supported / total_number_of_datasets
     open_success_percentage = 100 * open_success / (total_number_of_datasets - not_supported)
-    open_bbox_success_percentage = 100 * open_bbox_success / (total_number_of_datasets - not_supported)
-    visualize_success_percentage = 100 * visualize_success / (total_number_of_datasets - not_supported)
+    open_bbox_success_percentage = \
+        100 * open_bbox_success / (total_number_of_datasets - not_supported)
+    visualize_success_percentage = \
+        100 * visualize_success / (total_number_of_datasets - not_supported)
     cache_success_percentage = 100 * cache_success / (total_number_of_datasets - not_supported)
     summary_row_new = {'ecv': ecv,
                        'supported': supported,
@@ -550,13 +551,17 @@ def create_dict_of_ids_with_verification_flags(data_sets):
 
 
 def main():
-    store = DATA_STORE_REGISTRY.get_data_store('esa_cci_odp_os')
-    data_sets = store.query()
-    lds = DATA_STORE_REGISTRY.get_data_store('local')
+    store_name = 'cci-store'
+    results_csv = f'test_{store_name}_data_support_{datetime.date(datetime.now())}.csv'
+    if len(sys.argv) == 2:
+        store_name = sys.argv[1]
+    store = DATA_STORE_POOL.get_store(store_name)
+    data_ids = store.get_data_ids()
+    lds = DATA_STORE_POOL.get_store('local')
 
     start_time = datetime.now()
     with mp.Pool(mp.cpu_count() - 1, maxtasksperchild=1) as pool:
-        pool.starmap(test_open_ds, zip(data_sets, repeat(store), repeat(lds)))
+        pool.starmap(test_open_ds, zip(data_ids, repeat(store), repeat(lds), repeat(results_csv)))
         pool.close()
         pool.join()
 
@@ -578,11 +583,10 @@ def main():
         csv_output.writerows(data)
 
     summary_csv = f'summary_sorted_{results_csv}'
-    header_summary = ['ecv', 'supported', 'open_success', 'open_fail', 'open_bbox_success', 'open_bbox_fail',
-                      'cache_success', 'cache_fail', 'visualize_success',
+    header_summary = ['ecv', 'supported', 'open_success', 'open_fail', 'open_bbox_success',
+                      'open_bbox_fail', 'cache_success', 'cache_fail', 'visualize_success',
                       'visualize_fail', 'supported_percentage', 'open_success_percentage',
-                      'open_bbox_success_percentage',
-                      'cache_success_percentage',
+                      'open_bbox_success_percentage', 'cache_success_percentage',
                       'visualize_success_percentage', 'total_number_of_datasets']
 
     for ecv in ecvs:
@@ -597,16 +601,20 @@ def main():
     if os.path.exists(results_csv):
         os.remove(results_csv)
     else:
-        print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] The file {results_csv} does not exist.')
+        print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
+              f'The file {results_csv} does not exist.')
 
     if os.path.exists(failed_csv):
         os.remove(failed_csv)
     else:
-        print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] The file {failed_csv} does not exist.')
+        print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
+              f'The file {failed_csv} does not exist.')
 
-    print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Test run finished on {datetime.date(datetime.now())}.')
-    print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Test run took {datetime.now() - start_time}')
+    print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
+          f'Test run finished on {datetime.date(datetime.now())}.')
+    print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
+          f'Test run took {datetime.now() - start_time}')
 
 
 if __name__ == '__main__':
-    main()
+     main()

@@ -552,9 +552,9 @@ def create_dict_of_ids_with_verification_flags(data_sets):
 
 def main():
     store_name = 'cci-store'
-    results_csv = f'test_{store_name}_data_support_{datetime.date(datetime.now())}.csv'
     if len(sys.argv) == 2:
         store_name = sys.argv[1]
+    results_csv = f'test_{store_name}_data_support_{datetime.date(datetime.now())}.csv'
     store = DATA_STORE_POOL.get_store(store_name)
     data_ids = store.get_data_ids()
     lds = DATA_STORE_POOL.get_store('local')

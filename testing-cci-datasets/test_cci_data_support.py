@@ -23,15 +23,17 @@ from xcube.core.store import DataStoreError
 nest_asyncio.apply()
 
 # header for CSV report
-header_row = ['ECV-Name', 'Dataset-ID', 'supported', 'open(1)', 'open_bbox(2)', 'cache(3)', 'map(4)', 'comment']
+header_row = ['ECV-Name', 'Dataset-ID', 'supported', 'open(1)', 'open_bbox(2)', 'cache(3)',
+              'map(4)', 'comment']
 
 # Not supported vector data:
-vector_data = ['esacci.ICESHEETS.mon.IND.GMB.GRACE-instrument.GRACE.VARIOUS.1-3.greenland_gmb_time_series',
-               'esacci.ICESHEETS.unspecified.Unspecified.CFL.multi-sensor.multi-platform.UNSPECIFIED.v3-0.greenland',
-               'esacci.ICESHEETS.unspecified.Unspecified.GLL.multi-sensor.multi-platform.UNSPECIFIED.v1-3.greenland',
-               'esacci.ICESHEETS.yr.Unspecified.GMB.GRACE-instrument.GRACE.UNSPECIFIED.1-2.greenland_gmb_timeseries',
-               'esacci.ICESHEETS.yr.Unspecified.GMB.GRACE-instrument.GRACE.UNSPECIFIED.1-4.greenland_gmb_time_series',
-               'esacci.ICESHEETS.yr.Unspecified.GMB.GRACE-instrument.GRACE.UNSPECIFIED.1-5.greenland_gmb_time_series']
+vector_data = [
+    'esacci.ICESHEETS.mon.IND.GMB.GRACE-instrument.GRACE.VARIOUS.1-3.greenland_gmb_time_series',
+    'esacci.ICESHEETS.unspecified.Unspecified.CFL.multi-sensor.multi-platform.UNSPECIFIED.v3-0.greenland',
+    'esacci.ICESHEETS.unspecified.Unspecified.GLL.multi-sensor.multi-platform.UNSPECIFIED.v1-3.greenland',
+    'esacci.ICESHEETS.yr.Unspecified.GMB.GRACE-instrument.GRACE.UNSPECIFIED.1-2.greenland_gmb_timeseries',
+    'esacci.ICESHEETS.yr.Unspecified.GMB.GRACE-instrument.GRACE.UNSPECIFIED.1-4.greenland_gmb_time_series',
+    'esacci.ICESHEETS.yr.Unspecified.GMB.GRACE-instrument.GRACE.UNSPECIFIED.1-5.greenland_gmb_time_series']
 
 # time out in order to cancel datasets which are taking longer than a certain time
 TIMEOUT_TIME = 120
@@ -111,7 +113,6 @@ def check_for_processing(dataset, summary_row, time_range):
                         f'{list(dataset.data_vars)}: {sys.exc_info()[:2]}'
             return summary_row, comment_1
         try:
-            np.sum(dataset[var])
             first = pd.to_datetime(dataset.time.values.min()).strftime("%Y-%m-%d %H:%M:%S")
             last = pd.to_datetime(dataset.time.values.max()).strftime("%Y-%m-%d %H:%M:%S")
             print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
@@ -142,10 +143,10 @@ def check_write_to_disc(summary_row, comment_2, data_id, time_range, variables, 
     local_ds_id = f'local.{rand_string}'
     try:
         local_ds, local_ds_id = open_dataset(dataset_id=data_id,
-                                   time_range=time_range,
-                                   var_names=variables,
-                                   region=region,
-                                   force_local=True)
+                                             time_range=time_range,
+                                             var_names=variables,
+                                             region=region,
+                                             force_local=True)
         local_ds.close()
         summary_row['cache(3)'] = 'yes'
         comment_2 = ''
@@ -229,7 +230,8 @@ def _all_tests_no(summary_row, comment_1, results_csv, open_wo_subset_only=False
     summary_row['map(4)'] = 'no'
     if open_wo_subset_only:
         summary_row['open(1)'] = 'yes'
-        summary_row['comment'] = f'(1) Dataset can open without spatial subset only; (2) {comment_1}'
+        summary_row[
+            'comment'] = f'(1) Dataset can open without spatial subset only; (2) {comment_1}'
     else:
         summary_row['open(1)'] = 'no'
         summary_row['comment'] = f'{comment_1}'
@@ -580,6 +582,7 @@ def main():
     create_list_of_failed(test_data_sets, failed_csv, header_row)
     if os.path.exists(failed_csv):
         sort_csv(failed_csv, f'sorted_{failed_csv}')
+
     with open(results_csv, 'r', newline='') as f_input:
         csv_input = csv.DictReader(f_input)
         data = sorted(csv_input, key=lambda row: (row['Dataset-ID']))

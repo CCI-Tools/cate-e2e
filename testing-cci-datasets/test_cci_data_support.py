@@ -73,6 +73,9 @@ def get_region(data_descriptor):
     bbox_miny = data_descriptor.bbox[1]
     bbox_maxx = data_descriptor.bbox[2]
     bbox_maxy = data_descriptor.bbox[3]
+    spatial_res = 1.0
+    if data_descriptor.spatial_res is not None:
+        spatial_res = data_descriptor.spatial_res
     indx = random.uniform(float(bbox_minx), float(bbox_maxx))
     indy = random.uniform(float(bbox_miny), float(bbox_maxy))
     if indx == float(bbox_maxx):
@@ -90,7 +93,8 @@ def get_region(data_descriptor):
     if indy == float(bbox_miny):
         indy = indy + 1
     region = [float("{:.1f}".format(indx)), float("{:.1f}".format(indy)), float(
-        "{:.1f}".format((indx + 0.1))), float("{:.1f}".format((indy + 0.1)))]
+        "{:.1f}".format((indx + spatial_res * 2.))),
+              float("{:.1f}".format((indy + spatial_res * 2.)))]
 
     return region
 
@@ -108,15 +112,17 @@ def check_for_processing(dataset, summary_row, time_range):
             return summary_row, comment_1
         try:
             np.sum(dataset[var])
+            first = pd.to_datetime(dataset.time.values.min()).strftime("%Y-%m-%d %H:%M:%S")
+            last = pd.to_datetime(dataset.time.values.max()).strftime("%Y-%m-%d %H:%M:%S")
             print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
                   f'The requested time range is {time_range}. '
-                  f'The cubes actual first time stamp is {dataset.time.min()} '
-                  f'and last {dataset.time.max()}.')
+                  f'The cubes actual first time stamp is {first} '
+                  f'and last {last}.')
             summary_row['open_bbox(2)'] = 'yes'
             comment_1 = ''
         except:
             summary_row['open_bbox(2)'] = 'no'
-            comment_1 = f'Failed executing np.sum(cube[{var}]): {sys.exc_info()[:2]}'
+            comment_1 = f'Failed executing np.sum(dataset[{var}]): {sys.exc_info()[:2]}'
     except TimeOutException:
         summary_row['open_bbox(2)'] = 'no'
         comment_1 = sys.exc_info()[:2]
@@ -296,9 +302,9 @@ def test_open_ds(data_id, store, lds, results_csv):
         print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Opening cube for '
               f'data_id {data_id} with {var_list} and time range {time_range}.')
         dataset, _ = open_dataset(dataset_id=data_id,
-                               time_range=time_range,
-                               var_names=var_list,
-                               force_local=False)
+                                  time_range=time_range,
+                                  var_names=var_list,
+                                  force_local=False)
         vars_in_cube = []
         for var in var_list:
             if var in dataset.data_vars:
@@ -572,11 +578,11 @@ def main():
     ecvs = get_list_of_ecvs(test_data_sets)
     failed_csv = f'failed_{results_csv}'
     create_list_of_failed(test_data_sets, failed_csv, header_row)
-    sort_csv(failed_csv, f'sorted_{failed_csv}')
+    if os.path.exists(failed_csv):
+        sort_csv(failed_csv, f'sorted_{failed_csv}')
     with open(results_csv, 'r', newline='') as f_input:
         csv_input = csv.DictReader(f_input)
         data = sorted(csv_input, key=lambda row: (row['Dataset-ID']))
-
     with open(f'sorted_{results_csv}', 'w', newline='') as f_output:
         csv_output = csv.DictWriter(f_output, fieldnames=csv_input.fieldnames)
         csv_output.writeheader()

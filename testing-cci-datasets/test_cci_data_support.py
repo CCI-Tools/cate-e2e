@@ -416,7 +416,7 @@ def test_open_ds(data_id, store, lds, results_csv, store_name):
 
 def generate_traceback_file(store_name, data_id, time_range, var_list, region):
     if not os.path.exists(f'{store_name}/error_traceback'):
-        os.mkdir(f'{store_name}/error_traceback')
+        os.mkdir(f'{store_name}/error_traceback/')
     dir_for_traceback = f'{store_name}/error_traceback/{datetime.date(datetime.now())}'
     if not os.path.exists(dir_for_traceback):
         os.mkdir(dir_for_traceback)
@@ -615,7 +615,7 @@ def main():
         for data_id in data_ids:
             test_open_ds(data_id, store, lds, results_csv, store_name)
 
-    sort_csv(results_csv, f'{store_name}/sorted_{results_csv}')
+    sort_csv(results_csv, f'{store_name}/sorted_{support_file_name}')
 
     test_data_sets = read_all_result_rows(f'{store_name}/sorted_{support_file_name}', header_row)
 

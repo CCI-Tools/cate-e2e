@@ -151,7 +151,7 @@ def check_write_to_disc(summary_row, comment_2, data_id, time_range, variables, 
     rand_string = f"test{random.choice(string.ascii_lowercase)}{random.choice(string.octdigits)}"
     local_ds_id = f'local.{rand_string}'
     try:
-        local_ds, local_ds_id = open_dataset(dataset_id=data_id,
+        local_ds, local_ds_id = open_dataset(ds_id=data_id,
                                              data_store_id=store_name,
                                              time_range=time_range,
                                              var_names=variables,
@@ -314,7 +314,7 @@ def test_open_ds(data_id, store, lds, results_csv, store_name):
     try:
         print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Opening cube for '
               f'data_id {data_id} with {var_list} and time range {time_range}.')
-        dataset, _ = open_dataset(dataset_id=data_id,
+        dataset, _ = open_dataset(ds_id=data_id,
                                   data_store_id=store_name,
                                   time_range=time_range,
                                   var_names=var_list,
@@ -340,7 +340,7 @@ def test_open_ds(data_id, store, lds, results_csv, store_name):
     try:
         print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Opening cube for data_id '
               f'{data_id} with {var_list} and region {region} and time range {time_range}.')
-        dataset, _ = open_dataset(dataset_id=data_id,
+        dataset, _ = open_dataset(ds_id=data_id,
                                   data_store_id=store_name,
                                   time_range=time_range,
                                   var_names=var_list,
@@ -423,7 +423,7 @@ def generate_traceback_file(store_name, data_id, time_range, var_list, region):
     traceback_file = f'{dir_for_traceback}/{data_id}.txt'
     with open(traceback_file, 'a') as trace_f:
         trace_f.write(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Request: \n'
-                      f'open_dataset(datasetid={data_id}, store_id={store_name}, '
+                      f'open_dataset(ds_id={data_id}, store_id={store_name}, '
                       f'time_range={time_range}, var_names={var_list}, region={region})\n')
         trace_f.write('\n')
         trace_f.write(traceback.format_exc())

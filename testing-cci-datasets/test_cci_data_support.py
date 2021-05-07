@@ -14,7 +14,7 @@ from itertools import repeat
 import nest_asyncio
 import numpy as np
 from cate.core import DATA_STORE_POOL
-from cate.core import open_dataset
+from cate.ops.io import open_dataset
 from cate.core.ds import DataAccessError
 from xcube.core.store import TYPE_SPECIFIER_CUBE
 from xcube.core.store import TYPE_SPECIFIER_DATASET
@@ -94,10 +94,10 @@ def get_region(data_descriptor):
         indx = indx + 1
     if indy == float(bbox_miny):
         indy = indy + 1
-    region = [float("{:.1f}".format(indx)), float("{:.1f}".format(indy)), float(
-        "{:.1f}".format((indx + spatial_res * 2.))),
-              float("{:.1f}".format((indy + spatial_res * 2.)))]
-
+    region = [float("{:.5f}".format(indx)),
+              float("{:.5f}".format(indy)),
+              float("{:.5f}".format((indx + spatial_res * 2.))),
+              float("{:.5f}".format((indy + spatial_res * 2.)))]
     return region
 
 
@@ -113,8 +113,16 @@ def check_for_processing(dataset, summary_row, time_range):
                         f'{list(dataset.data_vars)}: {sys.exc_info()[:2]}'
             return summary_row, comment_1
         try:
-            first = pd.to_datetime(dataset.time.values.min()).strftime("%Y-%m-%d %H:%M:%S")
-            last = pd.to_datetime(dataset.time.values.max()).strftime("%Y-%m-%d %H:%M:%S")
+            np.sum(dataset[var].values)
+            try:
+                first = dataset.time.values[0].strftime("%Y-%m-%d %H:%M:%S")
+                last = dataset.time.values[-1].strftime("%Y-%m-%d %H:%M:%S")
+            except AttributeError:
+                first = pd.to_datetime(dataset.time.values[0]).strftime("%Y-%m-%d %H:%M:%S")
+                last = pd.to_datetime(dataset.time.values[-1]).strftime("%Y-%m-%d %H:%M:%S")
+            except TypeError:
+                first = pd.to_datetime(dataset.time.values[0]).strftime("%Y-%m-%d %H:%M:%S")
+                last = pd.to_datetime(dataset.time.values[-1]).strftime("%Y-%m-%d %H:%M:%S")
             print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
                   f'The requested time range is {time_range}. '
                   f'The cubes actual first time stamp is {first} '
@@ -132,7 +140,8 @@ def check_for_processing(dataset, summary_row, time_range):
     return summary_row, comment_1
 
 
-def check_write_to_disc(summary_row, comment_2, data_id, time_range, variables, region, lds):
+def check_write_to_disc(summary_row, comment_2, data_id, time_range, variables, region, lds,
+                        store_name):
     signal.signal(signal.SIGALRM, alarm_handler)
     signal.alarm(TIMEOUT_TIME)
     if comment_2 is not None:
@@ -143,6 +152,7 @@ def check_write_to_disc(summary_row, comment_2, data_id, time_range, variables, 
     local_ds_id = f'local.{rand_string}'
     try:
         local_ds, local_ds_id = open_dataset(dataset_id=data_id,
+                                             data_store_id=store_name,
                                              time_range=time_range,
                                              var_names=variables,
                                              region=region,
@@ -159,7 +169,8 @@ def check_write_to_disc(summary_row, comment_2, data_id, time_range, variables, 
     except:
         summary_row['cache(3)'] = 'no'
         comment_2 = f'Failed saving to disc with: {sys.exc_info()[:2]}'
-    lds.delete_data(local_ds_id)
+    if lds.has_data(local_ds_id):
+        lds.delete_data(local_ds_id)
     signal.alarm(0)
 
     return summary_row, comment_2
@@ -238,7 +249,7 @@ def _all_tests_no(summary_row, comment_1, results_csv, open_wo_subset_only=False
     update_csv(results_csv, header_row, summary_row)
 
 
-def test_open_ds(data_id, store, lds, results_csv):
+def test_open_ds(data_id, store, lds, results_csv, store_name):
     comment_1 = None
     comment_2 = None
     comment_3 = None
@@ -304,6 +315,7 @@ def test_open_ds(data_id, store, lds, results_csv):
         print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Opening cube for '
               f'data_id {data_id} with {var_list} and time range {time_range}.')
         dataset, _ = open_dataset(dataset_id=data_id,
+                                  data_store_id=store_name,
                                   time_range=time_range,
                                   var_names=var_list,
                                   force_local=False)
@@ -318,13 +330,18 @@ def test_open_ds(data_id, store, lds, results_csv):
         summary_row['open(1)'] = 'yes'
         open_wo_subset_only = True
     except:
-        traceback_file_url = generate_traceback_file(data_id, time_range, var_list, None)
+        traceback_file_url = generate_traceback_file(store_name,
+                                                     data_id,
+                                                     time_range,
+                                                     var_list,
+                                                     None)
         _all_tests_no(summary_row, traceback_file_url, results_csv, open_wo_subset_only)
         return
     try:
         print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Opening cube for data_id '
               f'{data_id} with {var_list} and region {region} and time range {time_range}.')
         dataset, _ = open_dataset(dataset_id=data_id,
+                                  data_store_id=store_name,
                                   time_range=time_range,
                                   var_names=var_list,
                                   region=region,
@@ -332,17 +349,29 @@ def test_open_ds(data_id, store, lds, results_csv):
         summary_row['open(1)'] = 'yes'
         open_wo_subset_only = False
     except ValueError:
-        traceback_file_url = generate_traceback_file(data_id, time_range, var_list, region)
+        traceback_file_url = generate_traceback_file(store_name,
+                                                     data_id,
+                                                     time_range,
+                                                     var_list,
+                                                     region)
         _all_tests_no(summary_row, traceback_file_url, results_csv, open_wo_subset_only)
         return
     except IndexError:
         print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
               f'Index error happening at stage 2. for {data_id}')
-        traceback_file_url = generate_traceback_file(data_id, time_range, var_list, region)
+        traceback_file_url = generate_traceback_file(store_name,
+                                                     data_id,
+                                                     time_range,
+                                                     var_list,
+                                                     region)
         _all_tests_no(summary_row, traceback_file_url, results_csv, open_wo_subset_only)
         return
     except:
-        traceback_file_url = generate_traceback_file(data_id, time_range, var_list, region)
+        traceback_file_url = generate_traceback_file(store_name,
+                                                     data_id,
+                                                     time_range,
+                                                     var_list,
+                                                     region)
         _all_tests_no(summary_row, traceback_file_url, results_csv, open_wo_subset_only)
         return
 
@@ -367,7 +396,7 @@ def test_open_ds(data_id, store, lds, results_csv):
     print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
           f'Checking dataset {data_id} for writing to disk.')
     summary_row, comment_2 = check_write_to_disc(summary_row, comment_2, data_id, time_range,
-                                                 var_list, region, lds)
+                                                 var_list, region, lds, store_name)
 
     if comment_1 and (comment_1 == comment_3):
         summary_row['comment'] = f'{comment_1}'
@@ -385,15 +414,17 @@ def test_open_ds(data_id, store, lds, results_csv):
     update_csv(results_csv, header_row, summary_row)
 
 
-def generate_traceback_file(data_id, time_range, var_list, region):
-    dir_for_traceback = f'error_traceback/{datetime.date(datetime.now())}'
+def generate_traceback_file(store_name, data_id, time_range, var_list, region):
+    if not os.path.exists(f'{store_name}/error_traceback'):
+        os.mkdir(f'{store_name}/error_traceback')
+    dir_for_traceback = f'{store_name}/error_traceback/{datetime.date(datetime.now())}'
     if not os.path.exists(dir_for_traceback):
         os.mkdir(dir_for_traceback)
     traceback_file = f'{dir_for_traceback}/{data_id}.txt'
     with open(traceback_file, 'a') as trace_f:
         trace_f.write(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Request: \n'
-                      f'open_dataset(datasetid={data_id}, time_range={time_range}, '
-                      f'var_names={var_list}, region={region})\n')
+                      f'open_dataset(datasetid={data_id}, store_id={store_name}, '
+                      f'time_range={time_range}, var_names={var_list}, region={region})\n')
         trace_f.write('\n')
         trace_f.write(traceback.format_exc())
     traceback_file_url = \
@@ -562,36 +593,47 @@ def main():
     store_name = 'cci-store'
     if len(sys.argv) == 2:
         store_name = sys.argv[1]
-    results_csv = f'test_{store_name}_data_support_{datetime.date(datetime.now())}.csv'
+    if not os.path.exists(store_name):
+        os.mkdir(store_name)
+    support_file_name = f'test_{store_name}_data_support_{datetime.date(datetime.now())}.csv'
+    results_csv = f'{store_name}/{support_file_name}'
     store = DATA_STORE_POOL.get_store(store_name)
     data_ids = store.get_data_ids()
     lds = DATA_STORE_POOL.get_store('local')
 
     start_time = datetime.now()
-    with mp.Pool(mp.cpu_count() - 1, maxtasksperchild=1) as pool:
-        pool.starmap(test_open_ds, zip(data_ids, repeat(store), repeat(lds), repeat(results_csv)))
-        pool.close()
-        pool.join()
+    if store_name == 'cci-store':
+        with mp.Pool(mp.cpu_count() - 1, maxtasksperchild=1) as pool:
+            pool.starmap(test_open_ds, zip(data_ids,
+                                           repeat(store),
+                                           repeat(lds),
+                                           repeat(results_csv),
+                                           repeat(store_name)))
+            pool.close()
+            pool.join()
+    else:
+        for data_id in data_ids:
+            test_open_ds(data_id, store, lds, results_csv, store_name)
 
-    sort_csv(results_csv, f'sorted_{results_csv}')
+    sort_csv(results_csv, f'{store_name}/sorted_{results_csv}')
 
-    test_data_sets = read_all_result_rows(f'sorted_{results_csv}', header_row)
+    test_data_sets = read_all_result_rows(f'{store_name}/sorted_{support_file_name}', header_row)
 
     ecvs = get_list_of_ecvs(test_data_sets)
-    failed_csv = f'failed_{results_csv}'
+    failed_csv = f'{store_name}/failed_{support_file_name}'
     create_list_of_failed(test_data_sets, failed_csv, header_row)
     if os.path.exists(failed_csv):
-        sort_csv(failed_csv, f'sorted_{failed_csv}')
+        sort_csv(failed_csv, f'{store_name}/sorted_failed_{support_file_name}')
 
     with open(results_csv, 'r', newline='') as f_input:
         csv_input = csv.DictReader(f_input)
         data = sorted(csv_input, key=lambda row: (row['Dataset-ID']))
-    with open(f'sorted_{results_csv}', 'w', newline='') as f_output:
+    with open(f'{store_name}/sorted_{support_file_name}', 'w', newline='') as f_output:
         csv_output = csv.DictWriter(f_output, fieldnames=csv_input.fieldnames)
         csv_output.writeheader()
         csv_output.writerows(data)
 
-    summary_csv = f'summary_sorted_{results_csv}'
+    summary_csv = f'{store_name}/summary_sorted_{support_file_name}'
     header_summary = ['ecv', 'supported', 'open_success', 'open_fail', 'open_bbox_success',
                       'open_bbox_fail', 'cache_success', 'cache_fail', 'visualize_success',
                       'visualize_fail', 'supported_percentage', 'open_success_percentage',
@@ -604,7 +646,8 @@ def main():
 
     dict_with_verify_flags = create_dict_of_ids_with_verification_flags(test_data_sets)
 
-    with open(f'DrsID_verification_flags_{datetime.date(datetime.now())}.json', 'w') as f:
+    with open(f'{store_name}/'
+              f'DrsID_verification_flags_{datetime.date(datetime.now())}.json', 'w') as f:
         json.dump(dict_with_verify_flags, f, indent=4)
 
     if os.path.exists(results_csv):

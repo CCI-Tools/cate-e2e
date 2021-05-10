@@ -151,12 +151,13 @@ def check_write_to_disc(summary_row, comment_2, data_id, time_range, variables, 
     rand_string = f"test{random.choice(string.ascii_lowercase)}{random.choice(string.octdigits)}"
     local_ds_id = f'local.{rand_string}'
     try:
-        local_ds, local_ds_id = open_dataset(ds_id=data_id,
-                                             data_store_id=store_name,
-                                             time_range=time_range,
-                                             var_names=variables,
-                                             region=region,
-                                             force_local=True)
+        local_ds = open_dataset(ds_id=data_id,
+                                data_store_id=store_name,
+                                time_range=time_range,
+                                var_names=variables,
+                                region=region,
+                                local_ds_id=local_ds_id,
+                                force_local=True)
         local_ds.close()
         summary_row['cache(3)'] = 'yes'
         comment_2 = ''
@@ -314,11 +315,11 @@ def test_open_ds(data_id, store, lds, results_csv, store_name):
     try:
         print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Opening cube for '
               f'data_id {data_id} with {var_list} and time range {time_range}.')
-        dataset, _ = open_dataset(ds_id=data_id,
-                                  data_store_id=store_name,
-                                  time_range=time_range,
-                                  var_names=var_list,
-                                  force_local=False)
+        dataset = open_dataset(ds_id=data_id,
+                               data_store_id=store_name,
+                               time_range=time_range,
+                               var_names=var_list,
+                               force_local=False)
         vars_in_cube = []
         for var in var_list:
             if var in dataset.data_vars:
@@ -340,12 +341,12 @@ def test_open_ds(data_id, store, lds, results_csv, store_name):
     try:
         print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Opening cube for data_id '
               f'{data_id} with {var_list} and region {region} and time range {time_range}.')
-        dataset, _ = open_dataset(ds_id=data_id,
-                                  data_store_id=store_name,
-                                  time_range=time_range,
-                                  var_names=var_list,
-                                  region=region,
-                                  force_local=False)
+        dataset = open_dataset(ds_id=data_id,
+                               data_store_id=store_name,
+                               time_range=time_range,
+                               var_names=var_list,
+                               region=region,
+                               force_local=False)
         summary_row['open(1)'] = 'yes'
         open_wo_subset_only = False
     except ValueError:

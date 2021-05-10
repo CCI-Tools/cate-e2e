@@ -1,0 +1,118 @@
+[2021-05-07 16:44:21] Request: 
+open_dataset(ds_id=ESACCI-SEALEVEL-IND-MSLTR-MERGED-1993-2016-fv02.zarr, store_id=cci-zarr-store, time_range=('1970-01-01', '1970-01-11'), var_names=['local_msl_trend', 'local_msl_trend_error'], region=None)
+
+Traceback (most recent call last):
+  File "pandas/_libs/index.pyx", line 101, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 975, in pandas._libs.hashtable.Float64HashTable.get_item
+TypeError: must be real number, not Timestamp
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 3080, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 70, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 103, in pandas._libs.index.IndexEngine.get_loc
+KeyError: Timestamp('1970-01-01 00:00:00')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 5390, in get_slice_bound
+    slc = self.get_loc(label)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/pandas/core/indexes/numeric.py", line 395, in get_loc
+    return super().get_loc(key, method=method, tolerance=tolerance)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 3082, in get_loc
+    raise KeyError(key) from err
+KeyError: Timestamp('1970-01-01 00:00:00')
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/users/tfincke/Projects/xcube/xcube/core/select.py", line 147, in select_temporal_subset
+    return dataset.sel({time_name or 'time': slice(time_1, time_2)})
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/dataset.py", line 2230, in sel
+    pos_indexers, new_indexes = remap_label_indexers(
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/coordinates.py", line 416, in remap_label_indexers
+    pos_indexers, new_indexes = indexing.remap_label_indexers(
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/indexing.py", line 270, in remap_label_indexers
+    idxr, new_idx = convert_label_indexer(index, label, dim, method, tolerance)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/indexing.py", line 121, in convert_label_indexer
+    indexer = index.slice_indexer(
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 5277, in slice_indexer
+    start_slice, end_slice = self.slice_locs(start, end, step=step, kind=kind)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 5476, in slice_locs
+    start_slice = self.get_slice_bound(start, "left", kind)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 5393, in get_slice_bound
+    return self._searchsorted_monotonic(label, side)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 5344, in _searchsorted_monotonic
+    return self.searchsorted(label, side=side)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/pandas/core/base.py", line 1292, in searchsorted
+    return algorithms.searchsorted(self._values, value, side=side, sorter=sorter)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/pandas/core/algorithms.py", line 1908, in searchsorted
+    result = arr.searchsorted(value, side=side, sorter=sorter)
+TypeError: '<' not supported between instances of 'float' and 'Timestamp'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "pandas/_libs/index.pyx", line 101, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 975, in pandas._libs.hashtable.Float64HashTable.get_item
+TypeError: must be real number, not cftime._cftime.datetime
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 3080, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 70, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 103, in pandas._libs.index.IndexEngine.get_loc
+KeyError: cftime.datetime(1970, 1, 1, 0, 0, 0, 0, calendar='')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 5390, in get_slice_bound
+    slc = self.get_loc(label)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/pandas/core/indexes/numeric.py", line 395, in get_loc
+    return super().get_loc(key, method=method, tolerance=tolerance)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 3082, in get_loc
+    raise KeyError(key) from err
+KeyError: cftime.datetime(1970, 1, 1, 0, 0, 0, 0, calendar='')
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 316, in test_open_ds
+    dataset, _ = open_dataset(ds_id=data_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/ds.py", line 437, in open_dataset
+    dataset = select_subset(dataset, **subset_args)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/select.py", line 39, in select_subset
+    dataset = select_temporal_subset(dataset, time_range=time_range)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/select.py", line 153, in select_temporal_subset
+    return dataset.sel({time_name or 'time': slice(time_1, time_2)})
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/dataset.py", line 2230, in sel
+    pos_indexers, new_indexes = remap_label_indexers(
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/coordinates.py", line 416, in remap_label_indexers
+    pos_indexers, new_indexes = indexing.remap_label_indexers(
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/indexing.py", line 270, in remap_label_indexers
+    idxr, new_idx = convert_label_indexer(index, label, dim, method, tolerance)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/indexing.py", line 121, in convert_label_indexer
+    indexer = index.slice_indexer(
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 5277, in slice_indexer
+    start_slice, end_slice = self.slice_locs(start, end, step=step, kind=kind)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 5476, in slice_locs
+    start_slice = self.get_slice_bound(start, "left", kind)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 5393, in get_slice_bound
+    return self._searchsorted_monotonic(label, side)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 5344, in _searchsorted_monotonic
+    return self.searchsorted(label, side=side)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/pandas/core/base.py", line 1292, in searchsorted
+    return algorithms.searchsorted(self._values, value, side=side, sorter=sorter)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/pandas/core/algorithms.py", line 1908, in searchsorted
+    result = arr.searchsorted(value, side=side, sorter=sorter)
+TypeError: '<' not supported between instances of 'float' and 'cftime._cftime.datetime'

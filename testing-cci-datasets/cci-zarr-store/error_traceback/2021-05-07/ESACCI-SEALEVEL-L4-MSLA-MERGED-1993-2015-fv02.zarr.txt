@@ -1,0 +1,7 @@
+[2021-05-07 16:44:39] Request: 
+open_dataset(ds_id=ESACCI-SEALEVEL-L4-MSLA-MERGED-1993-2015-fv02.zarr, store_id=cci-zarr-store, time_range=('1993-01-15', '1993-01-25'), var_names=['sla'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 316, in test_open_ds
+    dataset, _ = open_dataset(ds_id=data_id,
+ValueError: not enough values to unpack (expected 2, got 1)

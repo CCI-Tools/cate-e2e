@@ -1,0 +1,38 @@
+{
+    "1981-2016-ESACCI-L3C_SNOW-SWE-fv1.0.zarr": {
+        "verification_flags": []
+    },
+    "1981-2016-ESACCI-L4_GHRSST-SST-GMPE-GLOB_CDR2.0-v02.0-fv01.0.zarr": {
+        "verification_flags": []
+    },
+    "ESACCI-BIOMASS-L4-AGB-MERGED-100m-2010-2018-fv2.0.zarr": {
+        "verification_flags": []
+    },
+    "ESACCI-GHG-L2-CH4-SCIAMACHY-WFMD-2002-2011-fv1.zarr": {
+        "verification_flags": []
+    },
+    "ESACCI-GHG-L2-CO2-SCIAMACHY-WFMD-2002-2012-fv1.zarr": {
+        "verification_flags": []
+    },
+    "ESACCI-ICESHEETS_Antarctica_GMB-2002-2016-v1.1.zarr": {
+        "verification_flags": []
+    },
+    "ESACCI-ICESHEETS_Greenland_GMB-2003-2016-v1.1.zarr": {
+        "verification_flags": []
+    },
+    "ESACCI-L3C_CLOUD-CLD_PRODUCTS-AVHRR_NOAA-1982-2016-fv3.0.zarr": {
+        "verification_flags": []
+    },
+    "ESACCI-OC-L3S-IOP-MERGED-1M_MONTHLY_4km_GEO_PML_OCx_QAA-1997-2020-fv5.0.zarr": {
+        "verification_flags": []
+    },
+    "ESACCI-SEALEVEL-IND-MSLTR-MERGED-1993-2016-fv02.zarr": {
+        "verification_flags": []
+    },
+    "ESACCI-SEALEVEL-L4-MSLA-MERGED-1993-2015-fv02.zarr": {
+        "verification_flags": []
+    },
+    "ESACCI-SOILMOISTURE-L3S-SSMV-COMBINED-1978-2020-fv05.3.zarr": {
+        "verification_flags": []
+    }
+}

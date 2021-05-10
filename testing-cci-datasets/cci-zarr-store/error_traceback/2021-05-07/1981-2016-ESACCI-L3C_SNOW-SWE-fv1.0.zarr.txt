@@ -1,0 +1,7 @@
+[2021-05-07 16:34:27] Request: 
+open_dataset(ds_id=1981-2016-ESACCI-L3C_SNOW-SWE-fv1.0.zarr, store_id=cci-zarr-store, time_range=('1981-01-01', '1981-01-11'), var_names=['swe', 'swe_std'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 323, in test_open_ds
+    if var in dataset.data_vars:
+AttributeError: 'str' object has no attribute 'data_vars'

@@ -1,0 +1,17 @@
+[2021-05-10 08:51:59] Request: 
+open_dataset(ds_id=ESACCI-GHG-L2-CH4-SCIAMACHY-WFMD-2002-2011-fv1.zarr, store_id=cci-zarr-store, time_range=('2002-10-01', '2011-12-31'), var_names=['scene_number', 'state_number'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 317, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/ds.py", line 437, in open_dataset
+    dataset = select_subset(dataset, **subset_args)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/select.py", line 39, in select_subset
+    dataset = select_temporal_subset(dataset, time_range=time_range)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/select.py", line 135, in select_temporal_subset
+    raise ValueError(f'cannot compute temporal subset: variable "{time_name}" not found in dataset')
+ValueError: cannot compute temporal subset: variable "time" not found in dataset

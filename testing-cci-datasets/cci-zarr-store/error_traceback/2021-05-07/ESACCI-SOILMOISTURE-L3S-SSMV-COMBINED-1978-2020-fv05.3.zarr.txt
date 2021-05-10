@@ -1,0 +1,7 @@
+[2021-05-07 16:45:09] Request: 
+open_dataset(ds_id=ESACCI-SOILMOISTURE-L3S-SSMV-COMBINED-1978-2020-fv05.3.zarr, store_id=cci-zarr-store, time_range=('1978-10-31', '1978-11-01'), var_names=['sensor', 't0'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 323, in test_open_ds
+    if var in dataset.data_vars:
+AttributeError: 'str' object has no attribute 'data_vars'

@@ -1,0 +1,7 @@
+[2021-05-07 16:43:31] Request: 
+open_dataset(ds_id=ESACCI-ICESHEETS_Antarctica_GMB-2002-2016-v1.1.zarr, store_id=cci-zarr-store, time_range=('2002-08-16', '2002-08-26'), var_names=['lat', 'lon'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 316, in test_open_ds
+    dataset, _ = open_dataset(ds_id=data_id,
+ValueError: not enough values to unpack (expected 2, got 0)

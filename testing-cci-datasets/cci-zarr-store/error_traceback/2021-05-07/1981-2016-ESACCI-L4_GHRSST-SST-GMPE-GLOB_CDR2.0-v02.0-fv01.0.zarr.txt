@@ -1,0 +1,7 @@
+[2021-05-07 16:34:50] Request: 
+open_dataset(ds_id=1981-2016-ESACCI-L4_GHRSST-SST-GMPE-GLOB_CDR2.0-v02.0-fv01.0.zarr, store_id=cci-zarr-store, time_range=('1981-09-01', '1981-09-02'), var_names=['analysed_sst', 'median_type'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 323, in test_open_ds
+    if var in dataset.data_vars:
+AttributeError: 'str' object has no attribute 'data_vars'

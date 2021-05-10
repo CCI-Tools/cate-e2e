@@ -1,0 +1,7 @@
+[2021-05-07 16:44:18] Request: 
+open_dataset(ds_id=ESACCI-OC-L3S-IOP-MERGED-1M_MONTHLY_4km_GEO_PML_OCx_QAA-1997-2020-fv5.0.zarr, store_id=cci-zarr-store, time_range=('1997-09-04', '1997-09-14'), var_names=['bbp_510', 'aph_665'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 323, in test_open_ds
+    if var in dataset.data_vars:
+AttributeError: 'str' object has no attribute 'data_vars'

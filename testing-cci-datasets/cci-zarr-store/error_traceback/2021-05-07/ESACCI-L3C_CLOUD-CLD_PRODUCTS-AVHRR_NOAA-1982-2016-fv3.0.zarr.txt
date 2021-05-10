@@ -1,0 +1,7 @@
+[2021-05-07 16:43:39] Request: 
+open_dataset(ds_id=ESACCI-L3C_CLOUD-CLD_PRODUCTS-AVHRR_NOAA-1982-2016-fv3.0.zarr, store_id=cci-zarr-store, time_range=('1982-01-01', '1982-01-11'), var_names=['cfc', 'cfc_std'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 323, in test_open_ds
+    if var in dataset.data_vars:
+AttributeError: 'str' object has no attribute 'data_vars'

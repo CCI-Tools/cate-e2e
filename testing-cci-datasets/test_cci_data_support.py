@@ -327,12 +327,13 @@ def test_open_ds(data_id, store, lds, results_csv, store_name):
         return
 
     var_list = []
-    if len(data_descriptor.data_vars) > 3:
-        while len(var_list) < 1:
-            for var in random.choices(list(data_descriptor.data_vars.keys()), k=2):
-                var_list.append(var)
-    else:
-        var_list = list(data_descriptor.data_vars.keys())
+    if data_descriptor.data_vars is not None:
+        if len(data_descriptor.data_vars) > 3:
+            while len(var_list) < 1:
+                for var in random.choices(list(data_descriptor.data_vars.keys()), k=2):
+                    var_list.append(var)
+        else:
+            var_list = list(data_descriptor.data_vars.keys())
 
     try:
         print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Opening cube for '
@@ -700,9 +701,10 @@ def main():
         csv_output.writerows(data)
 
     summary_csv = f'{store_name}/summary_sorted_{support_file_name}'
-    header_summary = ['ecv', 'supported', 'open_success', 'open_fail', 'open_bbox_success',
-                      'open_bbox_fail', 'cache_success', 'cache_fail', 'visualize_success',
-                      'visualize_fail', 'supported_percentage', 'open_success_percentage',
+    header_summary = ['ecv', 'supported', 'open_success', 'open_fail', 'open_temp_success',
+                      'open_temp_fail', 'open_bbox_success', 'open_bbox_fail', 'cache_success',
+                      'cache_fail', 'visualize_success', 'visualize_fail', 'supported_percentage',
+                      'open_success_percentage', 'open_temp_success',
                       'open_bbox_success_percentage', 'cache_success_percentage',
                       'visualize_success_percentage', 'total_number_of_datasets']
 

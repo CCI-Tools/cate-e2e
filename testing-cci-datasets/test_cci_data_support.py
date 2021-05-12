@@ -177,8 +177,7 @@ def check_write_to_disc(summary_row, comment_2, data_id, time_range, variables, 
         return summary_row, comment_2
 
     # needed for when tests run in parallel
-    rand_string = f"test{random.choice(string.ascii_lowercase)}{random.choice(string.octdigits)}"
-    local_ds_id = f'local.{rand_string}'
+    local_ds_id = f'local.{data_id}.zarr'
     print(f'Saving data locally as "{local_ds_id}"')
     try:
         local_ds = open_dataset(ds_id=data_id,
@@ -193,7 +192,7 @@ def check_write_to_disc(summary_row, comment_2, data_id, time_range, variables, 
         comment_2 = ''
     except DataAccessError:
         summary_row['cache(4)'] = 'no'
-        comment_2 = f'local.{rand_string}: Failed saving to disc with: {sys.exc_info()[:2]}'
+        comment_2 = f'{local_ds_id}: Failed saving to disc with: {sys.exc_info()[:2]}'
     except TimeOutException:
         summary_row['cache(4)'] = 'no'
         comment_2 = sys.exc_info()[:2]

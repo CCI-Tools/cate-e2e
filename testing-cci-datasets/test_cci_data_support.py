@@ -179,6 +179,7 @@ def check_write_to_disc(summary_row, comment_2, data_id, time_range, variables, 
     # needed for when tests run in parallel
     rand_string = f"test{random.choice(string.ascii_lowercase)}{random.choice(string.octdigits)}"
     local_ds_id = f'local.{rand_string}'
+    print(f'Saving data locally as "{local_ds_id}"')
     try:
         local_ds = open_dataset(ds_id=data_id,
                                 data_store_id=store_name,
@@ -209,16 +210,16 @@ def check_write_to_disc(summary_row, comment_2, data_id, time_range, variables, 
 def _all_tests_no(summary_row,
                   results_csv,
                   general_comment=None,
-                  comment_temporal=None,
-                  comment_spatial=None):
+                  comment_temporal='not_tested',
+                  comment_spatial='not_tested'):
     summary_row['open(1)'] = 'no' if general_comment else 'yes'
     summary_row['open_temp(2)'] = 'no' if comment_temporal else 'yes'
     summary_row['open_bbox(3)'] = 'no' if comment_spatial else 'yes'
     summary_row['cache(4)'] = 'no'
     summary_row['map(5)'] = 'no'
     summary_row['comment'] = general_comment if general_comment is not None else ''
-    if comment_temporal is not None:
-        if comment_spatial is not None:
+    if comment_temporal is not None and comment_temporal != 'not_tested':
+        if comment_spatial is not None and comment_spatial != 'not_tested':
             summary_row['comment'] = \
                 f'(1) Dataset can only open without spatial or temporal subset;' \
                 f'(2) {comment_temporal};' \
@@ -226,7 +227,7 @@ def _all_tests_no(summary_row,
         else:
             summary_row['comment'] \
                 = f'(1) Dataset can open without temporal subset only; (2) {comment_temporal}'
-    elif comment_spatial is not None:
+    elif comment_spatial is not None and comment_spatial != 'not_tested':
         summary_row['comment'] \
             = f'(1) Dataset can open without spatial subset only; (2) {comment_spatial}'
     update_csv(results_csv, header_row, summary_row)
@@ -362,55 +363,59 @@ def test_open_ds(data_id, store, lds, results_csv, store_name):
         _all_tests_no(summary_row, results_csv, general_comment=traceback_file_url)
         return
 
-    try:
-        print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Opening cube for '
-              f'data_id {data_id} with {var_list} and time range {time_range}.')
-        dataset = open_dataset(ds_id=data_id,
-                               data_store_id=store_name,
-                               time_range=time_range,
-                               var_names=var_list,
-                               force_local=False)
-        vars_in_dataset = []
-        for var in var_list:
-            if var in dataset.data_vars:
-                vars_in_dataset.append(var)
-        if len(vars_in_dataset) == 0:
-            comment_temporal = f'Requested variables {var_list} for subset are not in dataset.'
-        else:
-            summary_row['open_temp(2)'] = 'yes'
-    except:
-        comment_temporal = generate_traceback_file(store_name, data_id, time_range, var_list, None,
-                                                   '_temp')
+    if time_range is not None:
+        try:
+            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Opening cube for '
+                  f'data_id {data_id} with {var_list} and time range {time_range}.')
+            dataset = open_dataset(ds_id=data_id,
+                                   data_store_id=store_name,
+                                   time_range=time_range,
+                                   var_names=var_list,
+                                   force_local=False)
+            vars_in_dataset = []
+            for var in var_list:
+                if var in dataset.data_vars:
+                    vars_in_dataset.append(var)
+            if len(vars_in_dataset) == 0:
+                comment_temporal = f'Requested variables {var_list} for subset are not in dataset.'
+            else:
+                summary_row['open_temp(2)'] = 'yes'
+        except:
+            comment_temporal = generate_traceback_file(store_name, data_id, time_range, var_list,
+                                                       None, '_temp')
 
     region = get_region(data_descriptor)
 
-    try:
-        print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Opening cube for data_id '
-              f'{data_id} with {var_list} and region {region}.')
-        dataset = open_dataset(ds_id=data_id,
-                               data_store_id=store_name,
-                               var_names=var_list,
-                               region=region,
-                               force_local=False)
-        vars_in_dataset = []
-        for var in var_list:
-            if var in dataset.data_vars:
-                vars_in_dataset.append(var)
-        if len(vars_in_dataset) == 0:
-            comment_spatial = f'Requested variables {var_list} for subset are not in dataset.'
-        else:
-            summary_row['open_bbox(3)'] = 'yes'
-    except ValueError:
-        comment_spatial = generate_traceback_file(store_name, data_id, None, var_list, region,
+    if region is None:
+        comment_spatial = 'Could not determine region subset.'
+    else:
+        try:
+            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] Opening cube for data_id '
+                  f'{data_id} with {var_list} and region {region}.')
+            dataset = open_dataset(ds_id=data_id,
+                                   data_store_id=store_name,
+                                   var_names=var_list,
+                                   region=region,
+                                   force_local=False)
+            vars_in_dataset = []
+            for var in var_list:
+                if var in dataset.data_vars:
+                    vars_in_dataset.append(var)
+            if len(vars_in_dataset) == 0:
+                comment_spatial = f'Requested variables {var_list} for subset are not in dataset.'
+            else:
+                summary_row['open_bbox(3)'] = 'yes'
+        except ValueError:
+            comment_spatial = generate_traceback_file(store_name, data_id, None, var_list, region,
                                                   '_spatial')
-    except IndexError:
-        print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
-              f'Index error happening at stage 2. for {data_id}')
-        comment_spatial = generate_traceback_file(store_name, data_id, None, var_list, region,
-                                                  '_spatial')
-    except:
-        comment_spatial = generate_traceback_file(store_name, data_id, None, var_list, region,
-                                                  '_spatial')
+        except IndexError:
+            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
+                  f'Index error happening at stage 2. for {data_id}')
+            comment_spatial = generate_traceback_file(store_name, data_id, None, var_list, region,
+                                                      '_spatial')
+        except:
+            comment_spatial = generate_traceback_file(store_name, data_id, None, var_list, region,
+                                                      '_spatial')
 
     if comment_temporal is not None or comment_spatial is not None:
         _all_tests_no(summary_row,
@@ -418,6 +423,13 @@ def test_open_ds(data_id, store, lds, results_csv, store_name):
                       comment_temporal=comment_temporal,
                       comment_spatial=comment_spatial)
         return
+
+    dataset = open_dataset(ds_id=data_id,
+                           data_store_id=store_name,
+                           var_names=var_list,
+                           time_range=time_range,
+                           region=region,
+                           force_local=False)
 
     print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
           f'Checking dataset for data_id {data_id} for processing.')

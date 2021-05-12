@@ -71,18 +71,23 @@ def update_csv(results_csv, header_row, results_for_dataset_collection):
 def get_time_range(data_descriptor, data):
     time_range = data_descriptor.time_range
     if time_range is not None and data_descriptor.dims is not None \
-            and 'time' in data_descriptor.dims and data_descriptor.dims['time'] > 2:
-        if data_descriptor.time_period:
-            # we have to use this weird notation so pandas interpretes the data correctly
-            time_delta = pd.Timedelta(int(data_descriptor.time_period[:-1]),
-                                      data_descriptor.time_period[-1])
-            time_start = pd.Timestamp(time_range[0])
-            time_end = time_start + time_delta
-            return time_start.strftime('%Y-%m-%d'), time_end.strftime('%Y-%m-%d')
-    elif 'time' in data:
-        start_time = data.time[0].values
-        end_time_index = min(2, len(data.time) - 1)
-        end_time = data.time[end_time_index].values
+            and 'time' in data_descriptor.dims and data_descriptor.dims['time'] > 2 \
+            and data_descriptor.time_period is not None:
+        # we have to use this weird notation so pandas interpretes the data correctly
+        time_delta = pd.Timedelta(int(data_descriptor.time_period[:-1]),
+                                  data_descriptor.time_period[-1])
+        time_start = pd.Timestamp(time_range[0])
+        time_end = time_start + time_delta
+        return time_start.strftime('%Y-%m-%d'), time_end.strftime('%Y-%m-%d')
+    time_name = None
+    if 'time' in data:
+        time_name = 'time'
+    elif 't' in data:
+        time_name = 't'
+    if time_name is not None:
+        start_time = data[time_name][0].values
+        end_time_index = min(2, len(data[time_name]) - 1)
+        end_time = data[time_name][end_time_index].values
         try:
             return pd.to_datetime(start_time).strftime('%Y-%m-%d'), \
                    pd.to_datetime(end_time).strftime('%Y-%m-%d')
@@ -412,6 +417,7 @@ def test_open_ds(data_id, store, lds, results_csv, store_name):
                       results_csv,
                       comment_temporal=comment_temporal,
                       comment_spatial=comment_spatial)
+        return
 
     print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
           f'Checking dataset for data_id {data_id} for processing.')

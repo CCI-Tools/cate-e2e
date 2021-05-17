@@ -1,0 +1,54 @@
+[2021-05-12 16:10:19] Request: 
+open_dataset(ds_id=ESACCI-ICESHEETS_Greenland_GMB-2003-2016-v1.1.zarr, store_id=cci-zarr-store, time_range=None, var_names=['longitude', 'end_time'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 340, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/io.py", line 94, in open_dataset
+    return adjust_temporal_attrs(normalize_op(ds))
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/normalize.py", line 59, in normalize
+    return normalize_impl(ds)
+  File "/home/users/tfincke/Projects/cate/cate/core/opimpl.py", line 76, in normalize_impl
+    ds = normalize_missing_time(ds)
+  File "/home/users/tfincke/Projects/cate/cate/core/opimpl.py", line 442, in normalize_missing_time
+    ds = ds.assign_coords(**new_coord_vars)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/common.py", line 483, in assign_coords
+    data.coords.update(results)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/coordinates.py", line 160, in update
+    self._update_coords(coords, indexes)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/coordinates.py", line 273, in _update_coords
+    dims = calculate_dimensions(variables)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/dataset.py", line 206, in calculate_dimensions
+    raise ValueError(
+ValueError: conflicting sizes for dimension 'time': length 1 on 'time' and length 10 on 'end_time'
+[2021-05-12 16:44:59] Request: 
+open_dataset(ds_id=ESACCI-ICESHEETS_Greenland_GMB-2003-2016-v1.1.zarr, store_id=cci-zarr-store, time_range=None, var_names=['GMB_trend', 'start_time'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 341, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/io.py", line 94, in open_dataset
+    return adjust_temporal_attrs(normalize_op(ds))
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/normalize.py", line 59, in normalize
+    return normalize_impl(ds)
+  File "/home/users/tfincke/Projects/cate/cate/core/opimpl.py", line 76, in normalize_impl
+    ds = normalize_missing_time(ds)
+  File "/home/users/tfincke/Projects/cate/cate/core/opimpl.py", line 442, in normalize_missing_time
+    ds = ds.assign_coords(**new_coord_vars)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/common.py", line 483, in assign_coords
+    data.coords.update(results)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/coordinates.py", line 160, in update
+    self._update_coords(coords, indexes)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/coordinates.py", line 273, in _update_coords
+    dims = calculate_dimensions(variables)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/dataset.py", line 206, in calculate_dimensions
+    raise ValueError(
+ValueError: conflicting sizes for dimension 'time': length 1 on 'time' and length 10 on 'GMB_trend'

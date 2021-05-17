@@ -1,0 +1,38 @@
+[2021-05-12 16:10:16] Request: 
+open_dataset(ds_id=ESACCI-ICESHEETS_Antarctica_GMB-2002-2016-v1.1.zarr, store_id=cci-zarr-store, time_range=None, var_names=['area', 'lat'], region=[-2198390.54273, -1556103.98849, -2098390.54273, -1456103.98849])
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 394, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/ds.py", line 438, in open_dataset
+    dataset = select_subset(dataset, **subset_args)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/select.py", line 37, in select_subset
+    dataset = select_spatial_subset(dataset, xy_bbox=bbox)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/select.py", line 104, in select_spatial_subset
+    geo_coding = geo_coding if geo_coding is not None else GeoCoding.from_xy((x, y), xy_names=xy_names)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/geocoding.py", line 159, in from_xy
+    raise ValueError(
+ValueError: coordinate variables 'x' and 'lat' must both have either one or two dimensions
+[2021-05-12 16:44:56] Request: 
+open_dataset(ds_id=ESACCI-ICESHEETS_Antarctica_GMB-2002-2016-v1.1.zarr, store_id=cci-zarr-store, time_range=None, var_names=['area', 'lon'], region=[1217816.63518, 1131534.81309, 1317816.63518, 1231534.81309])
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 395, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/ds.py", line 438, in open_dataset
+    dataset = select_subset(dataset, **subset_args)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/select.py", line 37, in select_subset
+    dataset = select_spatial_subset(dataset, xy_bbox=bbox)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/select.py", line 104, in select_spatial_subset
+    geo_coding = geo_coding if geo_coding is not None else GeoCoding.from_xy((x, y), xy_names=xy_names)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/geocoding.py", line 159, in from_xy
+    raise ValueError(
+ValueError: coordinate variables 'lon' and 'y' must both have either one or two dimensions

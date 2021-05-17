@@ -1,0 +1,19 @@
+[2021-05-11 16:54:08] Request: 
+open_dataset(ds_id=ESACCI-ICESHEETS_Antarctica_GMB-2002-2016-v1.1.zarr, store_id=cci-zarr-store, time_range=('2002-08-16', '2002-08-26'), var_names=['lat', 'time_dec'], region=[-737051.2354, -2188013.69346, -637051.2354, -2088013.69346])
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 344, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/ds.py", line 438, in open_dataset
+    dataset = select_subset(dataset, **subset_args)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/select.py", line 37, in select_subset
+    dataset = select_spatial_subset(dataset, xy_bbox=bbox)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/select.py", line 104, in select_spatial_subset
+    geo_coding = geo_coding if geo_coding is not None else GeoCoding.from_xy((x, y), xy_names=xy_names)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/geocoding.py", line 159, in from_xy
+    raise ValueError(
+ValueError: coordinate variables 'x' and 'lat' must both have either one or two dimensions

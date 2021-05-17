@@ -294,7 +294,8 @@ def check_for_support(data_id):
 def test_open_ds(data_id, store, lds, results_csv, store_name):
     comment_temporal = None
     comment_spatial = None
-    summary_row = {'ECV-Name': data_id.split('.')[1], 'Dataset-ID': data_id}
+    ecv_name = data_id.split('-')[1] if store_name == 'cci-zarr-store' else data_id.split('.')[1]
+    summary_row = {'ECV-Name': ecv_name, 'Dataset-ID': data_id}
 
     supported, reason = check_for_support(data_id)
     if not supported:

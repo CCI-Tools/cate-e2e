@@ -705,7 +705,7 @@ def main():
     header_summary = ['ecv', 'supported', 'open_success', 'open_fail', 'open_temp_success',
                       'open_temp_fail', 'open_bbox_success', 'open_bbox_fail', 'cache_success',
                       'cache_fail', 'visualize_success', 'visualize_fail', 'supported_percentage',
-                      'open_success_percentage', 'open_temp_success',
+                      'open_success_percentage', 'open_temp_success_percentage',
                       'open_bbox_success_percentage', 'cache_success_percentage',
                       'visualize_success_percentage', 'total_number_of_datasets']
 

@@ -1,0 +1,84 @@
+[2021-05-25 07:58:27] Request: 
+open_dataset(ds_id=esacci.GHG.satellite-orbit-frequency.L2.CH4.TROPOMI.Sentinel-5P.WFMD.v1-2.r1, store_id=cci-store, time_range=None, var_names=['xco_averaging_kernel', 'xco_averaging_kernel'], region=[62.04293, 25.84649, 76.04293, 39.84649])
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 396, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/ds.py", line 438, in open_dataset
+    dataset = select_subset(dataset, **subset_args)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/select.py", line 37, in select_subset
+    dataset = select_spatial_subset(dataset, xy_bbox=bbox)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/select.py", line 86, in select_spatial_subset
+    x_name, y_name = get_dataset_xy_names(dataset, xy_names=xy_names)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/geocoding.py", line 437, in get_dataset_xy_names
+    return (_get_coord_var_name(dataset, x_name, X_COORD_VAR_NAMES, 'x'),
+  File "/home/users/tfincke/Projects/xcube/xcube/core/geocoding.py", line 447, in _get_coord_var_name
+    raise ValueError(f'cannot detect {dim_name!r}-coordinate variable in dataset')
+ValueError: cannot detect 'x'-coordinate variable in dataset
+[2021-05-25 11:44:02] Request: 
+open_dataset(ds_id=esacci.GHG.satellite-orbit-frequency.L2.CH4.TROPOMI.Sentinel-5P.WFMD.v1-2.r1, store_id=cci-store, time_range=None, var_names=['orbit_number', 'latitude_corners'], region=[86.11849, 41.38046, 100.11849, 55.38046])
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 399, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/ds.py", line 438, in open_dataset
+    dataset = select_subset(dataset, **subset_args)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/select.py", line 37, in select_subset
+    dataset = select_spatial_subset(dataset, xy_bbox=bbox)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/select.py", line 86, in select_spatial_subset
+    x_name, y_name = get_dataset_xy_names(dataset, xy_names=xy_names)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/geocoding.py", line 437, in get_dataset_xy_names
+    return (_get_coord_var_name(dataset, x_name, X_COORD_VAR_NAMES, 'x'),
+  File "/home/users/tfincke/Projects/xcube/xcube/core/geocoding.py", line 447, in _get_coord_var_name
+    raise ValueError(f'cannot detect {dim_name!r}-coordinate variable in dataset')
+ValueError: cannot detect 'x'-coordinate variable in dataset
+[2021-05-25 11:55:37] Request: 
+open_dataset(ds_id=esacci.GHG.satellite-orbit-frequency.L2.CH4.TROPOMI.Sentinel-5P.WFMD.v1-2.r1, store_id=cci-store, time_range=None, var_names=['scanline', 'h2o_column'], region=[167.23015, 56.28754, 181.23015, 70.28754])
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 396, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/ds.py", line 438, in open_dataset
+    dataset = select_subset(dataset, **subset_args)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/select.py", line 37, in select_subset
+    dataset = select_spatial_subset(dataset, xy_bbox=bbox)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/select.py", line 86, in select_spatial_subset
+    x_name, y_name = get_dataset_xy_names(dataset, xy_names=xy_names)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/geocoding.py", line 437, in get_dataset_xy_names
+    return (_get_coord_var_name(dataset, x_name, X_COORD_VAR_NAMES, 'x'),
+  File "/home/users/tfincke/Projects/xcube/xcube/core/geocoding.py", line 447, in _get_coord_var_name
+    raise ValueError(f'cannot detect {dim_name!r}-coordinate variable in dataset')
+ValueError: cannot detect 'x'-coordinate variable in dataset
+[2021-05-25 12:04:53] Request: 
+open_dataset(ds_id=esacci.GHG.satellite-orbit-frequency.L2.CH4.TROPOMI.Sentinel-5P.WFMD.v1-2.r1, store_id=cci-store, time_range=None, var_names=['h2o_column_uncertainty', 'azimuth_difference'], region=[100.29215, 74.99126, 114.29215, 88.99126])
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 396, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/ds.py", line 438, in open_dataset
+    dataset = select_subset(dataset, **subset_args)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/select.py", line 37, in select_subset
+    dataset = select_spatial_subset(dataset, xy_bbox=bbox)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/select.py", line 86, in select_spatial_subset
+    x_name, y_name = get_dataset_xy_names(dataset, xy_names=xy_names)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/geocoding.py", line 437, in get_dataset_xy_names
+    return (_get_coord_var_name(dataset, x_name, X_COORD_VAR_NAMES, 'x'),
+  File "/home/users/tfincke/Projects/xcube/xcube/core/geocoding.py", line 447, in _get_coord_var_name
+    raise ValueError(f'cannot detect {dim_name!r}-coordinate variable in dataset')
+ValueError: cannot detect 'x'-coordinate variable in dataset

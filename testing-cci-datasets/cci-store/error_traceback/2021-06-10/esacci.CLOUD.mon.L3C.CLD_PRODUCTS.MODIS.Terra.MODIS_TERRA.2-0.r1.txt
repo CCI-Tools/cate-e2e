@@ -1,0 +1,30 @@
+[2021-06-10 10:20:38] Request: 
+open_dataset(ds_id=esacci.CLOUD.mon.L3C.CLD_PRODUCTS.MODIS.Terra.MODIS_TERRA.2-0.r1, store_id=cci-store, time_range=None, var_names=['lwp', 'cla_vis006_liq_unc'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 369, in test_open_ds
+    time_range = get_time_range(data_descriptor, dataset)
+  File "test_cci_data_support.py", line 77, in get_time_range
+    time_delta = pd.Timedelta(int(data_descriptor.time_period[:-1]),
+  File "pandas/_libs/tslibs/timedeltas.pyx", line 1177, in pandas._libs.tslibs.timedeltas.Timedelta.__new__
+ValueError: Units 'M', 'Y', and 'y' are no longer supported, as they do not represent unambiguous timedelta values durations.
+[2021-06-10 10:40:29] Request: 
+open_dataset(ds_id=esacci.CLOUD.mon.L3C.CLD_PRODUCTS.MODIS.Terra.MODIS_TERRA.2-0.r1, store_id=cci-store, time_range=None, var_names=['cot_unc', 'iwp'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 369, in test_open_ds
+    time_range = get_time_range(data_descriptor, dataset)
+  File "test_cci_data_support.py", line 77, in get_time_range
+    time_delta = pd.Timedelta(int(data_descriptor.time_period[:-1]),
+  File "pandas/_libs/tslibs/timedeltas.pyx", line 1177, in pandas._libs.tslibs.timedeltas.Timedelta.__new__
+ValueError: Units 'M', 'Y', and 'y' are no longer supported, as they do not represent unambiguous timedelta values durations.
+[2021-06-10 10:47:31] Request: 
+open_dataset(ds_id=esacci.CLOUD.mon.L3C.CLD_PRODUCTS.MODIS.Terra.MODIS_TERRA.2-0.r1, store_id=cci-store, time_range=None, var_names=['lwp_unc', 'cth_unc'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 369, in test_open_ds
+    time_range = get_time_range(data_descriptor, dataset)
+  File "test_cci_data_support.py", line 77, in get_time_range
+    time_delta = pd.Timedelta(int(data_descriptor.time_period[:-1]),
+  File "pandas/_libs/tslibs/timedeltas.pyx", line 1177, in pandas._libs.tslibs.timedeltas.Timedelta.__new__
+ValueError: Units 'M', 'Y', and 'y' are no longer supported, as they do not represent unambiguous timedelta values durations.

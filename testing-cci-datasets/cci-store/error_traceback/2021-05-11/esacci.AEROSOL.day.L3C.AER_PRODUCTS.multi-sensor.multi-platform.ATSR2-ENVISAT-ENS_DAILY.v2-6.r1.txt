@@ -1,0 +1,28 @@
+[2021-05-11 16:48:20] Request: 
+open_dataset(ds_id=esacci.AEROSOL.day.L3C.AER_PRODUCTS.multi-sensor.multi-platform.ATSR2-ENVISAT-ENS_DAILY.v2-6.r1, store_id=cci-store, time_range=('1995-08-01', '1995-08-02'), var_names=['AOD550', 'Latitude'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 318, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/ds.py", line 436, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 476, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 230, in open_data
+    cci_schema.validate_instance(open_params)
+  File "/home/users/tfincke/Projects/xcube/xcube/util/jsonschema.py", line 101, in validate_instance
+    jsonschema.validate(instance=instance, schema=self.to_dict(),
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/jsonschema/validators.py", line 934, in validate
+    raise error
+jsonschema.exceptions.ValidationError: 'Latitude' is not one of ['AOD550', 'AOD550_UNCERTAINTY_ENSEMBLE', 'NMEAS']
+
+Failed validating 'enum' in schema['properties']['variable_names']['items']:
+    {'enum': ['AOD550', 'AOD550_UNCERTAINTY_ENSEMBLE', 'NMEAS'],
+     'type': 'string'}
+
+On instance['variable_names'][1]:
+    'Latitude'

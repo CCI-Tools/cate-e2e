@@ -1,0 +1,63 @@
+[2021-06-10 10:19:46] Request: 
+open_dataset(ds_id=esacci.AEROSOL.climatology.L3.AAI.multi-sensor.multi-platform.MSAAI.1-7.r1, store_id=cci-store, time_range=None, var_names=['solar_zenith_angle', 'number_of_observations'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 356, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/ds.py", line 436, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 485, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 245, in open_data
+    chunk_store = CciChunkStore(self._cci_odp, data_id, cube_kwargs)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/chunkstore.py", line 661, in __init__
+    super().__init__(dataset_id,
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/chunkstore.py", line 83, in __init__
+    raise ValueError('Could not determine any valid time stamps')
+ValueError: Could not determine any valid time stamps
+[2021-06-10 10:39:45] Request: 
+open_dataset(ds_id=esacci.AEROSOL.climatology.L3.AAI.multi-sensor.multi-platform.MSAAI.1-7.r1, store_id=cci-store, time_range=None, var_names=['number_of_observations', 'number_of_positive_observations'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 356, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/ds.py", line 436, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 485, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 245, in open_data
+    chunk_store = CciChunkStore(self._cci_odp, data_id, cube_kwargs)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/chunkstore.py", line 661, in __init__
+    super().__init__(dataset_id,
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/chunkstore.py", line 83, in __init__
+    raise ValueError('Could not determine any valid time stamps')
+ValueError: Could not determine any valid time stamps
+[2021-06-10 10:46:47] Request: 
+open_dataset(ds_id=esacci.AEROSOL.climatology.L3.AAI.multi-sensor.multi-platform.MSAAI.1-7.r1, store_id=cci-store, time_range=None, var_names=['number_of_positive_observations', 'positive_absorbing_aerosol_index'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 356, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/ds.py", line 436, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 485, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 245, in open_data
+    chunk_store = CciChunkStore(self._cci_odp, data_id, cube_kwargs)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/chunkstore.py", line 661, in __init__
+    super().__init__(dataset_id,
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/chunkstore.py", line 83, in __init__
+    raise ValueError('Could not determine any valid time stamps')
+ValueError: Could not determine any valid time stamps

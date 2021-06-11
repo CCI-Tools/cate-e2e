@@ -1,0 +1,178 @@
+[2021-05-12 15:54:21] Request: 
+open_dataset(ds_id=esacci.AEROSOL.mon.L3C.AER_PRODUCTS.AATSR.Envisat.ORAC.04-01_seg-.r1, store_id=cci-store, time_range=None, var_names=['pixel_corner_latitude2', 'surface_reflectance1600_uncertainty_lowerquartile'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 340, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/ds.py", line 436, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 476, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 230, in open_data
+    cci_schema.validate_instance(open_params)
+  File "/home/users/tfincke/Projects/xcube/xcube/util/jsonschema.py", line 101, in validate_instance
+    jsonschema.validate(instance=instance, schema=self.to_dict(),
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/jsonschema/validators.py", line 934, in validate
+    raise error
+jsonschema.exceptions.ValidationError: 'pixel_corner_latitude2' is not one of ['pixel_count', 'aerosol_type_count', 'interquartile_count', 'AOD550_mean', 'AOD550_median', 'AOD550_sdev', 'AOD550_lowerquartile', 'AOD550_upperquartile', 'AOD550_interquartile_mean', 'REFF_mean', 'REFF_median', 'REFF_sdev', 'REFF_lowerquartile', 'REFF_upperquartile', 'REFF_interquartile_mean', 'AOD870_mean', 'AOD870_median', 'AOD870_sdev', 'AOD870_lowerquartile', 'AOD870_upperquartile', 'AOD870_interquartile_mean', 'AOD670_mean', 'AOD670_median', 'AOD670_sdev', 'AOD670_lowerquartile', 'AOD670_upperquartile', 'AOD670_interquartile_mean', 'AOD1600_mean', 'AOD1600_median', 'AOD1600_sdev', 'AOD1600_lowerquartile', 'AOD1600_upperquartile', 'AOD1600_interquartile_mean', 'ANG550_870_mean', 'ANG550_870_median', 'ANG550_870_sdev', 'ANG550_870_lowerquartile', 'ANG550_870_upperquartile', 'ANG550_870_interquartile_mean', 'FM_AOD550_mean', 'FM_AOD550_median', 'FM_AOD550_sdev', 'FM_AOD550_lowerquartile', 'FM_AOD550_upperquartile', 'FM_AOD550_interquartile_mean', 'D_AOD550_mean', 'D_AOD550_median', 'D_AOD550_sdev', 'D_AOD550_lowerquartile', 'D_AOD550_upperquartile', 'D_AOD550_interquartile_mean', 'AAOD550_mean', 'AAOD550_median', 'AAOD550_sdev', 'AAOD550_lowerquartile', 'AAOD550_upperquartile', 'AAOD550_interquartile_mean', 'surface_reflectance550_mean', 'surface_reflectance550_median', 'surface_reflectance550_sdev', 'surface_reflectance550_lowerquartile', 'surface_reflectance550_upperquartile', 'surface_reflectance550_interquartile_mean', 'surface_reflectance670_mean', 'surface_reflectance670_median', 'surface_reflectance670_sdev', 'surface_reflectance670_lowerquartile', 'surface_reflectance670_upperquartile', 'surface_reflectance670_interquartile_mean', 'surface_reflectance870_mean', 'surface_reflectance870_median', 'surface_reflectance870_sdev', 'surface_reflectance870_lowerquartile', 'surface_reflectance870_upperquartile', 'surface_reflectance870_interquartile_mean', 'surface_reflectance1600_mean', 'surface_reflectance1600_median', 'surface_reflectance1600_sdev', 'surface_reflectance1600_lowerquartile', 'surface_reflectance1600_upperquartile', 'surface_reflectance1600_interquartile_mean', 'AOD550_uncertainty_mean', 'AOD550_uncertainty_median', 'AOD550_uncertainty_sdev', 'AOD550_uncertainty_lowerquartile', 'AOD550_uncertainty_upperquartile', 'AOD550_uncertainty_interquartile_mean', 'REFF_uncertainty_mean', 'REFF_uncertainty_median', 'REFF_uncertainty_sdev', 'REFF_uncertainty_lowerquartile', 'REFF_uncertainty_upperquartile', 'REFF_uncertainty_interquartile_mean', 'AOD870_uncertainty_mean', 'AOD870_uncertainty_median', 'AOD870_uncertainty_sdev', 'AOD870_uncertainty_lowerquartile', 'AOD870_uncertainty_upperquartile', 'AOD870_uncertainty_interquartile_mean', 'surface_reflectance550_uncertainty_mean', 'surface_reflectance550_uncertainty_median', 'surface_reflectance550_uncertainty_sdev', 'surface_reflectance550_uncertainty_lowerquartile', 'surface_reflectance550_uncertainty_upperquartile', 'surface_reflectance550_uncertainty_interquartile_mean', 'surface_reflectance670_uncertainty_mean', 'surface_reflectance670_uncertainty_median', 'surface_reflectance670_uncertainty_sdev', 'surface_reflectance670_uncertainty_lowerquartile', 'surface_reflectance670_uncertainty_upperquartile', 'surface_reflectance670_uncertainty_interquartile_mean', 'surface_reflectance870_uncertainty_mean', 'surface_reflectance870_uncertainty_median', 'surface_reflectance870_uncertainty_sdev', 'surface_reflectance870_uncertainty_lowerquartile', 'surface_reflectance870_uncertainty_upperquartile', 'surface_reflectance870_uncertainty_interquartile_mean', 'surface_reflectance1600_uncertainty_mean', 'surface_reflectance1600_uncertainty_median', 'surface_reflectance1600_uncertainty_sdev', 'surface_reflectance1600_uncertainty_lowerquartile', 'surface_reflectance1600_uncertainty_upperquartile', 'surface_reflectance1600_uncertainty_interquartile_mean', 'sun_zenith_mean', 'satellite_zenith_mean', 'relative_azimuth_mean', 'time_mean', 'cloud_fraction_mean', 'surface_type_number_mean', 'iterations_mean', 'fit_error_mean']
+
+Failed validating 'enum' in schema['properties']['variable_names']['items']:
+    {'enum': ['pixel_count',
+              'aerosol_type_count',
+              'interquartile_count',
+              'AOD550_mean',
+              'AOD550_median',
+              'AOD550_sdev',
+              'AOD550_lowerquartile',
+              'AOD550_upperquartile',
+              'AOD550_interquartile_mean',
+              'REFF_mean',
+              'REFF_median',
+              'REFF_sdev',
+              'REFF_lowerquartile',
+              'REFF_upperquartile',
+              'REFF_interquartile_mean',
+              'AOD870_mean',
+              'AOD870_median',
+              'AOD870_sdev',
+              'AOD870_lowerquartile',
+              'AOD870_upperquartile',
+              'AOD870_interquartile_mean',
+              'AOD670_mean',
+              'AOD670_median',
+              'AOD670_sdev',
+              'AOD670_lowerquartile',
+              'AOD670_upperquartile',
+              'AOD670_interquartile_mean',
+              'AOD1600_mean',
+              'AOD1600_median',
+              'AOD1600_sdev',
+              'AOD1600_lowerquartile',
+              'AOD1600_upperquartile',
+              'AOD1600_interquartile_mean',
+              'ANG550_870_mean',
+              'ANG550_870_median',
+              'ANG550_870_sdev',
+              'ANG550_870_lowerquartile',
+              'ANG550_870_upperquartile',
+              'ANG550_870_interquartile_mean',
+              'FM_AOD550_mean',
+              'FM_AOD550_median',
+              'FM_AOD550_sdev',
+              'FM_AOD550_lowerquartile',
+              'FM_AOD550_upperquartile',
+              'FM_AOD550_interquartile_mean',
+              'D_AOD550_mean',
+              'D_AOD550_median',
+              'D_AOD550_sdev',
+              'D_AOD550_lowerquartile',
+              'D_AOD550_upperquartile',
+              'D_AOD550_interquartile_mean',
+              'AAOD550_mean',
+              'AAOD550_median',
+              'AAOD550_sdev',
+              'AAOD550_lowerquartile',
+              'AAOD550_upperquartile',
+              'AAOD550_interquartile_mean',
+              'surface_reflectance550_mean',
+              'surface_reflectance550_median',
+              'surface_reflectance550_sdev',
+              'surface_reflectance550_lowerquartile',
+              'surface_reflectance550_upperquartile',
+              'surface_reflectance550_interquartile_mean',
+              'surface_reflectance670_mean',
+              'surface_reflectance670_median',
+              'surface_reflectance670_sdev',
+              'surface_reflectance670_lowerquartile',
+              'surface_reflectance670_upperquartile',
+              'surface_reflectance670_interquartile_mean',
+              'surface_reflectance870_mean',
+              'surface_reflectance870_median',
+              'surface_reflectance870_sdev',
+              'surface_reflectance870_lowerquartile',
+              'surface_reflectance870_upperquartile',
+              'surface_reflectance870_interquartile_mean',
+              'surface_reflectance1600_mean',
+              'surface_reflectance1600_median',
+              'surface_reflectance1600_sdev',
+              'surface_reflectance1600_lowerquartile',
+              'surface_reflectance1600_upperquartile',
+              'surface_reflectance1600_interquartile_mean',
+              'AOD550_uncertainty_mean',
+              'AOD550_uncertainty_median',
+              'AOD550_uncertainty_sdev',
+              'AOD550_uncertainty_lowerquartile',
+              'AOD550_uncertainty_upperquartile',
+              'AOD550_uncertainty_interquartile_mean',
+              'REFF_uncertainty_mean',
+              'REFF_uncertainty_median',
+              'REFF_uncertainty_sdev',
+              'REFF_uncertainty_lowerquartile',
+              'REFF_uncertainty_upperquartile',
+              'REFF_uncertainty_interquartile_mean',
+              'AOD870_uncertainty_mean',
+              'AOD870_uncertainty_median',
+              'AOD870_uncertainty_sdev',
+              'AOD870_uncertainty_lowerquartile',
+              'AOD870_uncertainty_upperquartile',
+              'AOD870_uncertainty_interquartile_mean',
+              'surface_reflectance550_uncertainty_mean',
+              'surface_reflectance550_uncertainty_median',
+              'surface_reflectance550_uncertainty_sdev',
+              'surface_reflectance550_uncertainty_lowerquartile',
+              'surface_reflectance550_uncertainty_upperquartile',
+              'surface_reflectance550_uncertainty_interquartile_mean',
+              'surface_reflectance670_uncertainty_mean',
+              'surface_reflectance670_uncertainty_median',
+              'surface_reflectance670_uncertainty_sdev',
+              'surface_reflectance670_uncertainty_lowerquartile',
+              'surface_reflectance670_uncertainty_upperquartile',
+              'surface_reflectance670_uncertainty_interquartile_mean',
+              'surface_reflectance870_uncertainty_mean',
+              'surface_reflectance870_uncertainty_median',
+              'surface_reflectance870_uncertainty_sdev',
+              'surface_reflectance870_uncertainty_lowerquartile',
+              'surface_reflectance870_uncertainty_upperquartile',
+              'surface_reflectance870_uncertainty_interquartile_mean',
+              'surface_reflectance1600_uncertainty_mean',
+              'surface_reflectance1600_uncertainty_median',
+              'surface_reflectance1600_uncertainty_sdev',
+              'surface_reflectance1600_uncertainty_lowerquartile',
+              'surface_reflectance1600_uncertainty_upperquartile',
+              'surface_reflectance1600_uncertainty_interquartile_mean',
+              'sun_zenith_mean',
+              'satellite_zenith_mean',
+              'relative_azimuth_mean',
+              'time_mean',
+              'cloud_fraction_mean',
+              'surface_type_number_mean',
+              'iterations_mean',
+              'fit_error_mean'],
+     'type': 'string'}
+
+On instance['variable_names'][0]:
+    'pixel_corner_latitude2'
+[2021-05-12 16:31:01] Request: 
+open_dataset(ds_id=esacci.AEROSOL.mon.L3C.AER_PRODUCTS.AATSR.Envisat.ORAC.04-01_seg-.r1, store_id=cci-store, time_range=None, var_names=['REFF_sdev', 'surface_reflectance550_lowerquartile'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 354, in test_open_ds
+    time_range = get_time_range(data_descriptor, dataset)
+  File "test_cci_data_support.py", line 77, in get_time_range
+    time_delta = pd.Timedelta(int(data_descriptor.time_period[:-1]),
+  File "pandas/_libs/tslibs/timedeltas.pyx", line 1177, in pandas._libs.tslibs.timedeltas.Timedelta.__new__
+ValueError: Units 'M', 'Y', and 'y' are no longer supported, as they do not represent unambiguous timedelta values durations.
+[2021-05-12 16:56:07] Request: 
+open_dataset(ds_id=esacci.AEROSOL.mon.L3C.AER_PRODUCTS.AATSR.Envisat.ORAC.04-01_seg-.r1, store_id=cci-store, time_range=None, var_names=['surface_reflectance550_uncertainty_interquartile_mean', 'FM_AOD550_upperquartile'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 354, in test_open_ds
+    time_range = get_time_range(data_descriptor, dataset)
+  File "test_cci_data_support.py", line 77, in get_time_range
+    time_delta = pd.Timedelta(int(data_descriptor.time_period[:-1]),
+  File "pandas/_libs/tslibs/timedeltas.pyx", line 1177, in pandas._libs.tslibs.timedeltas.Timedelta.__new__
+ValueError: Units 'M', 'Y', and 'y' are no longer supported, as they do not represent unambiguous timedelta values durations.

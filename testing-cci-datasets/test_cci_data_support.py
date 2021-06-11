@@ -74,8 +74,16 @@ def get_time_range(data_descriptor, data):
             and 'time' in data_descriptor.dims and data_descriptor.dims['time'] > 2 \
             and data_descriptor.time_period is not None:
         # we have to use this weird notation so pandas interpretes the data correctly
-        time_delta = pd.Timedelta(int(data_descriptor.time_period[:-1]),
-                                  data_descriptor.time_period[-1])
+        time_value = int(data_descriptor.time_period[:-1])
+        time_unit = data_descriptor.time_period[-1]
+        if time_unit == 'M':
+            time_unit = 'D'
+            time_value *= 31
+        elif time_unit == 'Y':
+            time_unit = 'D'
+            time_value *= 366
+        time_delta = pd.Timedelta(time_value,
+                                  time_unit)
         time_start = pd.Timestamp(time_range[0])
         time_end = time_start + time_delta
         return time_start.strftime('%Y-%m-%d'), time_end.strftime('%Y-%m-%d')
@@ -666,22 +674,24 @@ def main():
     support_file_name = f'test_{store_name}_data_support_{datetime.date(datetime.now())}.csv'
     results_csv = f'{store_name}/{support_file_name}'
     store = DATA_STORE_POOL.get_store(store_name)
-    data_ids = store.get_data_ids()
+    # data_ids = store.get_data_ids()
     lds = DATA_STORE_POOL.get_store('local')
 
+    data_ids = ['esacci.CLOUD.mon.L3C.CLD_PRODUCTS.MODIS.Aqua.MODIS_AQUA.2-0.r1']
+
     start_time = datetime.now()
-    if store_name == 'cci-store':
-        with mp.Pool(mp.cpu_count() - 1, maxtasksperchild=1) as pool:
-            pool.starmap(test_open_ds, zip(data_ids,
-                                           repeat(store),
-                                           repeat(lds),
-                                           repeat(results_csv),
-                                           repeat(store_name)))
-            pool.close()
-            pool.join()
-    else:
-        for data_id in data_ids:
-            test_open_ds(data_id, store, lds, results_csv, store_name)
+    # if store_name == 'cci-store':
+    #     with mp.Pool(mp.cpu_count() - 1, maxtasksperchild=1) as pool:
+    #         pool.starmap(test_open_ds, zip(data_ids,
+    #                                        repeat(store),
+    #                                        repeat(lds),
+    #                                        repeat(results_csv),
+    #                                        repeat(store_name)))
+    #         pool.close()
+    #         pool.join()
+    # else:
+    for data_id in data_ids:
+        test_open_ds(data_id, store, lds, results_csv, store_name)
 
     sort_csv(results_csv, f'{store_name}/sorted_{support_file_name}')
 

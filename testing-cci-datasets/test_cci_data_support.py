@@ -652,13 +652,11 @@ def create_dict_of_ids_with_verification_flags(data_sets):
         if 'yes' in dataset['open(1)']:
             verify_flags.append('open')
         if 'yes' in dataset['open_temp(2)']:
-            verify_flags.append('open_time')
+            verify_flags.append('constrain_time')
         if 'yes' in dataset['open_bbox(3)']:
-            verify_flags.append('open_bbox')
+            verify_flags.append('constrain_region')
         if 'yes' in dataset['cache(4)']:
-            verify_flags.append('cache')
-        if 'yes' in dataset['map(5)']:
-            verify_flags.append('map')
+            verify_flags.append('write_zarr')
 
         dict_with_verify_flags[dataset['Dataset-ID']] = {'verification_flags': verify_flags}
 

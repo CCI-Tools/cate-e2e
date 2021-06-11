@@ -23,8 +23,8 @@ from xcube.core.store import DataStoreError
 nest_asyncio.apply()
 
 # header for CSV report
-header_row = ['ECV-Name', 'Dataset-ID', 'supported', 'open(1)', 'open_temp(2)', 'open_bbox(3)',
-              'cache(4)', 'map(5)', 'comment']
+header_row = ['ECV-Name', 'Dataset-ID', 'supported', 'Type-Specifier', 'open(1)', 'open_temp(2)',
+              'open_bbox(3)', 'cache(4)', 'map(5)', 'comment']
 
 # Not supported vector data:
 vector_data = [
@@ -326,6 +326,7 @@ def test_open_ds(data_id, store, lds, results_csv, store_name):
                     f'only available type specifiers "{type_specifiers_for_data}" were found.'
         _all_tests_no(summary_row, results_csv, general_comment=comment_1)
         return
+    summary_row['Type-Specifier'] = type_specifier
     try:
         data_descriptor = store.describe_data(data_id=data_id, type_specifier=type_specifier)
     except DataStoreError:
@@ -648,6 +649,7 @@ def create_list_of_failed(test_data_sets, failed_csv, header_row):
 def create_dict_of_ids_with_verification_flags(data_sets):
     dict_with_verify_flags = {}
     for dataset in data_sets:
+        type_specifier = dataset['Type-Specifier']
         verify_flags = []
         if 'yes' in dataset['open(1)']:
             verify_flags.append('open')
@@ -658,7 +660,8 @@ def create_dict_of_ids_with_verification_flags(data_sets):
         if 'yes' in dataset['cache(4)']:
             verify_flags.append('write_zarr')
 
-        dict_with_verify_flags[dataset['Dataset-ID']] = {'verification_flags': verify_flags}
+        dict_with_verify_flags[dataset['Dataset-ID']] = {'type_specifier': type_specifier,
+                                                         'verification_flags': verify_flags}
 
     return dict_with_verify_flags
 

@@ -1,0 +1,78 @@
+[2021-05-28 07:47:54] Request: 
+open_dataset(ds_id=esacci.AEROSOL.day.L3C.AOD.MERIS.Envisat.MERIS_ENVISAT.2-2.r1, store_id=cci-store, time_range=('2008-01-01', '2008-01-02'), var_names=['AOD865', 'fAOD865'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 385, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/ds.py", line 436, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 485, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 245, in open_data
+    chunk_store = CciChunkStore(self._cci_odp, data_id, cube_kwargs)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/chunkstore.py", line 661, in __init__
+    super().__init__(dataset_id,
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/chunkstore.py", line 103, in __init__
+    self._dimension_data = self.get_dimension_data(data_id)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/chunkstore.py", line 729, in get_dimension_data
+    dimension_data = self.get_variable_data(dataset_id, dimensions)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/chunkstore.py", line 736, in get_variable_data
+    return self._cci_odp.get_variable_data(dataset_id,
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/cciodp.py", line 694, in get_variable_data
+    dimension_data = self._run_with_session(self._get_var_data, dataset_name, dimension_names,
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/cciodp.py", line 400, in _run_with_session
+    result = loop.run_until_complete(coro)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/nest_asyncio.py", line 70, in run_until_complete
+    return f.result()
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/asyncio/futures.py", line 178, in result
+    raise self._exception
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/asyncio/tasks.py", line 280, in __step
+    result = coro.send(None)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/cciodp.py", line 106, in _run_with_session_executor
+    return await async_function(session, *params)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/cciodp.py", line 730, in _get_var_data
+    data=list(range(variable_names[var_name])))
+MemoryError
+[2021-05-28 09:23:11] Request: 
+open_dataset(ds_id=esacci.AEROSOL.day.L3C.AOD.MERIS.Envisat.MERIS_ENVISAT.2-2.r1, store_id=cci-store, time_range=('2008-01-01', '2008-01-02'), var_names=['fAOD865', 'AOD550_std'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 385, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/ds.py", line 436, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 485, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 245, in open_data
+    chunk_store = CciChunkStore(self._cci_odp, data_id, cube_kwargs)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/chunkstore.py", line 661, in __init__
+    super().__init__(dataset_id,
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/chunkstore.py", line 103, in __init__
+    self._dimension_data = self.get_dimension_data(data_id)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/chunkstore.py", line 729, in get_dimension_data
+    dimension_data = self.get_variable_data(dataset_id, dimensions)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/chunkstore.py", line 736, in get_variable_data
+    return self._cci_odp.get_variable_data(dataset_id,
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/cciodp.py", line 694, in get_variable_data
+    dimension_data = self._run_with_session(self._get_var_data, dataset_name, dimension_names,
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/cciodp.py", line 400, in _run_with_session
+    result = loop.run_until_complete(coro)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/nest_asyncio.py", line 70, in run_until_complete
+    return f.result()
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/asyncio/futures.py", line 178, in result
+    raise self._exception
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/asyncio/tasks.py", line 280, in __step
+    result = coro.send(None)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/cciodp.py", line 106, in _run_with_session_executor
+    return await async_function(session, *params)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/cciodp.py", line 730, in _get_var_data
+    data=list(range(variable_names[var_name])))
+MemoryError

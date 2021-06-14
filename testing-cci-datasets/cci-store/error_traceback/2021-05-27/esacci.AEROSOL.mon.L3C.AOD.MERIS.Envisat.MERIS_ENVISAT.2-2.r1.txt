@@ -1,0 +1,50 @@
+[2021-05-27 15:36:01] Request: 
+open_dataset(ds_id=esacci.AEROSOL.mon.L3C.AOD.MERIS.Envisat.MERIS_ENVISAT.2-2.r1, store_id=cci-store, time_range=None, var_names=['AOD550', 'AOD550'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 363, in test_open_ds
+    time_range = get_time_range(data_descriptor, dataset)
+  File "test_cci_data_support.py", line 77, in get_time_range
+    time_delta = pd.Timedelta(int(data_descriptor.time_period[:-1]),
+  File "pandas/_libs/tslibs/timedeltas.pyx", line 1177, in pandas._libs.tslibs.timedeltas.Timedelta.__new__
+ValueError: Units 'M', 'Y', and 'y' are no longer supported, as they do not represent unambiguous timedelta values durations.
+[2021-05-27 15:43:56] Request: 
+open_dataset(ds_id=esacci.AEROSOL.mon.L3C.AOD.MERIS.Envisat.MERIS_ENVISAT.2-2.r1, store_id=cci-store, time_range=None, var_names=['R_eff_std', 'Aerosol_Altitude'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 363, in test_open_ds
+    time_range = get_time_range(data_descriptor, dataset)
+  File "test_cci_data_support.py", line 77, in get_time_range
+    time_delta = pd.Timedelta(int(data_descriptor.time_period[:-1]),
+  File "pandas/_libs/tslibs/timedeltas.pyx", line 1177, in pandas._libs.tslibs.timedeltas.Timedelta.__new__
+ValueError: Units 'M', 'Y', and 'y' are no longer supported, as they do not represent unambiguous timedelta values durations.
+[2021-05-27 15:52:38] Request: 
+open_dataset(ds_id=esacci.AEROSOL.mon.L3C.AOD.MERIS.Envisat.MERIS_ENVISAT.2-2.r1, store_id=cci-store, time_range=None, var_names=['fAOD550', 'fAOD865'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 366, in test_open_ds
+    time_range = get_time_range(data_descriptor, dataset)
+  File "test_cci_data_support.py", line 77, in get_time_range
+    time_delta = pd.Timedelta(int(data_descriptor.time_period[:-1]),
+  File "pandas/_libs/tslibs/timedeltas.pyx", line 1177, in pandas._libs.tslibs.timedeltas.Timedelta.__new__
+ValueError: Units 'M', 'Y', and 'y' are no longer supported, as they do not represent unambiguous timedelta values durations.
+[2021-05-27 16:20:51] Request: 
+open_dataset(ds_id=esacci.AEROSOL.mon.L3C.AOD.MERIS.Envisat.MERIS_ENVISAT.2-2.r1, store_id=cci-store, time_range=None, var_names=['Aerosol_Altitude_std', 'AOD550'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 369, in test_open_ds
+    time_range = get_time_range(data_descriptor, dataset)
+  File "test_cci_data_support.py", line 77, in get_time_range
+    time_delta = pd.Timedelta(int(data_descriptor.time_period[:-1]),
+  File "pandas/_libs/tslibs/timedeltas.pyx", line 1177, in pandas._libs.tslibs.timedeltas.Timedelta.__new__
+ValueError: Units 'M', 'Y', and 'y' are no longer supported, as they do not represent unambiguous timedelta values durations.
+[2021-05-27 17:08:35] Request: 
+open_dataset(ds_id=esacci.AEROSOL.mon.L3C.AOD.MERIS.Envisat.MERIS_ENVISAT.2-2.r1, store_id=cci-store, time_range=None, var_names=['Aerosol_Altitude_std', 'R_eff_std'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 369, in test_open_ds
+    time_range = get_time_range(data_descriptor, dataset)
+  File "test_cci_data_support.py", line 77, in get_time_range
+    time_delta = pd.Timedelta(int(data_descriptor.time_period[:-1]),
+  File "pandas/_libs/tslibs/timedeltas.pyx", line 1177, in pandas._libs.tslibs.timedeltas.Timedelta.__new__
+ValueError: Units 'M', 'Y', and 'y' are no longer supported, as they do not represent unambiguous timedelta values durations.

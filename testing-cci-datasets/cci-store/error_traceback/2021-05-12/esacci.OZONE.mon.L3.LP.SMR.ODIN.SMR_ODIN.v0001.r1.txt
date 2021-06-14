@@ -1,0 +1,78 @@
+[2021-05-12 15:56:00] Request: 
+open_dataset(ds_id=esacci.OZONE.mon.L3.LP.SMR.ODIN.SMR_ODIN.v0001.r1, store_id=cci-store, time_range=None, var_names=['approximate_altitude', 'inhomogeneity_in_latitude'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 340, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/ds.py", line 436, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 476, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 230, in open_data
+    cci_schema.validate_instance(open_params)
+  File "/home/users/tfincke/Projects/xcube/xcube/util/jsonschema.py", line 101, in validate_instance
+    jsonschema.validate(instance=instance, schema=self.to_dict(),
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/jsonschema/validators.py", line 934, in validate
+    raise error
+jsonschema.exceptions.ValidationError: 'approximate_altitude' is not one of ['ozone_mixing_ratio', 'ozone_mole_concentation', 'standard_error_of_the_mean', 'sample_standard_deviation', 'mean_uncertainty_estimate', 'inhomogeneity_in_time', 'inhomogeneity_in_latitude']
+
+Failed validating 'enum' in schema['properties']['variable_names']['items']:
+    {'enum': ['ozone_mixing_ratio',
+              'ozone_mole_concentation',
+              'standard_error_of_the_mean',
+              'sample_standard_deviation',
+              'mean_uncertainty_estimate',
+              'inhomogeneity_in_time',
+              'inhomogeneity_in_latitude'],
+     'type': 'string'}
+
+On instance['variable_names'][0]:
+    'approximate_altitude'
+[2021-05-12 16:33:18] Request: 
+open_dataset(ds_id=esacci.OZONE.mon.L3.LP.SMR.ODIN.SMR_ODIN.v0001.r1, store_id=cci-store, time_range=None, var_names=['ozone_mole_concentation', 'approximate_altitude'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 341, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/ds.py", line 436, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 476, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 230, in open_data
+    cci_schema.validate_instance(open_params)
+  File "/home/users/tfincke/Projects/xcube/xcube/util/jsonschema.py", line 101, in validate_instance
+    jsonschema.validate(instance=instance, schema=self.to_dict(),
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/jsonschema/validators.py", line 934, in validate
+    raise error
+jsonschema.exceptions.ValidationError: 'approximate_altitude' is not one of ['ozone_mixing_ratio', 'ozone_mole_concentation', 'standard_error_of_the_mean', 'sample_standard_deviation', 'mean_uncertainty_estimate', 'inhomogeneity_in_time', 'inhomogeneity_in_latitude']
+
+Failed validating 'enum' in schema['properties']['variable_names']['items']:
+    {'enum': ['ozone_mixing_ratio',
+              'ozone_mole_concentation',
+              'standard_error_of_the_mean',
+              'sample_standard_deviation',
+              'mean_uncertainty_estimate',
+              'inhomogeneity_in_time',
+              'inhomogeneity_in_latitude'],
+     'type': 'string'}
+
+On instance['variable_names'][1]:
+    'approximate_altitude'
+[2021-05-12 16:58:49] Request: 
+open_dataset(ds_id=esacci.OZONE.mon.L3.LP.SMR.ODIN.SMR_ODIN.v0001.r1, store_id=cci-store, time_range=None, var_names=['inhomogeneity_in_time', 'mean_uncertainty_estimate'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 354, in test_open_ds
+    time_range = get_time_range(data_descriptor, dataset)
+  File "test_cci_data_support.py", line 77, in get_time_range
+    time_delta = pd.Timedelta(int(data_descriptor.time_period[:-1]),
+  File "pandas/_libs/tslibs/timedeltas.pyx", line 1177, in pandas._libs.tslibs.timedeltas.Timedelta.__new__
+ValueError: Units 'M', 'Y', and 'y' are no longer supported, as they do not represent unambiguous timedelta values durations.

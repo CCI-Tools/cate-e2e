@@ -1,0 +1,183 @@
+[2021-06-15 09:13:25] Request: 
+open_dataset(ds_id=esacci.BIOMASS.yr.L4.AGB.multi-sensor.multi-platform.MERGED.2-0.r1, store_id=cci-store, time_range=None, var_names=['agb', 'agb_se'], region=[-115.02757, -45.24429, -115.0258, -45.24251])
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/projects/ccitools/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 409, in test_open_ds
+    force_local=False)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/ops/io.py", line 92, in open_dataset
+    monitor=monitor)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/ds.py", line 456, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 472, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 248, in open_data
+    ds = xr.open_zarr(chunk_store)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/zarr.py", line 679, in open_zarr
+    use_cftime=use_cftime,
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/api.py", line 557, in open_dataset
+    ds = maybe_decode_store(store, chunks)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/api.py", line 461, in maybe_decode_store
+    decode_timedelta=decode_timedelta,
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/conventions.py", line 657, in decode_cf
+    ds = Dataset(vars, attrs=attrs)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/dataset.py", line 688, in __init__
+    data_vars, coords, compat="broadcast_equals"
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/merge.py", line 468, in merge_data_and_coords
+    objects, compat, join, explicit_coords=explicit_coords, indexes=indexes
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/merge.py", line 613, in merge_core
+    collected = collect_variables_and_indexes(aligned)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/merge.py", line 278, in collect_variables_and_indexes
+    variable = as_variable(variable, name=name)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/variable.py", line 172, in as_variable
+    obj = obj.to_index_variable()
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/variable.py", line 571, in to_index_variable
+    self.dims, self._data, self._attrs, encoding=self._encoding, fastpath=True
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/variable.py", line 2518, in __init__
+    self._data = PandasIndexAdapter(self._data)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/indexing.py", line 1397, in __init__
+    self.array = utils.safe_cast_to_index(array)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/utils.py", line 115, in safe_cast_to_index
+    index = pd.Index(np.asarray(array), **kwargs)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/numpy/core/_asarray.py", line 102, in asarray
+    return array(a, dtype, copy=False, order=order)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/indexing.py", line 568, in __array__
+    return np.asarray(array[self.key], dtype=None)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/zarr.py", line 73, in __getitem__
+    return array[key.tuple]
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/zarr/core.py", line 662, in __getitem__
+    return self.get_basic_selection(selection, fields=fields)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/zarr/core.py", line 788, in get_basic_selection
+    fields=fields)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/zarr/core.py", line 828, in _get_basic_selection_nd
+    indexer = BasicIndexer(selection, self)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/zarr/indexing.py", line 282, in __init__
+    dim_indexer = SliceDimIndexer(dim_sel, dim_len, dim_chunk_len)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/zarr/indexing.py", line 116, in __init__
+    self.nchunks = ceildiv(self.dim_len, self.dim_chunk_len)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/zarr/indexing.py", line 100, in ceildiv
+    return math.ceil(a / b)
+ZeroDivisionError: division by zero
+[2021-06-15 09:29:53] Request: 
+open_dataset(ds_id=esacci.BIOMASS.yr.L4.AGB.multi-sensor.multi-platform.MERGED.2-0.r1, store_id=cci-store, time_range=None, var_names=['agb', 'agb_se'], region=[146.10816, 47.0131, 146.10993, 47.01488])
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/projects/ccitools/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 409, in test_open_ds
+    force_local=False)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/ops/io.py", line 92, in open_dataset
+    monitor=monitor)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/ds.py", line 456, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 472, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 248, in open_data
+    ds = xr.open_zarr(chunk_store)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/zarr.py", line 679, in open_zarr
+    use_cftime=use_cftime,
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/api.py", line 557, in open_dataset
+    ds = maybe_decode_store(store, chunks)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/api.py", line 461, in maybe_decode_store
+    decode_timedelta=decode_timedelta,
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/conventions.py", line 657, in decode_cf
+    ds = Dataset(vars, attrs=attrs)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/dataset.py", line 688, in __init__
+    data_vars, coords, compat="broadcast_equals"
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/merge.py", line 468, in merge_data_and_coords
+    objects, compat, join, explicit_coords=explicit_coords, indexes=indexes
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/merge.py", line 613, in merge_core
+    collected = collect_variables_and_indexes(aligned)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/merge.py", line 278, in collect_variables_and_indexes
+    variable = as_variable(variable, name=name)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/variable.py", line 172, in as_variable
+    obj = obj.to_index_variable()
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/variable.py", line 571, in to_index_variable
+    self.dims, self._data, self._attrs, encoding=self._encoding, fastpath=True
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/variable.py", line 2518, in __init__
+    self._data = PandasIndexAdapter(self._data)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/indexing.py", line 1397, in __init__
+    self.array = utils.safe_cast_to_index(array)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/utils.py", line 115, in safe_cast_to_index
+    index = pd.Index(np.asarray(array), **kwargs)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/numpy/core/_asarray.py", line 102, in asarray
+    return array(a, dtype, copy=False, order=order)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/indexing.py", line 568, in __array__
+    return np.asarray(array[self.key], dtype=None)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/zarr.py", line 73, in __getitem__
+    return array[key.tuple]
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/zarr/core.py", line 662, in __getitem__
+    return self.get_basic_selection(selection, fields=fields)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/zarr/core.py", line 788, in get_basic_selection
+    fields=fields)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/zarr/core.py", line 828, in _get_basic_selection_nd
+    indexer = BasicIndexer(selection, self)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/zarr/indexing.py", line 282, in __init__
+    dim_indexer = SliceDimIndexer(dim_sel, dim_len, dim_chunk_len)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/zarr/indexing.py", line 116, in __init__
+    self.nchunks = ceildiv(self.dim_len, self.dim_chunk_len)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/zarr/indexing.py", line 100, in ceildiv
+    return math.ceil(a / b)
+ZeroDivisionError: division by zero
+[2021-06-15 09:59:20] Request: 
+open_dataset(ds_id=esacci.BIOMASS.yr.L4.AGB.multi-sensor.multi-platform.MERGED.2-0.r1, store_id=cci-store, time_range=None, var_names=['agb', 'agb_se'], region=[33.64668, 65.33259, 33.64846, 65.33436])
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/projects/ccitools/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 409, in test_open_ds
+    force_local=False)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/ops/io.py", line 92, in open_dataset
+    monitor=monitor)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/ds.py", line 456, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 472, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 248, in open_data
+    ds = xr.open_zarr(chunk_store)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/zarr.py", line 679, in open_zarr
+    use_cftime=use_cftime,
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/api.py", line 557, in open_dataset
+    ds = maybe_decode_store(store, chunks)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/api.py", line 461, in maybe_decode_store
+    decode_timedelta=decode_timedelta,
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/conventions.py", line 657, in decode_cf
+    ds = Dataset(vars, attrs=attrs)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/dataset.py", line 688, in __init__
+    data_vars, coords, compat="broadcast_equals"
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/merge.py", line 468, in merge_data_and_coords
+    objects, compat, join, explicit_coords=explicit_coords, indexes=indexes
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/merge.py", line 613, in merge_core
+    collected = collect_variables_and_indexes(aligned)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/merge.py", line 278, in collect_variables_and_indexes
+    variable = as_variable(variable, name=name)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/variable.py", line 172, in as_variable
+    obj = obj.to_index_variable()
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/variable.py", line 571, in to_index_variable
+    self.dims, self._data, self._attrs, encoding=self._encoding, fastpath=True
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/variable.py", line 2518, in __init__
+    self._data = PandasIndexAdapter(self._data)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/indexing.py", line 1397, in __init__
+    self.array = utils.safe_cast_to_index(array)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/utils.py", line 115, in safe_cast_to_index
+    index = pd.Index(np.asarray(array), **kwargs)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/numpy/core/_asarray.py", line 102, in asarray
+    return array(a, dtype, copy=False, order=order)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/core/indexing.py", line 568, in __array__
+    return np.asarray(array[self.key], dtype=None)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/xarray/backends/zarr.py", line 73, in __getitem__
+    return array[key.tuple]
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/zarr/core.py", line 662, in __getitem__
+    return self.get_basic_selection(selection, fields=fields)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/zarr/core.py", line 788, in get_basic_selection
+    fields=fields)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/zarr/core.py", line 828, in _get_basic_selection_nd
+    indexer = BasicIndexer(selection, self)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/zarr/indexing.py", line 282, in __init__
+    dim_indexer = SliceDimIndexer(dim_sel, dim_len, dim_chunk_len)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/zarr/indexing.py", line 116, in __init__
+    self.nchunks = ceildiv(self.dim_len, self.dim_chunk_len)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/zarr/indexing.py", line 100, in ceildiv
+    return math.ceil(a / b)
+ZeroDivisionError: division by zero

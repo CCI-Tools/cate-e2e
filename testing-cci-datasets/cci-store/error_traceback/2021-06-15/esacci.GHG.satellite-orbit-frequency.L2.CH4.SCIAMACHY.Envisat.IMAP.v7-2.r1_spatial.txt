@@ -1,0 +1,63 @@
+[2021-06-15 09:16:44] Request: 
+open_dataset(ds_id=esacci.GHG.satellite-orbit-frequency.L2.CH4.SCIAMACHY.Envisat.IMAP.v7-2.r1, store_id=cci-store, time_range=None, var_names=['chi2_ch4', 'pressure_weight'], region=[-77.03166, 66.75354, 42.96834, 186.75354])
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/projects/ccitools/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 409, in test_open_ds
+    force_local=False)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/ops/io.py", line 92, in open_dataset
+    monitor=monitor)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/ds.py", line 458, in open_dataset
+    dataset = select_subset(dataset, **subset_args)
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/select.py", line 37, in select_subset
+    dataset = select_spatial_subset(dataset, xy_bbox=bbox)
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/select.py", line 86, in select_spatial_subset
+    x_name, y_name = get_dataset_xy_names(dataset, xy_names=xy_names)
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/geocoding.py", line 437, in get_dataset_xy_names
+    return (_get_coord_var_name(dataset, x_name, X_COORD_VAR_NAMES, 'x'),
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/geocoding.py", line 447, in _get_coord_var_name
+    raise ValueError(f'cannot detect {dim_name!r}-coordinate variable in dataset')
+ValueError: cannot detect 'x'-coordinate variable in dataset
+[2021-06-15 09:33:18] Request: 
+open_dataset(ds_id=esacci.GHG.satellite-orbit-frequency.L2.CH4.SCIAMACHY.Envisat.IMAP.v7-2.r1, store_id=cci-store, time_range=None, var_names=['xco2_macc', 'xco2_CT2015'], region=[-11.5028, 21.382, 108.4972, 141.382])
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/projects/ccitools/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 409, in test_open_ds
+    force_local=False)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/ops/io.py", line 92, in open_dataset
+    monitor=monitor)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/ds.py", line 458, in open_dataset
+    dataset = select_subset(dataset, **subset_args)
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/select.py", line 37, in select_subset
+    dataset = select_spatial_subset(dataset, xy_bbox=bbox)
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/select.py", line 86, in select_spatial_subset
+    x_name, y_name = get_dataset_xy_names(dataset, xy_names=xy_names)
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/geocoding.py", line 437, in get_dataset_xy_names
+    return (_get_coord_var_name(dataset, x_name, X_COORD_VAR_NAMES, 'x'),
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/geocoding.py", line 447, in _get_coord_var_name
+    raise ValueError(f'cannot detect {dim_name!r}-coordinate variable in dataset')
+ValueError: cannot detect 'x'-coordinate variable in dataset
+[2021-06-15 10:03:04] Request: 
+open_dataset(ds_id=esacci.GHG.satellite-orbit-frequency.L2.CH4.SCIAMACHY.Envisat.IMAP.v7-2.r1, store_id=cci-store, time_range=None, var_names=['xch4_raw', 'latitude'], region=[-122.77659, -87.69835, -2.77659, 32.30165])
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/projects/ccitools/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 409, in test_open_ds
+    force_local=False)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/ops/io.py", line 92, in open_dataset
+    monitor=monitor)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/ds.py", line 458, in open_dataset
+    dataset = select_subset(dataset, **subset_args)
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/select.py", line 37, in select_subset
+    dataset = select_spatial_subset(dataset, xy_bbox=bbox)
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/select.py", line 86, in select_spatial_subset
+    x_name, y_name = get_dataset_xy_names(dataset, xy_names=xy_names)
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/geocoding.py", line 437, in get_dataset_xy_names
+    return (_get_coord_var_name(dataset, x_name, X_COORD_VAR_NAMES, 'x'),
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/geocoding.py", line 447, in _get_coord_var_name
+    raise ValueError(f'cannot detect {dim_name!r}-coordinate variable in dataset')
+ValueError: cannot detect 'x'-coordinate variable in dataset

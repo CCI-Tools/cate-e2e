@@ -1,0 +1,34 @@
+[2021-09-22 08:35:27] Request: 
+open_dataset(ds_id=esacci.ICESHEETS.unspecified.Unspecified.IV.multi-sensor.multi-platform.UNSPECIFIED.1-1.greenland_timeseries_Hagen, store_id=cci-store, time_range=None, var_names=['land_ice_surface_velocity_magnitude_std', 'land_ice_surface_vertical_velocity'], region=None)
+
+Traceback (most recent call last):
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 108, in describe_data
+    return self._get_data_descriptor_from_metadata(data_id, ds_metadata)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 130, in _get_data_descriptor_from_metadata
+    var_descriptors = self._get_variable_descriptors(dataset_info['var_names'], var_infos)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 180, in _get_variable_descriptors
+    VariableDescriptor(var_name, var_dtype, var_dims, attrs=var_info)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/store/descriptor.py", line 265, in __init__
+    assert_not_none(dims, 'dims')
+  File "/home/users/tfincke/Projects/xcube/xcube/util/assertions.py", line 28, in assert_not_none
+    raise ValueError(f'{name or _DEFAULT_NAME} must not be None')
+ValueError: dims must not be None
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 356, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/ds.py", line 414, in open_dataset
+    open_schema = data_store.get_open_data_params_schema(dataset_id, opener_id)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 469, in get_open_data_params_schema
+    return self._get_opener(opener_id=opener_id).get_open_data_params_schema(data_id)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 203, in get_open_data_params_schema
+    dsd = self.describe_data(data_id)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 110, in describe_data
+    raise DataStoreError(f'Cannot describe metadata. "{data_id}" does not seem to be a valid identifier.')
+xcube.core.store.error.DataStoreError: Cannot describe metadata. "esacci.ICESHEETS.unspecified.Unspecified.IV.multi-sensor.multi-platform.UNSPECIFIED.1-1.greenland_timeseries_Hagen" does not seem to be a valid identifier.

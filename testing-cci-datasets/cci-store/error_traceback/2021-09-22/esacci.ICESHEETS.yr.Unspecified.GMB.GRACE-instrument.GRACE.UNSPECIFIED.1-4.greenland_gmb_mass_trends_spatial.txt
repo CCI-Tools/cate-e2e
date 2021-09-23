@@ -1,0 +1,7 @@
+[2021-09-22 08:35:47] Request: 
+open_dataset(ds_id=esacci.ICESHEETS.yr.Unspecified.GMB.GRACE-instrument.GRACE.UNSPECIFIED.1-4.greenland_gmb_mass_trends, store_id=cci-store, time_range=None, var_names=['longitude', 'latitude'], region=[-76.21373, 82.31562, -74.21373, 84.31562])
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 417, in test_open_ds
+    if var in dataset.data_vars:
+AttributeError: 'NoneType' object has no attribute 'data_vars'

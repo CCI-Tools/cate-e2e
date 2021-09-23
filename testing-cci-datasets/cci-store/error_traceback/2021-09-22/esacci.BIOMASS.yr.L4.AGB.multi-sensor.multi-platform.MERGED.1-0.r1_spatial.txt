@@ -1,0 +1,61 @@
+[2021-09-22 08:32:00] Request: 
+open_dataset(ds_id=esacci.BIOMASS.yr.L4.AGB.multi-sensor.multi-platform.MERGED.1-0.r1, store_id=cci-store, time_range=None, var_names=['agb', 'agb_se'], region=[164.00973, -45.01358, 164.01151, -45.01181])
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 410, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/ds.py", line 459, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 472, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/users/tfincke/Projects/xcube-cci/xcube_cci/dataaccess.py", line 248, in open_data
+    ds = xr.open_zarr(chunk_store)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/backends/zarr.py", line 666, in open_zarr
+    ds = open_dataset(
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/backends/api.py", line 557, in open_dataset
+    ds = maybe_decode_store(store, chunks)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/backends/api.py", line 453, in maybe_decode_store
+    ds = conventions.decode_cf(
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/conventions.py", line 657, in decode_cf
+    ds = Dataset(vars, attrs=attrs)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/dataset.py", line 687, in __init__
+    variables, coord_names, dims, indexes, _ = merge_data_and_coords(
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/merge.py", line 467, in merge_data_and_coords
+    return merge_core(
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/merge.py", line 613, in merge_core
+    collected = collect_variables_and_indexes(aligned)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/merge.py", line 278, in collect_variables_and_indexes
+    variable = as_variable(variable, name=name)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/variable.py", line 172, in as_variable
+    obj = obj.to_index_variable()
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/variable.py", line 570, in to_index_variable
+    return IndexVariable(
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/variable.py", line 2518, in __init__
+    self._data = PandasIndexAdapter(self._data)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/indexing.py", line 1397, in __init__
+    self.array = utils.safe_cast_to_index(array)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/utils.py", line 115, in safe_cast_to_index
+    index = pd.Index(np.asarray(array), **kwargs)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/numpy/core/_asarray.py", line 102, in asarray
+    return array(a, dtype, copy=False, order=order)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/indexing.py", line 568, in __array__
+    return np.asarray(array[self.key], dtype=None)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/backends/zarr.py", line 73, in __getitem__
+    return array[key.tuple]
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/zarr/core.py", line 571, in __getitem__
+    return self.get_basic_selection(selection, fields=fields)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/zarr/core.py", line 696, in get_basic_selection
+    return self._get_basic_selection_nd(selection=selection, out=out,
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/zarr/core.py", line 737, in _get_basic_selection_nd
+    indexer = BasicIndexer(selection, self)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/zarr/indexing.py", line 280, in __init__
+    dim_indexer = SliceDimIndexer(dim_sel, dim_len, dim_chunk_len)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/zarr/indexing.py", line 114, in __init__
+    self.nchunks = ceildiv(self.dim_len, self.dim_chunk_len)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/zarr/indexing.py", line 98, in ceildiv
+    return math.ceil(a / b)
+ZeroDivisionError: division by zero

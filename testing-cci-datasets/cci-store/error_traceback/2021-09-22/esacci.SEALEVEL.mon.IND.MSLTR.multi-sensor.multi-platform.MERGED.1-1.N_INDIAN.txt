@@ -1,0 +1,83 @@
+[2021-09-22 08:51:01] Request: 
+open_dataset(ds_id=esacci.SEALEVEL.mon.IND.MSLTR.multi-sensor.multi-platform.MERGED.1-1.N_INDIAN, store_id=cci-store, time_range=None, var_names=['lon', 'lat'], region=None)
+
+Traceback (most recent call last):
+  File "test_cci_data_support.py", line 356, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/io.py", line 94, in open_dataset
+    return adjust_temporal_attrs(normalize_op(ds))
+  File "/home/users/tfincke/Projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/users/tfincke/Projects/cate/cate/ops/normalize.py", line 60, in normalize
+    return xcube_normalize.normalize_dataset(ds, reverse_decreasing_lat=True)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/normalize.py", line 80, in normalize_dataset
+    ds = _normalize_lat_lon_2d(ds)
+  File "/home/users/tfincke/Projects/xcube/xcube/core/normalize.py", line 202, in _normalize_lat_lon_2d
+    equal_lat = np.allclose(lat_data_1, lat_data_2, equal_nan=True)
+  File "<__array_function__ internals>", line 5, in allclose
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/numpy/core/numeric.py", line 2256, in allclose
+    res = all(isclose(a, b, rtol=rtol, atol=atol, equal_nan=equal_nan))
+  File "<__array_function__ internals>", line 5, in isclose
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/numpy/core/numeric.py", line 2348, in isclose
+    x = asanyarray(a)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/numpy/core/_asarray.py", line 171, in asanyarray
+    return array(a, dtype, copy=False, order=order, subok=True)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/common.py", line 142, in __array__
+    return np.asarray(self.values, dtype=dtype)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/dataarray.py", line 634, in values
+    return self.variable.values
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/variable.py", line 554, in values
+    return _as_array_or_item(self._data)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/variable.py", line 287, in _as_array_or_item
+    data = np.asarray(data)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/numpy/core/_asarray.py", line 102, in asarray
+    return array(a, dtype, copy=False, order=order)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/dask/array/core.py", line 1483, in __array__
+    x = self.compute()
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/dask/base.py", line 283, in compute
+    (result,) = compute(self, traverse=False, **kwargs)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/dask/base.py", line 565, in compute
+    results = schedule(dsk, keys, **kwargs)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/dask/threaded.py", line 76, in get
+    results = get_async(
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/dask/local.py", line 487, in get_async
+    raise_exception(exc, tb)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/dask/local.py", line 317, in reraise
+    raise exc
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/dask/local.py", line 222, in execute_task
+    result = _execute_task(task, data)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/dask/core.py", line 121, in _execute_task
+    return func(*(_execute_task(a, cache) for a in args))
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/dask/array/core.py", line 115, in getter
+    c = np.asarray(c)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/numpy/core/_asarray.py", line 102, in asarray
+    return array(a, dtype, copy=False, order=order)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/indexing.py", line 503, in __array__
+    return np.asarray(self.array, dtype=dtype)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/numpy/core/_asarray.py", line 102, in asarray
+    return array(a, dtype, copy=False, order=order)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/indexing.py", line 663, in __array__
+    return np.asarray(self.array, dtype=dtype)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/numpy/core/_asarray.py", line 102, in asarray
+    return array(a, dtype, copy=False, order=order)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/core/indexing.py", line 568, in __array__
+    return np.asarray(array[self.key], dtype=None)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/xarray/backends/zarr.py", line 73, in __getitem__
+    return array[key.tuple]
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/zarr/core.py", line 571, in __getitem__
+    return self.get_basic_selection(selection, fields=fields)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/zarr/core.py", line 696, in get_basic_selection
+    return self._get_basic_selection_nd(selection=selection, out=out,
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/zarr/core.py", line 739, in _get_basic_selection_nd
+    return self._get_selection(indexer=indexer, out=out, fields=fields)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/zarr/core.py", line 1029, in _get_selection
+    self._chunk_getitem(chunk_coords, chunk_selection, out, out_selection,
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/zarr/core.py", line 1674, in _chunk_getitem
+    self._process_chunk(out, cdata, chunk_selection, drop_axes,
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/zarr/core.py", line 1617, in _process_chunk
+    chunk = self._decode_chunk(cdata)
+  File "/home/users/tfincke/miniconda3/envs/xcube/lib/python3.8/site-packages/zarr/core.py", line 1832, in _decode_chunk
+    chunk = chunk.reshape(self._chunks, order=self._order)
+ValueError: cannot reshape array of size 53 into shape (1,56)

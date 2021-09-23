@@ -1,0 +1,156 @@
+[2021-06-15 09:04:10] Request: 
+open_dataset(ds_id=esacci.AEROSOL.day.L3C.AER_PRODUCTS.ATSR-2.ERS-2.ORAC.04-01_seg-.r1, store_id=cci-store, time_range=None, var_names=['surface_reflectance870_uncertainty_median', 'AOD1600_upperquartile'], region=[76.34532, -2.89354, 78.34532, -0.89354])
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/projects/ccitools/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 409, in test_open_ds
+    force_local=False)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/ops/io.py", line 92, in open_dataset
+    monitor=monitor)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/ds.py", line 456, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 472, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 245, in open_data
+    chunk_store = CciChunkStore(self._cci_odp, data_id, cube_kwargs)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 664, in __init__
+    trace_store_calls=trace_store_calls)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 103, in __init__
+    self._dimension_data = self.get_dimension_data(data_id)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 730, in get_dimension_data
+    dimension_data = self.get_variable_data(dataset_id, dimensions)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 740, in get_variable_data
+    self._time_ranges[0][1].strftime(_TIMESTAMP_FORMAT))
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 710, in get_variable_data
+    start_time, end_time)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 415, in _run_with_session
+    result = loop.run_until_complete(coro)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/nest_asyncio.py", line 70, in run_until_complete
+    return f.result()
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/asyncio/futures.py", line 181, in result
+    raise self._exception
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/asyncio/tasks.py", line 249, in __step
+    result = coro.send(None)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 118, in _run_with_session_executor
+    return await async_function(session, *params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 745, in _get_var_data
+    data=list(range(variable_names[var_name])))
+MemoryError
+[2021-06-15 09:10:06] Request: 
+open_dataset(ds_id=esacci.AEROSOL.day.L3C.AER_PRODUCTS.ATSR-2.ERS-2.ORAC.04-01_seg-.r1, store_id=cci-store, time_range=None, var_names=['pixel_corner_latitude1', 'aerosol_type_count'], region=[29.73248, -59.00143, 31.73248, -57.00143])
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/projects/ccitools/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 409, in test_open_ds
+    force_local=False)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/ops/io.py", line 92, in open_dataset
+    monitor=monitor)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/ds.py", line 456, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 472, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 245, in open_data
+    chunk_store = CciChunkStore(self._cci_odp, data_id, cube_kwargs)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 664, in __init__
+    trace_store_calls=trace_store_calls)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 103, in __init__
+    self._dimension_data = self.get_dimension_data(data_id)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 730, in get_dimension_data
+    dimension_data = self.get_variable_data(dataset_id, dimensions)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 740, in get_variable_data
+    self._time_ranges[0][1].strftime(_TIMESTAMP_FORMAT))
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 710, in get_variable_data
+    start_time, end_time)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 415, in _run_with_session
+    result = loop.run_until_complete(coro)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/nest_asyncio.py", line 70, in run_until_complete
+    return f.result()
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/asyncio/futures.py", line 181, in result
+    raise self._exception
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/asyncio/tasks.py", line 249, in __step
+    result = coro.send(None)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 118, in _run_with_session_executor
+    return await async_function(session, *params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 745, in _get_var_data
+    data=list(range(variable_names[var_name])))
+MemoryError
+[2021-06-15 09:26:35] Request: 
+open_dataset(ds_id=esacci.AEROSOL.day.L3C.AER_PRODUCTS.ATSR-2.ERS-2.ORAC.04-01_seg-.r1, store_id=cci-store, time_range=None, var_names=['AOD1600_upperquartile', 'REFF_uncertainty_sdev'], region=[-141.95334, 65.14769, -139.95334, 67.14769])
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/projects/ccitools/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 409, in test_open_ds
+    force_local=False)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/ops/io.py", line 92, in open_dataset
+    monitor=monitor)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/ds.py", line 456, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 472, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 245, in open_data
+    chunk_store = CciChunkStore(self._cci_odp, data_id, cube_kwargs)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 664, in __init__
+    trace_store_calls=trace_store_calls)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 103, in __init__
+    self._dimension_data = self.get_dimension_data(data_id)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 730, in get_dimension_data
+    dimension_data = self.get_variable_data(dataset_id, dimensions)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 740, in get_variable_data
+    self._time_ranges[0][1].strftime(_TIMESTAMP_FORMAT))
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 710, in get_variable_data
+    start_time, end_time)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 415, in _run_with_session
+    result = loop.run_until_complete(coro)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/nest_asyncio.py", line 70, in run_until_complete
+    return f.result()
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/asyncio/futures.py", line 181, in result
+    raise self._exception
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/asyncio/tasks.py", line 249, in __step
+    result = coro.send(None)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 118, in _run_with_session_executor
+    return await async_function(session, *params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 745, in _get_var_data
+    data=list(range(variable_names[var_name])))
+MemoryError
+[2021-06-15 09:55:13] Request: 
+open_dataset(ds_id=esacci.AEROSOL.day.L3C.AER_PRODUCTS.ATSR-2.ERS-2.ORAC.04-01_seg-.r1, store_id=cci-store, time_range=None, var_names=['AOD550_interquartile_mean', 'surface_reflectance550_mean'], region=[76.97308, -56.23405, 78.97308, -54.23405])
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/projects/ccitools/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 409, in test_open_ds
+    force_local=False)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/ops/io.py", line 92, in open_dataset
+    monitor=monitor)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/ds.py", line 456, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 472, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 245, in open_data
+    chunk_store = CciChunkStore(self._cci_odp, data_id, cube_kwargs)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 664, in __init__
+    trace_store_calls=trace_store_calls)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 103, in __init__
+    self._dimension_data = self.get_dimension_data(data_id)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 730, in get_dimension_data
+    dimension_data = self.get_variable_data(dataset_id, dimensions)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 740, in get_variable_data
+    self._time_ranges[0][1].strftime(_TIMESTAMP_FORMAT))
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 710, in get_variable_data
+    start_time, end_time)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 415, in _run_with_session
+    result = loop.run_until_complete(coro)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/nest_asyncio.py", line 70, in run_until_complete
+    return f.result()
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/asyncio/futures.py", line 181, in result
+    raise self._exception
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/asyncio/tasks.py", line 249, in __step
+    result = coro.send(None)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 118, in _run_with_session_executor
+    return await async_function(session, *params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 745, in _get_var_data
+    data=list(range(variable_names[var_name])))
+MemoryError

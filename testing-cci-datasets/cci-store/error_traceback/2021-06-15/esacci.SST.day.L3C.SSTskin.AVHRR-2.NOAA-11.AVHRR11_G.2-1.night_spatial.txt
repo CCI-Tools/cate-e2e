@@ -1,0 +1,27 @@
+[2021-06-15 11:01:14] Request: 
+open_dataset(ds_id=esacci.SST.day.L3C.SSTskin.AVHRR-2.NOAA-11.AVHRR11_G.2-1.night, store_id=cci-store, time_range=None, var_names=['uncertainty_correlated_time_and_depth_adjustment', 'uncertainty_systematic_alt'], region=[22.53796, 89.96234, 22.63796, 90.06234])
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/projects/ccitools/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 409, in test_open_ds
+    force_local=False)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/ops/io.py", line 92, in open_dataset
+    monitor=monitor)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/ds.py", line 456, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 472, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 238, in open_data
+    cci_schema.validate_instance(open_params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/util/jsonschema.py", line 104, in validate_instance
+    types=dict(array=(list, tuple)))
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/jsonschema/validators.py", line 934, in validate
+    raise error
+jsonschema.exceptions.ValidationError: 90.06234 is greater than the maximum of 90.0
+
+Failed validating 'maximum' in schema['properties']['bbox']['items'][3]:
+    {'maximum': 90.0, 'minimum': -90.0, 'type': 'number'}
+
+On instance['bbox'][3]:
+    90.06234

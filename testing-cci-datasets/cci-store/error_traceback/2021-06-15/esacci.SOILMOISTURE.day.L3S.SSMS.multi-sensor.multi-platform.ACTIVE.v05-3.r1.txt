@@ -1,0 +1,24 @@
+[2021-06-15 10:53:15] Request: 
+open_dataset(ds_id=esacci.SOILMOISTURE.day.L3S.SSMS.multi-sensor.multi-platform.ACTIVE.v05-3.r1, store_id=cci-store, time_range=None, var_names=[], region=None)
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/projects/ccitools/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 354, in test_open_ds
+    force_local=False)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/ops/io.py", line 92, in open_dataset
+    monitor=monitor)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/ds.py", line 456, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 472, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 249, in open_data
+    ds = self._normalize_dataset(ds, cci_schema, **open_params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 297, in _normalize_dataset
+    ds = cubify_dataset(ds)
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/normalize.py", line 48, in cubify_dataset
+    return assert_cube(ds)
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/verify.py", line 44, in assert_cube
+    raise ValueError(message)
+ValueError: Dataset is not a valid xcube dataset, because:
+- missing spatial x,y coordinate variables.

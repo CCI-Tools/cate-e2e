@@ -1,0 +1,33 @@
+[2021-06-15 10:21:59] Request: 
+open_dataset(ds_id=esacci.GHG.satellite-orbit-frequency.L2.CO2.multi-sensor.multi-platform.EMMA.v2-2b.r1, store_id=cci-store, time_range=None, var_names=['latitude', 'xco2'], region=None)
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/projects/ccitools/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 354, in test_open_ds
+    force_local=False)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/ops/io.py", line 92, in open_dataset
+    monitor=monitor)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/ds.py", line 456, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 472, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 245, in open_data
+    chunk_store = CciChunkStore(self._cci_odp, data_id, cube_kwargs)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 664, in __init__
+    trace_store_calls=trace_store_calls)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 80, in __init__
+    self._time_ranges = self.get_time_ranges(data_id, cube_params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 695, in get_time_ranges
+    request_time_ranges = self._cci_odp.get_time_ranges_from_data(dataset_id, iso_start_time, iso_end_time)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 837, in get_time_ranges_from_data
+    end_time)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 415, in _run_with_session
+    result = loop.run_until_complete(coro)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/nest_asyncio.py", line 64, in run_until_complete
+    self._run_once()
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/site-packages/nest_asyncio.py", line 87, in _run_once
+    event_list = self._selector.select(timeout)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.7/selectors.py", line 468, in select
+    fd_event_list = self._selector.poll(timeout, max_ev)
+KeyboardInterrupt

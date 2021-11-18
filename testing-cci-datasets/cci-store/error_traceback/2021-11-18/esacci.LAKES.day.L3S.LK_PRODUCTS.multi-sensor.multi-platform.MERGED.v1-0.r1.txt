@@ -1,0 +1,60 @@
+[2021-11-18 11:01:34] Request: 
+open_dataset(ds_id=esacci.LAKES.day.L3S.LK_PRODUCTS.multi-sensor.multi-platform.MERGED.v1-0.r1, store_id=cci-store, time_range=None, var_names=['Rw665_uncertainty_relative', 'chla_uncertainty'], region=None)
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/site-packages/zarr/storage.py", line 2175, in __getitem__
+    value = self._values_cache[key]
+KeyError: '.zmetadata'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 653, in __getitem__
+    value = self._vfs[key]
+KeyError: '.zmetadata'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/site-packages/xarray/backends/zarr.py", line 369, in open_group
+    zarr_group = zarr.open_consolidated(store, **open_kwargs)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/site-packages/zarr/convenience.py", line 1178, in open_consolidated
+    meta_store = ConsolidatedMetadataStore(store, metadata_key=metadata_key)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/site-packages/zarr/storage.py", line 2769, in __init__
+    meta = json_loads(store[metadata_key])
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/site-packages/zarr/storage.py", line 2183, in __getitem__
+    value = self._store[key]
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 656, in __getitem__
+    value = self._vfs[key]
+KeyError: '.zmetadata'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/projects/ccitools/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 358, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/ds.py", line 450, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 499, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 301, in open_data
+    ds = xr.open_zarr(chunk_store, consolidated=False)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/site-packages/xarray/backends/zarr.py", line 770, in open_zarr
+    ds = open_dataset(
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/site-packages/xarray/backends/api.py", line 497, in open_dataset
+    backend_ds = backend.open_dataset(
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/site-packages/xarray/backends/zarr.py", line 826, in open_dataset
+    store = ZarrStore.open_group(
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/site-packages/xarray/backends/zarr.py", line 386, in open_group
+    zarr_group = zarr.open_group(store, **open_kwargs)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/site-packages/zarr/hierarchy.py", line 1165, in open_group
+    if contains_array(store, path=path):
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/site-packages/zarr/storage.py", line 96, in contains_array
+    return key in store
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/site-packages/zarr/storage.py", line 2093, in __contains__
+    self._contains_cache = set(self._keys())
+MemoryError

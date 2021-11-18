@@ -1,0 +1,27 @@
+[2021-11-18 11:45:21] Request: 
+open_dataset(ds_id=esacci.OZONE.mon.L3.LP.GOMOS.Envisat.GOMOS_ENVISAT.v0001.r1, store_id=cci-store, time_range=None, var_names=['standard_error_of_the_mean', 'inhomogeneity_in_time'], region=[105.27284, 87.08161, 125.27284, 107.08161])
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/projects/ccitools/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 416, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/ds.py", line 450, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 499, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 291, in open_data
+    cci_schema.validate_instance(open_params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/util/jsonschema.py", line 128, in validate_instance
+    jsonschema.validate(instance=instance, schema=self.to_dict(),
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/site-packages/jsonschema/validators.py", line 934, in validate
+    raise error
+jsonschema.exceptions.ValidationError: 107.08161 is greater than the maximum of 90.0
+
+Failed validating 'maximum' in schema['properties']['bbox']['items'][3]:
+    {'maximum': 90.0, 'minimum': -90.0, 'type': 'number'}
+
+On instance['bbox'][3]:
+    107.08161

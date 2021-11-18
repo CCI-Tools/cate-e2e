@@ -1,0 +1,21 @@
+[2021-11-18 11:49:48] Request: 
+open_dataset(ds_id=esacci.SEAICE.day.L4.SICONC.multi-sensor.multi-platform.AMSR_25kmEASE2.2-1.SH, store_id=cci-store, time_range=None, var_names=['total_standard_error', 'ice_conc'], region=[178.70261, -88.96692, 228.70261, -38.96692])
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/projects/ccitools/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 416, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/ds.py", line 452, in open_dataset
+    dataset = select_subset(dataset, **subset_args)
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/select.py", line 64, in select_subset
+    dataset = select_spatial_subset(dataset, xy_bbox=bbox)
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/select.py", line 131, in select_spatial_subset
+    grid_mapping = GridMapping.from_dataset(dataset,
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/gridmapping/base.py", line 664, in from_dataset
+    return new_grid_mapping_from_dataset(
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/gridmapping/dataset.py", line 103, in new_grid_mapping_from_dataset
+    raise ValueError('cannot find any grid mapping in dataset')
+ValueError: cannot find any grid mapping in dataset

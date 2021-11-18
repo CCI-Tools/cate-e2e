@@ -1,0 +1,66 @@
+[2021-11-18 10:59:52] Request: 
+open_dataset(ds_id=esacci.ICESHEETS.yr.Unspecified.GMB.GRACE-instrument.GRACE.UNSPECIFIED.1-2.greenland_gmb_mass_trends, store_id=cci-store, time_range=None, var_names=['crs', 'GMB_trend'], region=[-74.63265, 80.73541, -72.63265, 82.73541])
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/projects/ccitools/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 412, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/ds.py", line 452, in open_dataset
+    dataset = select_subset(dataset, **subset_args)
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/select.py", line 64, in select_subset
+    dataset = select_spatial_subset(dataset, xy_bbox=bbox)
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/select.py", line 131, in select_spatial_subset
+    grid_mapping = GridMapping.from_dataset(dataset,
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/gridmapping/base.py", line 664, in from_dataset
+    return new_grid_mapping_from_dataset(
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/gridmapping/dataset.py", line 72, in new_grid_mapping_from_dataset
+    grid_mappings = [
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/gridmapping/dataset.py", line 73, in <listcomp>
+    new_grid_mapping_from_coords(x_coords=gmp.coords.x,
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/gridmapping/coords.py", line 260, in new_grid_mapping_from_coords
+    return cls(x_coords=x_coords,
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/gridmapping/coords.py", line 60, in __init__
+    super().__init__(**kwargs)
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/gridmapping/base.py", line 109, in __init__
+    _assert_valid_xy_names(xy_dim_names, name='xy_dim_names')
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/gridmapping/helpers.py", line 134, in _assert_valid_xy_names
+    assert_true(len(value) == 2
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/util/assertions.py", line 106, in assert_true
+    raise exception_type(message)
+ValueError: invalid xy_dim_names
+[2021-11-18 11:27:55] Request: 
+open_dataset(ds_id=esacci.ICESHEETS.yr.Unspecified.GMB.GRACE-instrument.GRACE.UNSPECIFIED.1-2.greenland_gmb_mass_trends, store_id=cci-store, time_range=None, var_names=['t', 'start_time'], region=[-20.37949, 84.6145, -18.37949, 86.6145])
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/projects/ccitools/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 416, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/ds.py", line 452, in open_dataset
+    dataset = select_subset(dataset, **subset_args)
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/select.py", line 64, in select_subset
+    dataset = select_spatial_subset(dataset, xy_bbox=bbox)
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/select.py", line 131, in select_spatial_subset
+    grid_mapping = GridMapping.from_dataset(dataset,
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/gridmapping/base.py", line 664, in from_dataset
+    return new_grid_mapping_from_dataset(
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/gridmapping/dataset.py", line 72, in new_grid_mapping_from_dataset
+    grid_mappings = [
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/gridmapping/dataset.py", line 73, in <listcomp>
+    new_grid_mapping_from_coords(x_coords=gmp.coords.x,
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/gridmapping/coords.py", line 260, in new_grid_mapping_from_coords
+    return cls(x_coords=x_coords,
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/gridmapping/coords.py", line 60, in __init__
+    super().__init__(**kwargs)
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/gridmapping/base.py", line 109, in __init__
+    _assert_valid_xy_names(xy_dim_names, name='xy_dim_names')
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/core/gridmapping/helpers.py", line 134, in _assert_valid_xy_names
+    assert_true(len(value) == 2
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/util/assertions.py", line 106, in assert_true
+    raise exception_type(message)
+ValueError: invalid xy_dim_names

@@ -1,0 +1,105 @@
+[2021-11-18 10:36:54] Request: 
+open_dataset(ds_id=esacci.AEROSOL.5-days.L3C.AEX.GOMOS.Envisat.AERGOM.3-00.r1, store_id=cci-store, time_range=None, var_names=['SAD_SULF', 'AEX355'], region=[149.80672, -37.97262, 159.80672, -27.97262])
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/projects/ccitools/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 412, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/ds.py", line 450, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 499, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 298, in open_data
+    chunk_store = CciChunkStore(self._cci_odp, data_id, cube_kwargs)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 731, in __init__
+    super().__init__(dataset_id,
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 84, in __init__
+    self._time_ranges = self.get_time_ranges(data_id, cube_params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 765, in get_time_ranges
+    request_time_ranges = self._cci_odp.get_time_ranges_from_data(dataset_id, iso_start_time, iso_end_time)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 894, in get_time_ranges_from_data
+    return self._run_with_session(self._get_time_ranges_from_data,
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 409, in _run_with_session
+    result = loop.run_until_complete(coro)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/site-packages/nest_asyncio.py", line 70, in run_until_complete
+    return f.result()
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/asyncio/futures.py", line 178, in result
+    raise self._exception
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/asyncio/tasks.py", line 280, in __step
+    result = coro.send(None)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 118, in _run_with_session_executor
+    return await async_function(session, *params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 908, in _get_time_ranges_from_data
+    feature_list = await self._get_feature_list(session, request)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 847, in _get_feature_list
+    while feature_list[end_offset] in self._features[ds_id] \
+IndexError: list index out of range
+[2021-11-18 10:37:41] Request: 
+open_dataset(ds_id=esacci.AEROSOL.5-days.L3C.AEX.GOMOS.Envisat.AERGOM.3-00.r1, store_id=cci-store, time_range=None, var_names=['AEFF_PSC', 'AEX355_uncertainty'], region=[28.83492, 31.87096, 38.83492, 41.87096])
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/projects/ccitools/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 412, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/ds.py", line 450, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 499, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 298, in open_data
+    chunk_store = CciChunkStore(self._cci_odp, data_id, cube_kwargs)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 731, in __init__
+    super().__init__(dataset_id,
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 84, in __init__
+    self._time_ranges = self.get_time_ranges(data_id, cube_params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/chunkstore.py", line 765, in get_time_ranges
+    request_time_ranges = self._cci_odp.get_time_ranges_from_data(dataset_id, iso_start_time, iso_end_time)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 894, in get_time_ranges_from_data
+    return self._run_with_session(self._get_time_ranges_from_data,
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 409, in _run_with_session
+    result = loop.run_until_complete(coro)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/site-packages/nest_asyncio.py", line 70, in run_until_complete
+    return f.result()
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/asyncio/futures.py", line 178, in result
+    raise self._exception
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/asyncio/tasks.py", line 280, in __step
+    result = coro.send(None)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 118, in _run_with_session_executor
+    return await async_function(session, *params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 908, in _get_time_ranges_from_data
+    feature_list = await self._get_feature_list(session, request)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/cciodp.py", line 847, in _get_feature_list
+    while feature_list[end_offset] in self._features[ds_id] \
+IndexError: list index out of range
+[2021-11-18 11:05:37] Request: 
+open_dataset(ds_id=esacci.AEROSOL.5-days.L3C.AEX.GOMOS.Envisat.AERGOM.3-00.r1, store_id=cci-store, time_range=None, var_names=['ANG430-560-AEX', 'S_AOD440'], region=[-126.07038, 80.54705, -116.07038, 90.54705])
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/projects/ccitools/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 416, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/ds.py", line 450, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 499, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 291, in open_data
+    cci_schema.validate_instance(open_params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube/xcube/util/jsonschema.py", line 128, in validate_instance
+    jsonschema.validate(instance=instance, schema=self.to_dict(),
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/site-packages/jsonschema/validators.py", line 934, in validate
+    raise error
+jsonschema.exceptions.ValidationError: 90.54705 is greater than the maximum of 90.0
+
+Failed validating 'maximum' in schema['properties']['bbox']['items'][3]:
+    {'maximum': 90.0, 'minimum': -90.0, 'type': 'number'}
+
+On instance['bbox'][3]:
+    90.54705

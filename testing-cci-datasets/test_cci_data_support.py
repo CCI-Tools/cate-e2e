@@ -294,6 +294,10 @@ def check_for_support(data_id):
         supported = False
         reason = f"There is no support for SEALEVEL satellite-orbit " \
                  f"frequency datasets, because problems are expected."
+    elif 'LAKES' in data_id:
+        supported = False
+        reason = f"There is currently no support for LAKES datasets, " \
+                 f"because problems are expected."
     elif data_id in vector_data:
         supported = False
         reason = f"There is no support for vector data."

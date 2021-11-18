@@ -19,8 +19,8 @@ from xcube.core.store import DataStoreError
 nest_asyncio.apply()
 
 # header for CSV report
-header_row = ['ECV-Name', 'Dataset-ID', 'supported', 'Type-Specifier', 'open(1)', 'open_temp(2)',
-              'open_bbox(3)', 'cache(4)', 'map(5)', 'comment']
+header_row = ['ECV-Name', 'Dataset-ID', 'supported', 'Data-Type', 'open(1)',
+              'open_temp(2)', 'open_bbox(3)', 'cache(4)', 'map(5)', 'comment']
 
 # Not supported vector data:
 vector_data = [

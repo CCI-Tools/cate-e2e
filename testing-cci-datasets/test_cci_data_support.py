@@ -1,23 +1,19 @@
 import csv
 import json
-import multiprocessing as mp
 import os
 import pandas as pd
 import random
 import signal
-import string
 import sys
 import traceback
 from datetime import datetime
-from itertools import repeat
 
 import nest_asyncio
 import numpy as np
 from cate.core import DATA_STORE_POOL
 from cate.ops.io import open_dataset
 from cate.core.ds import DataAccessError
-from xcube.core.store import TYPE_SPECIFIER_CUBE
-from xcube.core.store import TYPE_SPECIFIER_DATASET
+from xcube.core.store import DATASET_TYPE
 from xcube.core.store import DataStoreError
 
 nest_asyncio.apply()
@@ -28,12 +24,18 @@ header_row = ['ECV-Name', 'Dataset-ID', 'supported', 'Type-Specifier', 'open(1)'
 
 # Not supported vector data:
 vector_data = [
+    'esacci.FIRE.mon.L3S.BA.MODIS.Terra.MODIS_TERRA.v5-1.pixel',
+    'esacci.FIRE.mon.L3S.BA.MSI-(Sentinel-2).Sentinel-2A.MSI.v1-1.pixel',
     'esacci.ICESHEETS.mon.IND.GMB.GRACE-instrument.GRACE.VARIOUS.1-3.greenland_gmb_time_series',
     'esacci.ICESHEETS.unspecified.Unspecified.CFL.multi-sensor.multi-platform.UNSPECIFIED.v3-0.greenland',
     'esacci.ICESHEETS.unspecified.Unspecified.GLL.multi-sensor.multi-platform.UNSPECIFIED.v1-3.greenland',
     'esacci.ICESHEETS.yr.Unspecified.GMB.GRACE-instrument.GRACE.UNSPECIFIED.1-2.greenland_gmb_timeseries',
+    'esacci.ICESHEETS.yr.Unspecified.GMB.GRACE-instrument.GRACE.UNSPECIFIED.1-4.greenland_gmb_mass_trends',
     'esacci.ICESHEETS.yr.Unspecified.GMB.GRACE-instrument.GRACE.UNSPECIFIED.1-4.greenland_gmb_time_series',
-    'esacci.ICESHEETS.yr.Unspecified.GMB.GRACE-instrument.GRACE.UNSPECIFIED.1-5.greenland_gmb_time_series']
+    'esacci.ICESHEETS.yr.Unspecified.GMB.GRACE-instrument.GRACE.UNSPECIFIED.1-5.greenland_gmb_mass_trends',
+    'esacci.ICESHEETS.yr.Unspecified.GMB.GRACE-instrument.GRACE.UNSPECIFIED.1-5.greenland_gmb_time_series',
+    'esacci.ICESHEETS.yr.Unspecified.SEC.SIRAL.CryoSat-2.UNSPECIFIED.2-2.greenland_sec_cryosat_2yr',
+    'esacci.ICESHEETS.yr.Unspecified.SEC.SIRAL.CryoSat-2.UNSPECIFIED.2-2.greenland_sec_cryosat_5yr']
 
 # time out in order to cancel datasets which are taking longer than a certain time
 TIMEOUT_TIME = 120
@@ -278,17 +280,20 @@ def check_for_visualization(cube, summary_row, variables):
 def check_for_support(data_id):
     if 'sinusoidal' in data_id:
         supported = False
-        reason = f"There is no support for sinusoidal datasets, please use the equivalent dataset with 'geographic' in" \
-                 f" the dataset_id."
+        reason = f"There is no support for sinusoidal datasets, please use " \
+                 f"the equivalent dataset with 'geographic' in the dataset_id."
     elif 'L2P' in data_id:
         supported = False
-        reason = f"There is no support for L2P datasets, because problems are expected."
+        reason = f"There is no support for L2P datasets, " \
+                 f"because problems are expected."
     elif 'esacci.FIRE.mon.L3S' in data_id:
         supported = False
-        reason = f"There is no support for FIRE L3S datasets, because problems are expected."
+        reason = f"There is no support for FIRE L3S datasets, " \
+                 f"because problems are expected."
     elif 'esacci.SEALEVEL.satellite-orbit-frequency.L1' in data_id:
         supported = False
-        reason = f"There is no support for SEALEVEL satellite-orbit-frequency datasets, because problems are expected."
+        reason = f"There is no support for SEALEVEL satellite-orbit " \
+                 f"frequency datasets, because problems are expected."
     elif data_id in vector_data:
         supported = False
         reason = f"There is no support for vector data."
@@ -302,7 +307,8 @@ def check_for_support(data_id):
 def test_open_ds(data_id, store, lds, results_csv, store_name):
     comment_temporal = None
     comment_spatial = None
-    ecv_name = data_id.split('-')[1] if store_name == 'cci-zarr-store' else data_id.split('.')[1]
+    ecv_name = data_id.split('-')[1] \
+        if store_name == 'cci-zarr-store' else data_id.split('.')[1]
     summary_row = {'ECV-Name': ecv_name, 'Dataset-ID': data_id}
 
     supported, reason = check_for_support(data_id)
@@ -313,26 +319,27 @@ def test_open_ds(data_id, store, lds, results_csv, store_name):
     else:
         summary_row['supported'] = 'yes'
 
-    type_specifier = None
-    type_specifiers_for_data = store.get_type_specifiers_for_data(data_id)
-    preferred_type_specifiers = [TYPE_SPECIFIER_CUBE, TYPE_SPECIFIER_DATASET]
-    for preferred_type_specifier in preferred_type_specifiers:
-        for type_specifier_for_data in type_specifiers_for_data:
-            if preferred_type_specifier.is_satisfied_by(type_specifier_for_data):
-                type_specifier = type_specifier_for_data
-                break
-    if type_specifier is None:
+    data_type = None
+    data_types_for_data = store.get_data_types_for_data(data_id)
+
+    for data_type_for_data in data_types_for_data:
+        if DATASET_TYPE.is_super_type_of(data_type_for_data):
+            data_type = data_type_for_data
+            break
+    if data_type is None:
         comment_1 = f'Testing only supports datasets. For "{data_id}", ' \
-                    f'only available type specifiers "{type_specifiers_for_data}" were found.'
+                    f'only available data types "{data_types_for_data}" ' \
+                    f'were found.'
         _all_tests_no(summary_row, results_csv, general_comment=comment_1)
         return
-    summary_row['Type-Specifier'] = type_specifier
+    summary_row['Data-Type'] = data_type
     try:
-        data_descriptor = store.describe_data(data_id=data_id, type_specifier=type_specifier)
+        data_descriptor = store.describe_data(data_id=data_id,
+                                              data_type=data_type)
     except DataStoreError:
         comment_1 = f'Failed getting data description while executing ' \
-                    f'store.describe_data(data_id=data_id, type_specifier=type_specifier) ' \
-                    f'with: {sys.exc_info()[:2]}'
+                    f'store.describe_data(data_id=data_id, ' \
+                    f'data_type=data_type) with: {sys.exc_info()[:2]}'
         _all_tests_no(summary_row, results_csv, general_comment=comment_1)
         return
 
@@ -604,14 +611,23 @@ def count_success_fail(data_sets, ecv):
         total_number_of_datasets = len(data_sets)
 
     supported_percentage = 100 * supported / total_number_of_datasets
-    open_success_percentage = 100 * open_success / (total_number_of_datasets - not_supported)
-    open_temp_success_percentage = \
-        100 * open_temp_success / (total_number_of_datasets - not_supported)
-    open_bbox_success_percentage = \
-        100 * open_bbox_success / (total_number_of_datasets - not_supported)
-    visualize_success_percentage = \
-        100 * visualize_success / (total_number_of_datasets - not_supported)
-    cache_success_percentage = 100 * cache_success / (total_number_of_datasets - not_supported)
+    try:
+        open_success_percentage = \
+            100 * open_success / (total_number_of_datasets - not_supported)
+        open_temp_success_percentage = \
+            100 * open_temp_success / (total_number_of_datasets - not_supported)
+        open_bbox_success_percentage = \
+            100 * open_bbox_success / (total_number_of_datasets - not_supported)
+        visualize_success_percentage = \
+            100 * visualize_success / (total_number_of_datasets - not_supported)
+        cache_success_percentage = \
+            100 * cache_success / (total_number_of_datasets - not_supported)
+    except ZeroDivisionError:
+        open_success_percentage = 0.0
+        open_temp_success_percentage = 0.0
+        open_bbox_success_percentage = 0.0
+        visualize_success_percentage = 0.0
+        cache_success_percentage = 0.0
     summary_row_new = {'ecv': ecv,
                        'supported': supported,
                        'open_success': open_success,
@@ -649,7 +665,7 @@ def create_list_of_failed(test_data_sets, failed_csv, header_row):
 def create_dict_of_ids_with_verification_flags(data_sets):
     dict_with_verify_flags = {}
     for dataset in data_sets:
-        type_specifier = dataset['Type-Specifier']
+        data_type = dataset['Data-Type']
         verify_flags = []
         if 'yes' in dataset['open(1)']:
             verify_flags.append('open')
@@ -660,8 +676,9 @@ def create_dict_of_ids_with_verification_flags(data_sets):
         if 'yes' in dataset['cache(4)']:
             verify_flags.append('write_zarr')
 
-        dict_with_verify_flags[dataset['Dataset-ID']] = {'type_specifier': type_specifier,
-                                                         'verification_flags': verify_flags}
+        dict_with_verify_flags[dataset['Dataset-ID']] = \
+            {'data_type': data_type,
+             'verification_flags': verify_flags}
 
     return dict_with_verify_flags
 

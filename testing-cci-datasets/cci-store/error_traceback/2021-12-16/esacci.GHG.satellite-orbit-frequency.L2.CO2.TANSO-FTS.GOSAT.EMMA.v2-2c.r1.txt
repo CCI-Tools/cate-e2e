@@ -1,0 +1,33 @@
+[2021-12-16 15:50:24] Request: 
+open_dataset(ds_id=esacci.GHG.satellite-orbit-frequency.L2.CO2.TANSO-FTS.GOSAT.EMMA.v2-2c.r1, store_id=cci-store, time_range=None, var_names=['xco2_quality_flag', 'median_processor_id'], region=None)
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/projects/ccitools/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 362, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/tonio-bc/projects/ccitools/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/tonio-bc/projects/ccitools/cate/cate/core/ds.py", line 450, in open_dataset
+    dataset = data_store.open_data(data_id=dataset_id, opener_id=opener_id, **open_args)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 499, in open_data
+    return self._get_opener(opener_id=opener_id).open_data(data_id, **open_params)
+  File "/home/tonio-bc/projects/dcs4cop/xcube-cci/xcube_cci/dataaccess.py", line 301, in open_data
+    ds = xr.open_zarr(chunk_store, consolidated=False)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/site-packages/xarray/backends/zarr.py", line 770, in open_zarr
+    ds = open_dataset(
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/site-packages/xarray/backends/api.py", line 497, in open_dataset
+    backend_ds = backend.open_dataset(
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/site-packages/xarray/backends/zarr.py", line 840, in open_dataset
+    ds = store_entrypoint.open_dataset(
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/site-packages/xarray/backends/store.py", line 39, in open_dataset
+    ds = Dataset(vars, attrs=attrs)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/site-packages/xarray/core/dataset.py", line 754, in __init__
+    variables, coord_names, dims, indexes, _ = merge_data_and_coords(
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/site-packages/xarray/core/merge.py", line 484, in merge_data_and_coords
+    return merge_core(
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/site-packages/xarray/core/merge.py", line 640, in merge_core
+    dims = calculate_dimensions(variables)
+  File "/home/tonio-bc/miniconda3/envs/cate-env/lib/python3.8/site-packages/xarray/core/dataset.py", line 208, in calculate_dimensions
+    raise ValueError(
+ValueError: conflicting sizes for dimension 'sounding_dim': length 85 on 'median_processor_id' and length 18 on {'sounding_dim': 'latitude', 'time': 'median_processor_id'}

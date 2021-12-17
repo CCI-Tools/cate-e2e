@@ -1,0 +1,15 @@
+ecv,supported,open_success,open_fail,open_temp_success,open_temp_fail,open_bbox_success,open_bbox_fail,cache_success,cache_fail,visualize_success,visualize_fail,supported_percentage,open_success_percentage,open_temp_success_percentage,open_bbox_success_percentage,cache_success_percentage,visualize_success_percentage,total_number_of_datasets
+BIOMASS,1,1,0,1,0,1,0,1,0,1,0,100.0,100.0,100.0,100.0,100.0,100.0,1
+GHG,2,2,0,0,2,0,2,0,2,0,2,100.0,100.0,0.0,0.0,0.0,0.0,2
+ICESHEETS_Antarctica_GMB,1,1,0,1,0,0,1,0,1,0,1,100.0,100.0,100.0,0.0,0.0,0.0,1
+ICESHEETS_Greenland_GMB,1,1,0,0,1,0,1,0,1,0,1,100.0,100.0,0.0,0.0,0.0,0.0,1
+L3C_CLOUD,1,1,0,1,0,1,0,1,0,1,0,100.0,100.0,100.0,100.0,100.0,100.0,1
+L3C_SNOW,1,1,0,1,0,1,0,1,0,1,0,100.0,100.0,100.0,100.0,100.0,100.0,1
+L4_GHRSST,1,1,0,1,0,1,0,1,0,1,0,100.0,100.0,100.0,100.0,100.0,100.0,1
+LC,1,1,0,1,0,1,0,0,1,1,0,100.0,100.0,100.0,100.0,0.0,100.0,1
+OC,1,1,0,1,0,1,0,1,0,1,0,100.0,100.0,100.0,100.0,100.0,100.0,1
+PERMAFROST,1,1,0,1,0,0,1,0,1,0,1,100.0,100.0,100.0,0.0,0.0,0.0,1
+SEAICE,2,2,0,2,0,0,2,0,2,0,2,100.0,100.0,100.0,0.0,0.0,0.0,2
+SEALEVEL,2,1,1,1,1,1,1,1,1,1,1,100.0,50.0,50.0,50.0,50.0,50.0,2
+SOILMOISTURE,1,1,0,1,0,1,0,1,0,1,0,100.0,100.0,100.0,100.0,100.0,100.0,1
+ALL_ECVS,16,15,1,12,4,8,8,7,9,8,8,100.0,93.75,75.0,50.0,43.75,50.0,16

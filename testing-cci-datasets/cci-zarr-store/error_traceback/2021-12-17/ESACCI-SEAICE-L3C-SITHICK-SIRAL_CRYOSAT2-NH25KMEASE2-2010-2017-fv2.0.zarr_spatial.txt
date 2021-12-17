@@ -1,0 +1,7 @@
+[2021-12-17 14:32:28] Request: 
+open_dataset(ds_id=ESACCI-SEAICE-L3C-SITHICK-SIRAL_CRYOSAT2-NH25KMEASE2-2010-2017-fv2.0.zarr, store_id=cci-zarr-store, time_range=None, var_names=['sea_ice_thickness_uncertainty', 'status_flag'], region=[2842.81799, 3875.31606, 2844.81799, 3877.31606])
+
+Traceback (most recent call last):
+  File "/home/tonio-bc/projects/ccitools/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 423, in test_open_ds
+    if var in dataset.data_vars:
+AttributeError: 'NoneType' object has no attribute 'data_vars'

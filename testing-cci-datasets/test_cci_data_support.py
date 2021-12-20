@@ -806,8 +806,8 @@ def main():
         print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
               f'The file {failed_csv} does not exist.')
 
-    cleanup_result_outputs_than_14_days(store_name)
-    cleanup_result_outputs_than_14_days(f'{store_name}/error_traceback')
+    cleanup_result_outputs_older_than_14_days(store_name)
+    cleanup_result_outputs_older_than_14_days(f'{store_name}/error_traceback')
 
     print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
           f'Test run finished on {date_today}.')

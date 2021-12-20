@@ -714,7 +714,7 @@ def create_dict_of_ids_with_verification_flags(data_sets):
     return dict_with_verify_flags
 
 
-def cleanup_result_outputs_than_14_days(path_to_check_for_cleanup):
+def cleanup_result_outputs_older_than_14_days(path_to_check_for_cleanup):
     date_to_be_kept = date_today - (timedelta(days=14))
     for item in os.listdir(path_to_check_for_cleanup):
         try:

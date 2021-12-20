@@ -39,6 +39,16 @@ vector_data = [
     'esacci.ICESHEETS.yr.Unspecified.SEC.SIRAL.CryoSat-2.UNSPECIFIED.2-2.greenland_sec_cryosat_2yr',
     'esacci.ICESHEETS.yr.Unspecified.SEC.SIRAL.CryoSat-2.UNSPECIFIED.2-2.greenland_sec_cryosat_5yr']
 
+not_supported_list = [['sinusoidal',
+                       "please use the equivalent dataset with 'geographic' in the dataset_id"],
+                      ['L2P', 'because problems are expected'],
+                      ['esacci.FIRE.mon.L3S', 'because problems are expected'],
+                      ['esacci.SEALEVEL.satellite-orbit-frequency.L1',
+                       'because problems are expected'],
+                      ['LAKES', 'because problems are expected'],
+                      [vector_data, 'There is no support for vector data.']
+                      ]
+
 # time out in order to cancel datasets which are taking longer than a certain time
 TIMEOUT_TIME = 120
 
@@ -290,33 +300,17 @@ def check_for_visualization(cube, summary_row, variables):
 
 
 def check_for_support(data_id):
-    if 'sinusoidal' in data_id:
-        supported = False
-        reason = f"There is no support for sinusoidal datasets, please use " \
-                 f"the equivalent dataset with 'geographic' in the dataset_id."
-    elif 'L2P' in data_id:
-        supported = False
-        reason = f"There is no support for L2P datasets, " \
-                 f"because problems are expected."
-    elif 'esacci.FIRE.mon.L3S' in data_id:
-        supported = False
-        reason = f"There is no support for FIRE L3S datasets, " \
-                 f"because problems are expected."
-    elif 'esacci.SEALEVEL.satellite-orbit-frequency.L1' in data_id:
-        supported = False
-        reason = f"There is no support for SEALEVEL satellite-orbit " \
-                 f"frequency datasets, because problems are expected."
-    elif 'LAKES' in data_id:
-        supported = False
-        reason = f"There is currently no support for LAKES datasets, " \
-                 f"because problems are expected."
-    elif data_id in vector_data:
-        supported = False
-        reason = f"There is no support for vector data."
-
-    else:
-        supported = True
-        reason = None
+    supported = True
+    reason = None
+    for not_supported_id, reason in not_supported_list:
+        if isinstance(not_supported_id, list):
+            if data_id in not_supported_id:
+                supported = False
+                break
+        elif not_supported_id in data_id:
+            reason = f"There is no support for {not_supported_id}, {reason}."
+            supported = False
+            break
     return supported, reason
 
 
@@ -527,211 +521,6 @@ def generate_traceback_file(store_name, data_id, time_range, var_list, region,
     return traceback_file_url
 
 
-def sort_csv(input_csv, output_csv):
-    with open(input_csv, 'r', newline='') as f_input:
-        csv_input = csv.DictReader(f_input)
-        data = sorted(csv_input, key=lambda row: (row['Dataset-ID']))
-
-    with open(output_csv, 'w', newline='') as f_output:
-        csv_output = csv.DictWriter(f_output, fieldnames=csv_input.fieldnames)
-        csv_output.writeheader()
-        csv_output.writerows(data)
-
-
-# creating summary csv
-def read_all_result_rows(path, header_row):
-    test_data_sets_list = []
-    with open(path) as csvfile:
-        reader = csv.DictReader(csvfile, fieldnames=header_row, delimiter=',')
-        firstline = True
-        for row in reader:
-            if firstline:  # skip first line
-                firstline = False
-                continue
-            test_data_sets_list.append(row)
-    return test_data_sets_list
-
-
-def get_list_of_ecvs(data_sets):
-    ecvs = []
-    for dataset in data_sets:
-        if dataset['ECV-Name'] in ecvs:
-            continue
-        else:
-            ecvs.append(dataset['ECV-Name'])
-    ecvs.append('ALL_ECVS')
-    return ecvs
-
-
-def count_success_fail(data_sets, ecv):
-    supported = 0
-    not_supported = 0
-    open_success = 0
-    open_fail = 0
-    open_temp_success = 0
-    open_temp_fail = 0
-    open_bbox_success = 0
-    open_bbox_fail = 0
-    cache_success = 0
-    cache_fail = 0
-    visualize_success = 0
-    visualize_fail = 0
-
-    if 'ALL_ECVS' not in ecv:
-        for dataset in data_sets:
-            if ecv in dataset['ECV-Name']:
-                if 'yes' in dataset['supported']:
-                    supported += 1
-                    if 'yes' in dataset['open(1)']:
-                        open_success += 1
-                    else:
-                        open_fail += 1
-
-                    if 'yes' in dataset['open_temp(2)']:
-                        open_temp_success += 1
-                    else:
-                        open_temp_fail += 1
-
-                    if 'yes' in dataset['open_bbox(3)']:
-                        open_bbox_success += 1
-                    else:
-                        open_bbox_fail += 1
-
-                    if 'yes' in dataset['cache(4)']:
-                        cache_success += 1
-                    else:
-                        cache_fail += 1
-
-                    if 'yes' in dataset['map(5)']:
-                        visualize_success += 1
-                    else:
-                        visualize_fail += 1
-                else:
-                    not_supported += 1
-        total_number_of_datasets = sum([supported, not_supported])
-    else:
-        for dataset in data_sets:
-            if 'yes' in dataset['supported']:
-                supported += 1
-                if 'yes' in dataset['open(1)']:
-                    open_success += 1
-                else:
-                    open_fail += 1
-
-                if 'yes' in dataset['open_temp(2)']:
-                    open_temp_success += 1
-                else:
-                    open_temp_fail += 1
-
-                if 'yes' in dataset['open_bbox(3)']:
-                    open_bbox_success += 1
-                else:
-                    open_bbox_fail += 1
-
-                if 'yes' in dataset['cache(4)']:
-                    cache_success += 1
-                else:
-                    cache_fail += 1
-
-                if 'yes' in dataset['map(5)']:
-                    visualize_success += 1
-                else:
-                    visualize_fail += 1
-            else:
-                not_supported += 1
-        total_number_of_datasets = len(data_sets)
-
-    supported_percentage = 100 * supported / total_number_of_datasets
-    try:
-        open_success_percentage = \
-            100 * open_success / (total_number_of_datasets - not_supported)
-        open_temp_success_percentage = \
-            100 * open_temp_success / (total_number_of_datasets - not_supported)
-        open_bbox_success_percentage = \
-            100 * open_bbox_success / (total_number_of_datasets - not_supported)
-        visualize_success_percentage = \
-            100 * visualize_success / (total_number_of_datasets - not_supported)
-        cache_success_percentage = \
-            100 * cache_success / (total_number_of_datasets - not_supported)
-    except ZeroDivisionError:
-        open_success_percentage = 0.0
-        open_temp_success_percentage = 0.0
-        open_bbox_success_percentage = 0.0
-        visualize_success_percentage = 0.0
-        cache_success_percentage = 0.0
-    summary_row_new = {'ecv': ecv,
-                       'supported': supported,
-                       'open_success': open_success,
-                       'open_fail': open_fail,
-                       'open_temp_success': open_temp_success,
-                       'open_temp_fail': open_temp_fail,
-                       'open_bbox_success': open_bbox_success,
-                       'open_bbox_fail': open_bbox_fail,
-                       'cache_success': cache_success,
-                       'cache_fail': cache_fail,
-                       'visualize_success': visualize_success,
-                       'visualize_fail': visualize_fail,
-                       'supported_percentage': supported_percentage,
-                       'open_success_percentage': open_success_percentage,
-                       'open_temp_success_percentage': open_temp_success_percentage,
-                       'open_bbox_success_percentage': open_bbox_success_percentage,
-                       'visualize_success_percentage': visualize_success_percentage,
-                       'cache_success_percentage': cache_success_percentage,
-                       'total_number_of_datasets': total_number_of_datasets
-                       }
-
-    return summary_row_new
-
-
-def create_list_of_failed(test_data_sets, failed_csv, header_row):
-    for dataset in test_data_sets:
-        if dataset['supported'] == 'yes' and (dataset['open(1)'] == 'no' or
-                                              dataset['open_temp(2)'] == 'no' or
-                                              dataset['open_bbox(3)'] == 'no' or
-                                              dataset['cache(4)'] == 'no' or
-                                              dataset['map(5)'] == 'no'):
-            update_csv(failed_csv, header_row, dataset)
-
-
-def create_dict_of_ids_with_verification_flags(data_sets):
-    dict_with_verify_flags = {}
-    for dataset in data_sets:
-        data_type = dataset['Data-Type']
-        verify_flags = []
-        if 'yes' in dataset['open(1)']:
-            verify_flags.append('open')
-        if 'yes' in dataset['open_temp(2)']:
-            verify_flags.append('constrain_time')
-        if 'yes' in dataset['open_bbox(3)']:
-            verify_flags.append('constrain_region')
-        if 'yes' in dataset['cache(4)']:
-            verify_flags.append('write_zarr')
-
-        dict_with_verify_flags[dataset['Dataset-ID']] = \
-            {'data_type': data_type,
-             'verification_flags': verify_flags}
-
-    return dict_with_verify_flags
-
-
-def cleanup_result_outputs_than_14_days(path_to_check_for_cleanup):
-    date_to_be_kept = date_today - (timedelta(days=14))
-    for item in os.listdir(path_to_check_for_cleanup):
-        try:
-            date_of_item = datetime.strptime(item[:10], '%Y-%m-%d')
-        except ValueError:
-            continue
-        if date_of_item and date_of_item.date() < date_to_be_kept:
-            try:
-                if os.path.isdir(os.path.join(path_to_check_for_cleanup, item)):
-                    shutil.rmtree(os.path.join(path_to_check_for_cleanup, item))
-                if os.path.isfile(
-                        os.path.join(path_to_check_for_cleanup, item)):
-                    os.remove(os.path.join(path_to_check_for_cleanup, item))
-            except OSError as e:
-                print(f'Error removing {item}: {e.strerror}')
-
-
 def main():
     store_name = 'cci-store'
     if len(sys.argv) == 2:
@@ -747,67 +536,6 @@ def main():
     start_time = datetime.now()
     for data_id in data_ids:
         test_open_ds(data_id, store, lds, results_csv, store_name)
-
-    sort_csv(results_csv, f'{store_name}/{support_file_name}_sorted.csv')
-
-    test_data_sets = read_all_result_rows(
-        f'{store_name}/{support_file_name}_sorted.csv', header_row)
-
-    ecvs = get_list_of_ecvs(test_data_sets)
-    failed_csv = f'{store_name}/{support_file_name}_failed.csv'
-    create_list_of_failed(test_data_sets, failed_csv, header_row)
-    if os.path.exists(failed_csv):
-        sort_csv(failed_csv,
-                 f'{store_name}/{support_file_name}_sorted_failed.csv')
-
-    with open(results_csv, 'r', newline='') as f_input:
-        csv_input = csv.DictReader(f_input)
-        data = sorted(csv_input, key=lambda row: (row['Dataset-ID']))
-    with open(f'{store_name}/{support_file_name}_sorted.csv', 'w',
-              newline='') as f_output:
-        csv_output = csv.DictWriter(f_output, fieldnames=csv_input.fieldnames)
-        csv_output.writeheader()
-        csv_output.writerows(data)
-
-    summary_csv = f'{store_name}/{support_file_name}_summary_sorted.csv'
-    header_summary = ['ecv', 'supported', 'open_success', 'open_fail',
-                      'open_temp_success',
-                      'open_temp_fail', 'open_bbox_success', 'open_bbox_fail',
-                      'cache_success',
-                      'cache_fail', 'visualize_success', 'visualize_fail',
-                      'supported_percentage',
-                      'open_success_percentage', 'open_temp_success_percentage',
-                      'open_bbox_success_percentage',
-                      'cache_success_percentage',
-                      'visualize_success_percentage',
-                      'total_number_of_datasets']
-
-    for ecv in ecvs:
-        results_summary_row = count_success_fail(test_data_sets, ecv)
-        update_csv(summary_csv, header_summary, results_summary_row)
-
-    dict_with_verify_flags = create_dict_of_ids_with_verification_flags(
-        test_data_sets)
-
-    with open(f'{store_name}/'
-              f'{date_today}_DrsID_verification_flags.json',
-              'w') as f:
-        json.dump(dict_with_verify_flags, f, indent=4)
-
-    if os.path.exists(results_csv):
-        os.remove(results_csv)
-    else:
-        print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
-              f'The file {results_csv} does not exist.')
-
-    if os.path.exists(failed_csv):
-        os.remove(failed_csv)
-    else:
-        print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
-              f'The file {failed_csv} does not exist.')
-
-    cleanup_result_outputs_than_14_days(store_name)
-    cleanup_result_outputs_than_14_days(f'{store_name}/error_traceback')
 
     print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
           f'Test run finished on {date_today}.')

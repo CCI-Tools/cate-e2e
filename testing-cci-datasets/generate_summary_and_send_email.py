@@ -3,7 +3,8 @@ import json
 import os
 import shutil
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime
+from datetime import timedelta
 
 # header for CSV report
 header_row = ['ECV-Name', 'Dataset-ID', 'supported', 'Data-Type', 'open(1)',
@@ -79,7 +80,6 @@ def count_success_fail(data_sets, ecv):
     cache_fail = 0
     visualize_success = 0
     visualize_fail = 0
-
     if 'ALL_ECVS' not in ecv:
         for dataset in data_sets:
             if ecv in dataset['ECV-Name']:
@@ -217,7 +217,7 @@ def create_dict_of_ids_with_verification_flags(data_sets):
     return dict_with_verify_flags
 
 
-def cleanup_result_outputs_than_14_days(path_to_check_for_cleanup):
+def cleanup_result_outputs_older_than_14_days(path_to_check_for_cleanup):
     date_to_be_kept = date_today - (timedelta(days=14))
     for item in os.listdir(path_to_check_for_cleanup):
         try:
@@ -301,8 +301,8 @@ def main():
         print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
               f'The file {failed_csv} does not exist.')
 
-    cleanup_result_outputs_than_14_days(store_name)
-    cleanup_result_outputs_than_14_days(f'{store_name}/error_traceback')
+    cleanup_result_outputs_older_than_14_days(store_name)
+    cleanup_result_outputs_older_than_14_days(f'{store_name}/error_traceback')
 
     print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
           f'Test run finished on {date_today}.')

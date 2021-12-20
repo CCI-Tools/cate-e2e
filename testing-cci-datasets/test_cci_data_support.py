@@ -1,24 +1,20 @@
 import csv
 import json
 import os
-import pandas as pd
 import random
 import shutil
 import signal
 import sys
 import traceback
-from datetime import datetime, timedelta
+from datetime import datetime
+from datetime import timedelta
 
 import nest_asyncio
 import numpy as np
 import pandas as pd
 from cate.core import DATA_STORE_POOL
-from cate.core import DATA_STORE_POOL
-from cate.ops.io import open_dataset
 from cate.core.ds import DataAccessError
 from cate.ops.io import open_dataset
-from xcube.core.store import DATASET_TYPE
-from xcube.core.store import DataStoreError
 from xcube.core.store import DATASET_TYPE
 from xcube.core.store import DataStoreError
 
@@ -821,3 +817,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    

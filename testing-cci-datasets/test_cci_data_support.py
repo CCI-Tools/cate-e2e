@@ -50,8 +50,8 @@ class TimeOutException(Exception):
 
 
 def alarm_handler(signum, frame):
-    print(
-        f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] ALARM signal received')
+    print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
+          f'ALARM signal received')
     raise TimeOutException(f'Time out after {TIMEOUT_TIME} seconds.')
 
 

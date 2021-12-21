@@ -5,7 +5,7 @@ set -m
 # export necessary environment variables
 export EMAIL_PASSWORD="rxH6BDDy4UqSs2k"
 
-test_directory=~/projects/service-ke/testing-cci-datasets
+test_directory=~/projects/cate-e2e/testing-cci-datasets
 project_dirs=~/projects
 #declare -a test_modes=("development" "stage" "production")
 declare -a test_modes=("development")

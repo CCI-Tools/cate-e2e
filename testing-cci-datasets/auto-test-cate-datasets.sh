@@ -3,7 +3,7 @@ set -e
 set -m
 
 # export necessary environment variables
-export EMAIL_PASSWORD="rxH6BDDy4UqSs2k"
+export EMAIL_PASSWORD="placeholder"
 
 test_directory=~/projects/cate-e2e/testing-cci-datasets
 project_dirs=~/projects
@@ -13,8 +13,7 @@ git pull
 # you need to specify here, which envs should be rebuild. For stage and production this only
 # happens if a new dev or stable release has been issued. After building a new env for stage and production
 # please remember to remove them from update_envs array
-#declare -a update_envs=("development")
-declare -a update_envs=("dev_local")
+declare -a update_envs=("development")
 declare -a cci_stores=("cci-store" "cci-zarr-store")
 
 for test_mode in "${test_modes[@]}";do

@@ -68,6 +68,9 @@ def get_list_of_ecvs(data_sets):
 
 
 def count_success_fail(data_sets, ecv):
+    summary_dict = {}
+    summary_columns = ['supported', 'open(1)',
+                       'open_temp(2)', 'open_bbox(3)', 'cache(4)', 'map(5)']
     supported = 0
     not_supported = 0
     open_success = 0
@@ -83,6 +86,9 @@ def count_success_fail(data_sets, ecv):
     if 'ALL_ECVS' not in ecv:
         for dataset in data_sets:
             if ecv in dataset['ECV-Name']:
+                for column in summary_columns:
+                    if column not in summary_dict:
+                        summary_dict[column] = value
                 if 'yes' in dataset['supported']:
                     supported += 1
                     if 'yes' in dataset['open(1)']:

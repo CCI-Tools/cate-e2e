@@ -32,11 +32,16 @@ for test_mode in "${test_modes[@]}";do
 done
 
 source ~/miniconda3/bin/activate cate-env-production
-for cci_store in "${cci_stores[@]}";do
-  python generate_summary_and_send_email.py "$cci_store" "$test_mode"
+for test_mode in "${test_modes[@]}";do
+  for cci_store in "${cci_stores[@]}";do
+    python generate_summary.py "$cci_store" "$test_mode"
+  done
 done
 source ~/miniconda3/bin/deactivate
 
 git add .
 git commit -m "automatic update of test results"
 git push
+
+# writing automated email still needs to be implemened
+#   python write_email.py

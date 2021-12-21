@@ -68,123 +68,49 @@ def get_list_of_ecvs(data_sets):
 
 
 def count_success_fail(data_sets, ecv):
-    summary_dict = {}
-    summary_columns = ['supported', 'open(1)',
-                       'open_temp(2)', 'open_bbox(3)', 'cache(4)', 'map(5)']
-    supported = 0
-    not_supported = 0
-    open_success = 0
-    open_fail = 0
-    open_temp_success = 0
-    open_temp_fail = 0
-    open_bbox_success = 0
-    open_bbox_fail = 0
-    cache_success = 0
-    cache_fail = 0
-    visualize_success = 0
-    visualize_fail = 0
+    summary_row_new = {}
+    summary_columns = ['supported',
+                       'open(1)',
+                       'open_temp(2)',
+                       'open_bbox(3)',
+                       'cache(4)',
+                       'map(5)']
+    for i in summary_columns:
+        summary_row_new[i] = 0
+        summary_row_new[f'{i}_failed'] = 0
+        summary_row_new[f'{i}_percentage'] = 0
+
     if 'ALL_ECVS' not in ecv:
         for dataset in data_sets:
             if ecv in dataset['ECV-Name']:
-                if 'yes' in dataset['supported']:
-                    supported += 1
-                    if 'yes' in dataset['open(1)']:
-                        open_success += 1
+                for column in summary_columns:
+                    if 'yes' in dataset[column]:
+                        summary_row_new[column] += 1
                     else:
-                        open_fail += 1
+                        column_failed = f'{column}_failed'
+                        summary_row_new[column_failed] += 1
 
-                    if 'yes' in dataset['open_temp(2)']:
-                        open_temp_success += 1
-                    else:
-                        open_temp_fail += 1
-
-                    if 'yes' in dataset['open_bbox(3)']:
-                        open_bbox_success += 1
-                    else:
-                        open_bbox_fail += 1
-
-                    if 'yes' in dataset['cache(4)']:
-                        cache_success += 1
-                    else:
-                        cache_fail += 1
-
-                    if 'yes' in dataset['map(5)']:
-                        visualize_success += 1
-                    else:
-                        visualize_fail += 1
-                else:
-                    not_supported += 1
-        total_number_of_datasets = sum([supported, not_supported])
+        total_number_of_datasets = sum(
+            [summary_row_new['supported'], summary_row_new['supported_failed']])
     else:
         for dataset in data_sets:
-            if 'yes' in dataset['supported']:
-                supported += 1
-                if 'yes' in dataset['open(1)']:
-                    open_success += 1
+            for column in summary_columns:
+                if 'yes' in dataset[column]:
+                    summary_row_new[column] += 1
                 else:
-                    open_fail += 1
-
-                if 'yes' in dataset['open_temp(2)']:
-                    open_temp_success += 1
-                else:
-                    open_temp_fail += 1
-
-                if 'yes' in dataset['open_bbox(3)']:
-                    open_bbox_success += 1
-                else:
-                    open_bbox_fail += 1
-
-                if 'yes' in dataset['cache(4)']:
-                    cache_success += 1
-                else:
-                    cache_fail += 1
-
-                if 'yes' in dataset['map(5)']:
-                    visualize_success += 1
-                else:
-                    visualize_fail += 1
-            else:
-                not_supported += 1
+                    column_failed = f'{column}_failed'
+                    summary_row_new[column_failed] += 1
         total_number_of_datasets = len(data_sets)
 
-    supported_percentage = 100 * supported / total_number_of_datasets
-    try:
-        open_success_percentage = \
-            100 * open_success / (total_number_of_datasets - not_supported)
-        open_temp_success_percentage = \
-            100 * open_temp_success / (total_number_of_datasets - not_supported)
-        open_bbox_success_percentage = \
-            100 * open_bbox_success / (total_number_of_datasets - not_supported)
-        visualize_success_percentage = \
-            100 * visualize_success / (total_number_of_datasets - not_supported)
-        cache_success_percentage = \
-            100 * cache_success / (total_number_of_datasets - not_supported)
-    except ZeroDivisionError:
-        open_success_percentage = 0.0
-        open_temp_success_percentage = 0.0
-        open_bbox_success_percentage = 0.0
-        visualize_success_percentage = 0.0
-        cache_success_percentage = 0.0
-    summary_row_new = {'ecv': ecv,
-                       'supported': supported,
-                       'open_success': open_success,
-                       'open_fail': open_fail,
-                       'open_temp_success': open_temp_success,
-                       'open_temp_fail': open_temp_fail,
-                       'open_bbox_success': open_bbox_success,
-                       'open_bbox_fail': open_bbox_fail,
-                       'cache_success': cache_success,
-                       'cache_fail': cache_fail,
-                       'visualize_success': visualize_success,
-                       'visualize_fail': visualize_fail,
-                       'supported_percentage': supported_percentage,
-                       'open_success_percentage': open_success_percentage,
-                       'open_temp_success_percentage': open_temp_success_percentage,
-                       'open_bbox_success_percentage': open_bbox_success_percentage,
-                       'visualize_success_percentage': visualize_success_percentage,
-                       'cache_success_percentage': cache_success_percentage,
-                       'total_number_of_datasets': total_number_of_datasets
-                       }
+    for i in summary_columns:
+        try:
+            summary_row_new[f'{i}_percentage'] = 100 * summary_row_new[i] / (
+                    total_number_of_datasets - summary_row_new[
+                'supported_failed'])
+        except ZeroDivisionError:
+            summary_row_new[f'{i}_percentage'] = 0.0
+
+    summary_row_new['ecv'] = ecv
 
     return summary_row_new
 
@@ -274,20 +200,12 @@ def main():
         csv_output.writerows(data)
 
     summary_csv = f'{results_dir}/{support_file_name}_summary_sorted.csv'
-    header_summary = ['ecv', 'supported', 'open_success', 'open_fail',
-                      'open_temp_success',
-                      'open_temp_fail', 'open_bbox_success', 'open_bbox_fail',
-                      'cache_success',
-                      'cache_fail', 'visualize_success', 'visualize_fail',
-                      'supported_percentage',
-                      'open_success_percentage', 'open_temp_success_percentage',
-                      'open_bbox_success_percentage',
-                      'cache_success_percentage',
-                      'visualize_success_percentage',
-                      'total_number_of_datasets']
+    header_summary = None
 
     for ecv in ecvs:
         results_summary_row = count_success_fail(test_data_sets, ecv)
+        if not header_summary:
+            header_summary = list(results_summary_row.keys())
         update_csv(summary_csv, header_summary, results_summary_row)
 
     dict_with_verify_flags = create_dict_of_ids_with_verification_flags(

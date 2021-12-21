@@ -8,8 +8,8 @@ echo $test_mode
 
 # versions which should be used for updating environments, need to be adjusted manually
 version_development=master
-version_stage=v0.9.2
-version_production=v0.9.2
+version_stage=v3.1.2
+version_production=v3.1.2
 
 # declare -n version=version_${test_mode}
 declare -n version=version_${test_mode}

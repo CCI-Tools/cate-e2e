@@ -1,0 +1,26 @@
+[2021-12-21 12:27:55] Request: 
+open_dataset(ds_id=ESACCI-SEALEVEL-L4-MSLA-MERGED-1993-2015-fv02.zarr, store_id=cci-zarr-store, time_range=None, var_names=['sla'], region=None)
+
+Traceback (most recent call last):
+  File "/home/xcube/projects/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 118, in get_time_range
+    return pd.to_datetime(start_time).strftime('%Y-%m-%d'), \
+  File "/home/xcube/miniconda3/envs/cate-env-development/lib/python3.9/site-packages/pandas/core/tools/datetimes.py", line 914, in to_datetime
+    result = convert_listlike(np.array([arg]), format)[0]
+  File "/home/xcube/miniconda3/envs/cate-env-development/lib/python3.9/site-packages/pandas/core/tools/datetimes.py", line 401, in _convert_listlike_datetimes
+    result, tz_parsed = objects_to_datetime64ns(
+  File "/home/xcube/miniconda3/envs/cate-env-development/lib/python3.9/site-packages/pandas/core/arrays/datetimes.py", line 2180, in objects_to_datetime64ns
+    result, tz_parsed = tslib.array_to_datetime(
+  File "pandas/_libs/tslib.pyx", line 379, in pandas._libs.tslib.array_to_datetime
+  File "pandas/_libs/tslib.pyx", line 611, in pandas._libs.tslib.array_to_datetime
+  File "pandas/_libs/tslib.pyx", line 753, in pandas._libs.tslib._array_to_datetime_object
+  File "pandas/_libs/tslib.pyx", line 584, in pandas._libs.tslib.array_to_datetime
+TypeError: <class 'numpy.ndarray'> is not convertible to datetime
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/xcube/projects/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 383, in test_open_ds
+    time_range = get_time_range(data_descriptor, dataset)
+  File "/home/xcube/projects/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 121, in get_time_range
+    return pd.to_datetime(start_time.isoformat()).strftime('%Y-%m-%d'), \
+AttributeError: 'numpy.ndarray' object has no attribute 'isoformat'

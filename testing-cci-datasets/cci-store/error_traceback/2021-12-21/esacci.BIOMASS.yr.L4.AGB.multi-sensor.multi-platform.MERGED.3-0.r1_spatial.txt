@@ -1,0 +1,27 @@
+[2021-12-21 11:04:56] Request: 
+open_dataset(ds_id=esacci.BIOMASS.yr.L4.AGB.multi-sensor.multi-platform.MERGED.3-0.r1, store_id=cci-store, time_range=None, var_names=['agb', 'agb_se', 'crs'], region=[-145.32813, -77.05351, -145.32636, -77.05173])
+
+Traceback (most recent call last):
+  File "/home/xcube/projects/cate-e2e/testing-cci-datasets/test_cci_data_support.py", line 428, in test_open_ds
+    dataset = open_dataset(ds_id=data_id,
+  File "/home/xcube/projects/cate/cate/core/op.py", line 216, in __call__
+    return_value = self._wrapped_op(**input_values)
+  File "/home/xcube/projects/cate/cate/ops/io.py", line 85, in open_dataset
+    ds, ds_id = cate.core.ds.open_dataset(dataset_id=ds_id,
+  File "/home/xcube/projects/cate/cate/core/ds.py", line 452, in open_dataset
+    dataset = select_subset(dataset, **subset_args)
+  File "/home/xcube/miniconda3/envs/cate-env-development/lib/python3.9/site-packages/xcube/core/select.py", line 64, in select_subset
+    dataset = select_spatial_subset(dataset, xy_bbox=bbox)
+  File "/home/xcube/miniconda3/envs/cate-env-development/lib/python3.9/site-packages/xcube/core/select.py", line 131, in select_spatial_subset
+    grid_mapping = GridMapping.from_dataset(dataset,
+  File "/home/xcube/miniconda3/envs/cate-env-development/lib/python3.9/site-packages/xcube/core/gridmapping/base.py", line 664, in from_dataset
+    return new_grid_mapping_from_dataset(
+  File "/home/xcube/miniconda3/envs/cate-env-development/lib/python3.9/site-packages/xcube/core/gridmapping/dataset.py", line 72, in new_grid_mapping_from_dataset
+    grid_mappings = [
+  File "/home/xcube/miniconda3/envs/cate-env-development/lib/python3.9/site-packages/xcube/core/gridmapping/dataset.py", line 73, in <listcomp>
+    new_grid_mapping_from_coords(x_coords=gmp.coords.x,
+  File "/home/xcube/miniconda3/envs/cate-env-development/lib/python3.9/site-packages/xcube/core/gridmapping/coords.py", line 145, in new_grid_mapping_from_coords
+    x_res = round_to_fraction(float(np.nanmedian(x_diff)), 2, 0.5)
+  File "/home/xcube/miniconda3/envs/cate-env-development/lib/python3.9/site-packages/xcube/core/gridmapping/helpers.py", line 189, in round_to_fraction
+    exponent = math.floor(math.log10(value)) - digits - resolution_digits
+ValueError: cannot convert float NaN to integer

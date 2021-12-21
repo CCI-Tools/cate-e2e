@@ -86,9 +86,6 @@ def count_success_fail(data_sets, ecv):
     if 'ALL_ECVS' not in ecv:
         for dataset in data_sets:
             if ecv in dataset['ECV-Name']:
-                for column in summary_columns:
-                    if column not in summary_dict:
-                        summary_dict[column] = value
                 if 'yes' in dataset['supported']:
                     supported += 1
                     if 'yes' in dataset['open(1)']:

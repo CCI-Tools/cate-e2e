@@ -15,7 +15,7 @@ git pull
 # happens if a new dev or stable release has been issued. After building a new env for stage and production
 # please remember to remove them from update_envs array
 #declare -a update_envs=("development")
-declare -a update_envs=()
+declare -a update_envs=("dev_local")
 declare -a cci_stores=("cci-store" "cci-zarr-store")
 
 for test_mode in "${test_modes[@]}";do

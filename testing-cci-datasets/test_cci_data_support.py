@@ -523,12 +523,18 @@ def generate_traceback_file(store_name, data_id, time_range, var_list, region,
 
 def main():
     store_name = 'cci-store'
-    if len(sys.argv) == 2:
+    test_mode = None
+    if len(sys.argv) >= 2:
         store_name = sys.argv[1]
+    if len(sys.argv) == 3:
+        test_mode = sys.argv[2]
+
     if not os.path.exists(store_name):
         os.mkdir(store_name)
     support_file_name = f'{date_today}_test_{store_name}_data_support'
     results_csv = f'{store_name}/{support_file_name}.csv'
+    if test_mode:
+        results_csv = f'{test_mode}/{store_name}/{support_file_name}.csv'
     store = DATA_STORE_POOL.get_store(store_name)
     data_ids = store.get_data_ids()
     lds = DATA_STORE_POOL.get_store('local')

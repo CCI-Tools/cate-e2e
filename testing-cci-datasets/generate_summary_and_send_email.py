@@ -238,33 +238,39 @@ def cleanup_result_outputs_older_than_14_days(path_to_check_for_cleanup):
 def main():
     start_time = datetime.now()
     store_name = 'cci-store'
-    if len(sys.argv) == 2:
+    test_mode = None
+    if len(sys.argv) >= 2:
         store_name = sys.argv[1]
+    if len(sys.argv) == 3:
+        test_mode = sys.argv[2]
 
     support_file_name = f'{date_today}_test_{store_name}_data_support'
-    results_csv = f'{store_name}/{support_file_name}.csv'
-    sort_csv(results_csv, f'{store_name}/{support_file_name}_sorted.csv')
+    results_dir = f'{store_name}'
+    if test_mode:
+        results_dir = f'{test_mode}/{store_name}'
+    results_csv = f'{results_dir}/{support_file_name}.csv'
+    sort_csv(results_csv, f'{results_dir}/{support_file_name}_sorted.csv')
 
     test_data_sets = read_all_result_rows(
-        f'{store_name}/{support_file_name}_sorted.csv', header_row)
+        f'{results_dir}/{support_file_name}_sorted.csv', header_row)
 
     ecvs = get_list_of_ecvs(test_data_sets)
-    failed_csv = f'{store_name}/{support_file_name}_failed.csv'
+    failed_csv = f'{results_dir}/{support_file_name}_failed.csv'
     create_list_of_failed(test_data_sets, failed_csv, header_row)
     if os.path.exists(failed_csv):
         sort_csv(failed_csv,
-                 f'{store_name}/{support_file_name}_sorted_failed.csv')
+                 f'{results_dir}/{support_file_name}_sorted_failed.csv')
 
     with open(results_csv, 'r', newline='') as f_input:
         csv_input = csv.DictReader(f_input)
         data = sorted(csv_input, key=lambda row: (row['Dataset-ID']))
-    with open(f'{store_name}/{support_file_name}_sorted.csv', 'w',
+    with open(f'{results_dir}/{support_file_name}_sorted.csv', 'w',
               newline='') as f_output:
         csv_output = csv.DictWriter(f_output, fieldnames=csv_input.fieldnames)
         csv_output.writeheader()
         csv_output.writerows(data)
 
-    summary_csv = f'{store_name}/{support_file_name}_summary_sorted.csv'
+    summary_csv = f'{results_dir}/{support_file_name}_summary_sorted.csv'
     header_summary = ['ecv', 'supported', 'open_success', 'open_fail',
                       'open_temp_success',
                       'open_temp_fail', 'open_bbox_success', 'open_bbox_fail',
@@ -284,7 +290,7 @@ def main():
     dict_with_verify_flags = create_dict_of_ids_with_verification_flags(
         test_data_sets)
 
-    with open(f'{store_name}/'
+    with open(f'{results_dir}/'
               f'{date_today}_DrsID_verification_flags.json',
               'w') as f:
         json.dump(dict_with_verify_flags, f, indent=4)
@@ -301,8 +307,8 @@ def main():
         print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
               f'The file {failed_csv} does not exist.')
 
-    cleanup_result_outputs_older_than_14_days(store_name)
-    cleanup_result_outputs_older_than_14_days(f'{store_name}/error_traceback')
+    cleanup_result_outputs_older_than_14_days(results_dir)
+    cleanup_result_outputs_older_than_14_days(f'{results_dir}/error_traceback')
 
     print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
           f'Test run finished on {date_today}.')

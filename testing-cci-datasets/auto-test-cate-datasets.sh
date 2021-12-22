@@ -31,6 +31,8 @@ for test_mode in "${test_modes[@]}";do
   source ~/miniconda3/bin/deactivate
 done
 
+# activating production env for stability reasons.
+# The executed script does only do file joggling - so no need to have different envs for the runs.
 source ~/miniconda3/bin/activate cate-env-production
 for test_mode in "${test_modes[@]}";do
   for cci_store in "${cci_stores[@]}";do

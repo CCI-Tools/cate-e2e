@@ -31,7 +31,8 @@ def update_csv(results_csv, header_row, results_for_dataset_collection):
     append_dict_as_row(results_csv, results_for_dataset_collection, header_row)
 
 
-def sort_csv(input_csv, output_csv):
+def sort_csv(input_csv):
+    output_csv = f'{input_csv[:-4]}_sorted.csv'
     with open(input_csv, 'r', newline='') as f_input:
         csv_input = csv.DictReader(f_input)
         data = sorted(csv_input, key=lambda row: (row['Dataset-ID']))
@@ -40,6 +41,8 @@ def sort_csv(input_csv, output_csv):
         csv_output = csv.DictWriter(f_output, fieldnames=csv_input.fieldnames)
         csv_output.writeheader()
         csv_output.writerows(data)
+
+    return output_csv
 
 
 # creating summary csv
@@ -124,6 +127,9 @@ def create_list_of_failed(test_data_sets, failed_csv, header_row):
                                               dataset['map(5)'] == 'no'):
             update_csv(failed_csv, header_row, dataset)
 
+    sorted_csv = sort_csv(failed_csv)
+    return sorted_csv
+
 
 def create_json_of_ids_with_verification_flags(data_sets, results_dir):
     dict_with_verify_flags = {}
@@ -176,31 +182,21 @@ def main():
     if len(sys.argv) == 3:
         test_mode = sys.argv[2]
 
-    support_file_name = f'{date_today}_test_{store_name}_data_support'
     results_dir = f'{store_name}'
     if test_mode:
         results_dir = f'{test_mode}/{store_name}'
-    results_csv = f'{results_dir}/{support_file_name}.csv'
-    sort_csv(results_csv, f'{results_dir}/{support_file_name}_sorted.csv')
 
-    test_data_sets = read_all_result_rows(
-        f'{results_dir}/{support_file_name}_sorted.csv', header_row)
+    support_file_name = f'{date_today}_test_{store_name}_data_support'
+    results_csv = f'{results_dir}/{support_file_name}.csv'
+
+    results_sorted = sort_csv(results_csv)
+    test_data_sets = read_all_result_rows(results_sorted, header_row)
 
     ecvs = get_list_of_ecvs(test_data_sets)
-    failed_csv = f'{results_dir}/{support_file_name}_failed.csv'
-    create_list_of_failed(test_data_sets, failed_csv, header_row)
-    if os.path.exists(failed_csv):
-        sort_csv(failed_csv,
-                 f'{results_dir}/{support_file_name}_sorted_failed.csv')
-
-    with open(results_csv, 'r', newline='') as f_input:
-        csv_input = csv.DictReader(f_input)
-        data = sorted(csv_input, key=lambda row: (row['Dataset-ID']))
-    with open(f'{results_dir}/{support_file_name}_sorted.csv', 'w',
-              newline='') as f_output:
-        csv_output = csv.DictWriter(f_output, fieldnames=csv_input.fieldnames)
-        csv_output.writeheader()
-        csv_output.writerows(data)
+    # below maybe not needed anymore?
+    # failed_csv = f'{results_dir}/{support_file_name}_failed.csv'
+    # failed_sorted = create_list_of_failed(test_data_sets, failed_csv,
+    #                                       header_row)
 
     summary_csv = f'{results_dir}/{support_file_name}_summary_sorted.csv'
     header_summary = None

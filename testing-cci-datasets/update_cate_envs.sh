@@ -11,7 +11,8 @@ version_development=master
 version_stage=v3.1.2
 version_production=v3.1.2
 
-plugins=("xcube-cci")
+# I cloned xcube into xcube-cate so it will not interfere with the test environment used for water services
+plugins=("xcube-cci" "xcube-cate")
 
 # declare -n version=version_${test_mode}
 declare -n version=version_${test_mode}

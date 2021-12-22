@@ -125,7 +125,7 @@ def create_list_of_failed(test_data_sets, failed_csv, header_row):
             update_csv(failed_csv, header_row, dataset)
 
 
-def create_dict_of_ids_with_verification_flags(data_sets):
+def create_json_of_ids_with_verification_flags(data_sets, results_dir):
     dict_with_verify_flags = {}
     for dataset in data_sets:
         data_type = dataset['Data-Type']
@@ -143,7 +143,10 @@ def create_dict_of_ids_with_verification_flags(data_sets):
             {'data_type': data_type,
              'verification_flags': verify_flags}
 
-    return dict_with_verify_flags
+    with open(f'{results_dir}/'
+              f'{date_today}_DrsID_verification_flags.json',
+              'w') as f:
+        json.dump(dict_with_verify_flags, f, indent=4)
 
 
 def cleanup_result_outputs_older_than_14_days(path_to_check_for_cleanup):
@@ -208,25 +211,7 @@ def main():
             header_summary = list(results_summary_row.keys())
         update_csv(summary_csv, header_summary, results_summary_row)
 
-    dict_with_verify_flags = create_dict_of_ids_with_verification_flags(
-        test_data_sets)
-
-    with open(f'{results_dir}/'
-              f'{date_today}_DrsID_verification_flags.json',
-              'w') as f:
-        json.dump(dict_with_verify_flags, f, indent=4)
-
-    if os.path.exists(results_csv):
-        os.remove(results_csv)
-    else:
-        print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
-              f'The file {results_csv} does not exist.')
-
-    if os.path.exists(failed_csv):
-        os.remove(failed_csv)
-    else:
-        print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
-              f'The file {failed_csv} does not exist.')
+    create_json_of_ids_with_verification_flags(test_data_sets, results_dir)
 
     cleanup_result_outputs_older_than_14_days(results_dir)
     cleanup_result_outputs_older_than_14_days(f'{results_dir}/error_traceback')

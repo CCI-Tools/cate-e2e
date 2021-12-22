@@ -11,6 +11,9 @@ version_development=master
 version_stage=v3.1.2
 version_production=v3.1.2
 
+# I cloned xcube into xcube-cate so it will not interfere with the test environment used for water services
+plugins=("xcube-cci" "xcube-cate")
+
 # declare -n version=version_${test_mode}
 declare -n version=version_${test_mode}
 cate_env=cate-env-${test_mode}
@@ -25,6 +28,20 @@ source ~/miniconda3/bin/activate "$cate_env"
 echo "env activated"
 python setup.py develop
 echo "Update of environment $cate_env done."
+
+if [ "$test_mode" = "development" ]; then
+  ~/miniconda3/bin/mamba install -c conda-forge pydap -y
+  ~/miniconda3/bin/mamba install -c conda-forge lxml -y
+  ~/miniconda3/bin/mamba install -c conda-forge nest-asyncio -y
+  for plugin in "${plugins[@]}";do
+    cd ../"$plugin"
+    git checkout master
+    git pull
+    python setup.py develop
+    echo "Update of $plugin done."
+  done
+  echo "Update of all plugins done."
+fi
 
 
 

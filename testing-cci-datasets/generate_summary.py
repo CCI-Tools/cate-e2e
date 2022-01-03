@@ -70,6 +70,26 @@ def get_list_of_ecvs(data_sets):
     return ecvs
 
 
+def get_summary_column(column_name):
+    sep = '('
+    s_column_name = column_name.split(sep, 1)[0]
+    return s_column_name
+
+
+def update_summary_row(summary_columns, summary_row_new, dataset):
+    for column in summary_columns:
+        summary_column = get_summary_column(column)
+        if 'yes' in dataset[column]:
+            summary_row_new[summary_column] += 1
+        else:
+            if column == 'supported':
+                column_failed = f'not_{summary_column}'
+            else:
+                column_failed = f'{summary_column}_failed'
+            summary_row_new[column_failed] += 1
+    return summary_row_new
+
+
 def count_success_fail(data_sets, ecv):
     summary_row_new = {}
     summary_columns = ['supported',
@@ -79,39 +99,38 @@ def count_success_fail(data_sets, ecv):
                        'cache(4)',
                        'map(5)']
     for i in summary_columns:
-        summary_row_new[i] = 0
-        summary_row_new[f'{i}_failed'] = 0
-        summary_row_new[f'{i}_percentage'] = 0
+        i_short = get_summary_column(i)
+        summary_row_new[i_short] = 0
+        if i_short == 'supported':
+            summary_row_new[f'not_{i_short}'] = 0
+        else:
+            summary_row_new[f'{i_short}_failed'] = 0
+        summary_row_new[f'{i_short}_percentage'] = 0
 
     if 'ALL_ECVS' not in ecv:
         for dataset in data_sets:
             if ecv in dataset['ECV-Name']:
-                for column in summary_columns:
-                    if 'yes' in dataset[column]:
-                        summary_row_new[column] += 1
-                    else:
-                        column_failed = f'{column}_failed'
-                        summary_row_new[column_failed] += 1
-
-        total_number_of_datasets = sum(
-            [summary_row_new['supported'], summary_row_new['supported_failed']])
+                summary_row_new = update_summary_row(summary_columns,
+                                                     summary_row_new,
+                                                     dataset)
+        tot_nr_datasets = sum(
+            [summary_row_new['supported'], summary_row_new['not_supported']])
     else:
         for dataset in data_sets:
-            for column in summary_columns:
-                if 'yes' in dataset[column]:
-                    summary_row_new[column] += 1
-                else:
-                    column_failed = f'{column}_failed'
-                    summary_row_new[column_failed] += 1
-        total_number_of_datasets = len(data_sets)
+            summary_row_new = update_summary_row(summary_columns,
+                                                 summary_row_new,
+                                                 dataset)
+        tot_nr_datasets = len(data_sets)
 
     for i in summary_columns:
+        i_short = get_summary_column(i)
         try:
-            summary_row_new[f'{i}_percentage'] = 100 * summary_row_new[i] / (
-                    total_number_of_datasets - summary_row_new[
-                'supported_failed'])
+            summary_row_new[f'{i_short}_percentage'] = \
+                100 * summary_row_new[i_short] / (tot_nr_datasets -
+                                                  summary_row_new[
+                                                      'not_supported'])
         except ZeroDivisionError:
-            summary_row_new[f'{i}_percentage'] = 0.0
+            summary_row_new[f'{i_short}_percentage'] = 0.0
 
     summary_row_new['ecv'] = ecv
 
@@ -193,10 +212,10 @@ def main():
     test_data_sets = read_all_result_rows(results_sorted, header_row)
 
     ecvs = get_list_of_ecvs(test_data_sets)
-    # below maybe not needed anymore?
-    # failed_csv = f'{results_dir}/{support_file_name}_failed.csv'
-    # failed_sorted = create_list_of_failed(test_data_sets, failed_csv,
-    #                                       header_row)
+    failed_csv = f'{results_dir}/{support_file_name}_failed.csv'
+    failed_sorted = create_list_of_failed(test_data_sets,
+                                          failed_csv,
+                                          header_row)
 
     summary_csv = f'{results_dir}/{support_file_name}_summary_sorted.csv'
     for ecv in ecvs:

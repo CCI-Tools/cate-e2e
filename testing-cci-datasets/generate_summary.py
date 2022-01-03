@@ -199,12 +199,9 @@ def main():
     #                                       header_row)
 
     summary_csv = f'{results_dir}/{support_file_name}_summary_sorted.csv'
-    header_summary = None
-
     for ecv in ecvs:
         results_summary_row = count_success_fail(test_data_sets, ecv)
-        if not header_summary:
-            header_summary = list(results_summary_row.keys())
+        header_summary = list(results_summary_row.keys())
         update_csv(summary_csv, header_summary, results_summary_row)
 
     create_json_of_ids_with_verification_flags(test_data_sets, results_dir)

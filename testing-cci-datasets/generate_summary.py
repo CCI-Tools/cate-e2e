@@ -31,7 +31,8 @@ def update_csv(results_csv, header_row, results_for_dataset_collection):
     append_dict_as_row(results_csv, results_for_dataset_collection, header_row)
 
 
-def sort_csv(input_csv, output_csv):
+def sort_csv(input_csv):
+    output_csv = f'{input_csv[:-4]}_sorted.csv'
     with open(input_csv, 'r', newline='') as f_input:
         csv_input = csv.DictReader(f_input)
         data = sorted(csv_input, key=lambda row: (row['Dataset-ID']))
@@ -40,6 +41,8 @@ def sort_csv(input_csv, output_csv):
         csv_output = csv.DictWriter(f_output, fieldnames=csv_input.fieldnames)
         csv_output.writeheader()
         csv_output.writerows(data)
+
+    return output_csv
 
 
 # creating summary csv
@@ -67,124 +70,70 @@ def get_list_of_ecvs(data_sets):
     return ecvs
 
 
+def get_summary_column(column_name):
+    sep = '('
+    s_column_name = column_name.split(sep, 1)[0]
+    return s_column_name
+
+
+def update_summary_row(summary_columns, summary_row_new, dataset):
+    for column in summary_columns:
+        summary_column = get_summary_column(column)
+        if 'yes' in dataset[column]:
+            summary_row_new[summary_column] += 1
+        else:
+            if column == 'supported':
+                column_failed = f'not_{summary_column}'
+            else:
+                column_failed = f'{summary_column}_failed'
+            summary_row_new[column_failed] += 1
+    return summary_row_new
+
+
 def count_success_fail(data_sets, ecv):
-    summary_dict = {}
-    summary_columns = ['supported', 'open(1)',
-                       'open_temp(2)', 'open_bbox(3)', 'cache(4)', 'map(5)']
-    supported = 0
-    not_supported = 0
-    open_success = 0
-    open_fail = 0
-    open_temp_success = 0
-    open_temp_fail = 0
-    open_bbox_success = 0
-    open_bbox_fail = 0
-    cache_success = 0
-    cache_fail = 0
-    visualize_success = 0
-    visualize_fail = 0
+    summary_row_new = {}
+    summary_columns = ['supported',
+                       'open(1)',
+                       'open_temp(2)',
+                       'open_bbox(3)',
+                       'cache(4)',
+                       'map(5)']
+    for i in summary_columns:
+        i_short = get_summary_column(i)
+        summary_row_new[i_short] = 0
+        if i_short == 'supported':
+            summary_row_new[f'not_{i_short}'] = 0
+        else:
+            summary_row_new[f'{i_short}_failed'] = 0
+        summary_row_new[f'{i_short}_percentage'] = 0
+
     if 'ALL_ECVS' not in ecv:
         for dataset in data_sets:
             if ecv in dataset['ECV-Name']:
-                if 'yes' in dataset['supported']:
-                    supported += 1
-                    if 'yes' in dataset['open(1)']:
-                        open_success += 1
-                    else:
-                        open_fail += 1
-
-                    if 'yes' in dataset['open_temp(2)']:
-                        open_temp_success += 1
-                    else:
-                        open_temp_fail += 1
-
-                    if 'yes' in dataset['open_bbox(3)']:
-                        open_bbox_success += 1
-                    else:
-                        open_bbox_fail += 1
-
-                    if 'yes' in dataset['cache(4)']:
-                        cache_success += 1
-                    else:
-                        cache_fail += 1
-
-                    if 'yes' in dataset['map(5)']:
-                        visualize_success += 1
-                    else:
-                        visualize_fail += 1
-                else:
-                    not_supported += 1
-        total_number_of_datasets = sum([supported, not_supported])
+                summary_row_new = update_summary_row(summary_columns,
+                                                     summary_row_new,
+                                                     dataset)
+        tot_nr_datasets = sum(
+            [summary_row_new['supported'], summary_row_new['not_supported']]
+        )
     else:
         for dataset in data_sets:
-            if 'yes' in dataset['supported']:
-                supported += 1
-                if 'yes' in dataset['open(1)']:
-                    open_success += 1
-                else:
-                    open_fail += 1
+            summary_row_new = update_summary_row(summary_columns,
+                                                 summary_row_new,
+                                                 dataset)
+        tot_nr_datasets = len(data_sets)
 
-                if 'yes' in dataset['open_temp(2)']:
-                    open_temp_success += 1
-                else:
-                    open_temp_fail += 1
+    for i in summary_columns:
+        i_short = get_summary_column(i)
+        try:
+            summary_row_new[f'{i_short}_percentage'] = \
+                100 * summary_row_new[i_short] / (tot_nr_datasets -
+                                                  summary_row_new[
+                                                      'not_supported'])
+        except ZeroDivisionError:
+            summary_row_new[f'{i_short}_percentage'] = 0.0
 
-                if 'yes' in dataset['open_bbox(3)']:
-                    open_bbox_success += 1
-                else:
-                    open_bbox_fail += 1
-
-                if 'yes' in dataset['cache(4)']:
-                    cache_success += 1
-                else:
-                    cache_fail += 1
-
-                if 'yes' in dataset['map(5)']:
-                    visualize_success += 1
-                else:
-                    visualize_fail += 1
-            else:
-                not_supported += 1
-        total_number_of_datasets = len(data_sets)
-
-    supported_percentage = 100 * supported / total_number_of_datasets
-    try:
-        open_success_percentage = \
-            100 * open_success / (total_number_of_datasets - not_supported)
-        open_temp_success_percentage = \
-            100 * open_temp_success / (total_number_of_datasets - not_supported)
-        open_bbox_success_percentage = \
-            100 * open_bbox_success / (total_number_of_datasets - not_supported)
-        visualize_success_percentage = \
-            100 * visualize_success / (total_number_of_datasets - not_supported)
-        cache_success_percentage = \
-            100 * cache_success / (total_number_of_datasets - not_supported)
-    except ZeroDivisionError:
-        open_success_percentage = 0.0
-        open_temp_success_percentage = 0.0
-        open_bbox_success_percentage = 0.0
-        visualize_success_percentage = 0.0
-        cache_success_percentage = 0.0
-    summary_row_new = {'ecv': ecv,
-                       'supported': supported,
-                       'open_success': open_success,
-                       'open_fail': open_fail,
-                       'open_temp_success': open_temp_success,
-                       'open_temp_fail': open_temp_fail,
-                       'open_bbox_success': open_bbox_success,
-                       'open_bbox_fail': open_bbox_fail,
-                       'cache_success': cache_success,
-                       'cache_fail': cache_fail,
-                       'visualize_success': visualize_success,
-                       'visualize_fail': visualize_fail,
-                       'supported_percentage': supported_percentage,
-                       'open_success_percentage': open_success_percentage,
-                       'open_temp_success_percentage': open_temp_success_percentage,
-                       'open_bbox_success_percentage': open_bbox_success_percentage,
-                       'visualize_success_percentage': visualize_success_percentage,
-                       'cache_success_percentage': cache_success_percentage,
-                       'total_number_of_datasets': total_number_of_datasets
-                       }
+    summary_row_new['ecv'] = ecv
 
     return summary_row_new
 
@@ -198,8 +147,11 @@ def create_list_of_failed(test_data_sets, failed_csv, header_row):
                                               dataset['map(5)'] == 'no'):
             update_csv(failed_csv, header_row, dataset)
 
+    sorted_csv = sort_csv(failed_csv)
+    return sorted_csv
 
-def create_dict_of_ids_with_verification_flags(data_sets):
+
+def create_json_of_ids_with_verification_flags(data_sets, results_dir):
     dict_with_verify_flags = {}
     for dataset in data_sets:
         data_type = dataset['Data-Type']
@@ -217,7 +169,10 @@ def create_dict_of_ids_with_verification_flags(data_sets):
             {'data_type': data_type,
              'verification_flags': verify_flags}
 
-    return dict_with_verify_flags
+    with open(f'{results_dir}/'
+              f'{date_today}_DrsID_verification_flags.json',
+              'w') as f:
+        json.dump(dict_with_verify_flags, f, indent=4)
 
 
 def cleanup_result_outputs_older_than_14_days(path_to_check_for_cleanup):
@@ -247,68 +202,29 @@ def main():
     if len(sys.argv) == 3:
         test_mode = sys.argv[2]
 
-    support_file_name = f'{date_today}_test_{store_name}_data_support'
     results_dir = f'{store_name}'
     if test_mode:
         results_dir = f'{test_mode}/{store_name}'
-    results_csv = f'{results_dir}/{support_file_name}.csv'
-    sort_csv(results_csv, f'{results_dir}/{support_file_name}_sorted.csv')
 
-    test_data_sets = read_all_result_rows(
-        f'{results_dir}/{support_file_name}_sorted.csv', header_row)
+    support_file_name = f'{date_today}_test_{store_name}_data_support'
+    results_csv = f'{results_dir}/{support_file_name}.csv'
+
+    results_sorted = sort_csv(results_csv)
+    test_data_sets = read_all_result_rows(results_sorted, header_row)
 
     ecvs = get_list_of_ecvs(test_data_sets)
     failed_csv = f'{results_dir}/{support_file_name}_failed.csv'
-    create_list_of_failed(test_data_sets, failed_csv, header_row)
-    if os.path.exists(failed_csv):
-        sort_csv(failed_csv,
-                 f'{results_dir}/{support_file_name}_sorted_failed.csv')
-
-    with open(results_csv, 'r', newline='') as f_input:
-        csv_input = csv.DictReader(f_input)
-        data = sorted(csv_input, key=lambda row: (row['Dataset-ID']))
-    with open(f'{results_dir}/{support_file_name}_sorted.csv', 'w',
-              newline='') as f_output:
-        csv_output = csv.DictWriter(f_output, fieldnames=csv_input.fieldnames)
-        csv_output.writeheader()
-        csv_output.writerows(data)
+    failed_sorted = create_list_of_failed(test_data_sets,
+                                          failed_csv,
+                                          header_row)
 
     summary_csv = f'{results_dir}/{support_file_name}_summary_sorted.csv'
-    header_summary = ['ecv', 'supported', 'open_success', 'open_fail',
-                      'open_temp_success',
-                      'open_temp_fail', 'open_bbox_success', 'open_bbox_fail',
-                      'cache_success',
-                      'cache_fail', 'visualize_success', 'visualize_fail',
-                      'supported_percentage',
-                      'open_success_percentage', 'open_temp_success_percentage',
-                      'open_bbox_success_percentage',
-                      'cache_success_percentage',
-                      'visualize_success_percentage',
-                      'total_number_of_datasets']
-
     for ecv in ecvs:
         results_summary_row = count_success_fail(test_data_sets, ecv)
+        header_summary = list(results_summary_row.keys())
         update_csv(summary_csv, header_summary, results_summary_row)
 
-    dict_with_verify_flags = create_dict_of_ids_with_verification_flags(
-        test_data_sets)
-
-    with open(f'{results_dir}/'
-              f'{date_today}_DrsID_verification_flags.json',
-              'w') as f:
-        json.dump(dict_with_verify_flags, f, indent=4)
-
-    if os.path.exists(results_csv):
-        os.remove(results_csv)
-    else:
-        print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
-              f'The file {results_csv} does not exist.')
-
-    if os.path.exists(failed_csv):
-        os.remove(failed_csv)
-    else:
-        print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
-              f'The file {failed_csv} does not exist.')
+    create_json_of_ids_with_verification_flags(test_data_sets, results_dir)
 
     cleanup_result_outputs_older_than_14_days(results_dir)
     cleanup_result_outputs_older_than_14_days(f'{results_dir}/error_traceback')

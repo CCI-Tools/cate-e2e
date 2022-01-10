@@ -529,12 +529,16 @@ def main():
     if len(sys.argv) == 3:
         test_mode = sys.argv[2]
 
-    if not os.path.exists(store_name):
-        os.mkdir(store_name)
+    results_dir = f'{store_name}'
+    if test_mode:
+        results_dir = f'{test_mode}/{store_name}'
+
+    if not os.path.exists(results_dir):
+        os.mkdir(results_dir)
     support_file_name = f'{date_today}_test_{store_name}_data_support'
     results_csv = f'{store_name}/{support_file_name}.csv'
     if test_mode:
-        results_csv = f'{test_mode}/{store_name}/{support_file_name}.csv'
+        results_csv = f'{results_dir}/{support_file_name}.csv'
     store = DATA_STORE_POOL.get_store(store_name)
     data_ids = store.get_data_ids()
     lds = DATA_STORE_POOL.get_store('local')

@@ -114,7 +114,8 @@ def count_success_fail(data_sets, ecv):
                                                      summary_row_new,
                                                      dataset)
         tot_nr_datasets = sum(
-            [summary_row_new['supported'], summary_row_new['not_supported']])
+            [summary_row_new['supported'], summary_row_new['not_supported']]
+        )
     else:
         for dataset in data_sets:
             summary_row_new = update_summary_row(summary_columns,

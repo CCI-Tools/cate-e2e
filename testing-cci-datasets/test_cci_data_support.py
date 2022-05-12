@@ -346,7 +346,7 @@ def test_open_ds(data_id, store, lds, results_csv, store_name):
     try:
         data_descriptor = store.describe_data(data_id=data_id,
                                               data_type=data_type)
-    except DataStoreError:
+    except (DataStoreError, KeyError):
         comment_1 = f'Failed getting data description while executing ' \
                     f'store.describe_data(data_id=data_id, ' \
                     f'data_type=data_type) with: {sys.exc_info()[:2]}'

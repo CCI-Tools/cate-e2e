@@ -21,8 +21,9 @@ from xcube.core.store import DataStoreError
 nest_asyncio.apply()
 
 # header for CSV report
-header_row = ['ECV-Name', 'Dataset-ID', 'supported', 'Data-Type', 'open(1)',
-              'open_temp(2)', 'open_bbox(3)', 'cache(4)', 'map(5)', 'comment']
+header_row = ['ECV-Name', 'Dataset-ID', 'Dataset-Title','supported',
+              'Data-Type', 'open(1)', 'open_temp(2)', 'open_bbox(3)',
+              'cache(4)', 'map(5)', 'comment']
 
 # Not supported vector data:
 vector_data = [
@@ -42,7 +43,7 @@ vector_data = [
 not_supported_list = [['sinusoidal',
                        "please use the equivalent dataset with 'geographic' in the dataset_id"],
                       ['L2P', 'because problems are expected'],
-                      ['esacci.FIRE.mon.L3S', 'because problems are expected'],
+                      # ['esacci.FIRE.mon.L3S', 'because problems are expected'],
                       ['esacci.SEALEVEL.satellite-orbit-frequency.L1',
                        'because problems are expected'],
                       ['LAKES', 'because problems are expected'],
@@ -133,21 +134,25 @@ def get_region(data_descriptor):
     spatial_res = 1.0
     if data_descriptor.spatial_res is not None:
         spatial_res = data_descriptor.spatial_res
-    indx = random.uniform(float(bbox_minx), float(bbox_maxx))
-    indy = random.uniform(float(bbox_miny), float(bbox_maxy))
-    if indx == float(bbox_maxx):
+    minx = float(bbox_minx)
+    maxx = float(bbox_maxx) - spatial_res * 2.
+    miny = float(bbox_miny)
+    maxy = float(bbox_maxy) - spatial_res * 2.
+    indx = random.uniform(minx, maxx)
+    indy = random.uniform(miny, maxy)
+    if indx == maxx:
         if indx > 0:
             indx = indx - 1
         else:
             indx = indx + 1
-    if indy == float(bbox_maxy):
+    if indy == maxy:
         if indy > 0:
             indy = indy - 1
         else:
             indy = indy + 1
-    if indx == float(bbox_minx):
+    if indx == minx:
         indx = indx + 1
-    if indy == float(bbox_miny):
+    if indy == miny:
         indy = indy + 1
     region = [float("{:.5f}".format(indx)),
               float("{:.5f}".format(indy)),
@@ -319,15 +324,9 @@ def test_open_ds(data_id, store, lds, results_csv, store_name):
     comment_spatial = None
     ecv_name = data_id.split('-')[1] \
         if store_name == 'cci-zarr-store' else data_id.split('.')[1]
-    summary_row = {'ECV-Name': ecv_name, 'Dataset-ID': data_id}
-
-    supported, reason = check_for_support(data_id)
-    if not supported:
-        summary_row['supported'] = 'no'
-        _all_tests_no(summary_row, results_csv, general_comment=reason)
-        return
-    else:
-        summary_row['supported'] = 'yes'
+    summary_row = {'ECV-Name': ecv_name,
+                   'Dataset-ID': data_id,
+                   'supported': 'yes'}
 
     data_type = None
     data_types_for_data = store.get_data_types_for_data(data_id)
@@ -343,14 +342,23 @@ def test_open_ds(data_id, store, lds, results_csv, store_name):
         _all_tests_no(summary_row, results_csv, general_comment=comment_1)
         return
     summary_row['Data-Type'] = data_type
+
     try:
         data_descriptor = store.describe_data(data_id=data_id,
                                               data_type=data_type)
     except (DataStoreError, KeyError):
+        summary_row['Dataset-Title'] = data_id
         comment_1 = f'Failed getting data description while executing ' \
                     f'store.describe_data(data_id=data_id, ' \
                     f'data_type=data_type) with: {sys.exc_info()[:2]}'
         _all_tests_no(summary_row, results_csv, general_comment=comment_1)
+        return
+    summary_row['Dataset-Title'] = data_descriptor.attrs.get('title', data_id)
+
+    supported, reason = check_for_support(data_id)
+    if not supported:
+        summary_row['supported'] = 'no'
+        _all_tests_no(summary_row, results_csv, general_comment=reason)
         return
 
     var_list = []
@@ -544,7 +552,7 @@ def main():
     lds = DATA_STORE_POOL.get_store('local')
 
     start_time = datetime.now()
-    for data_id in data_ids:
+    for i, data_id in enumerate(data_ids):
         test_open_ds(data_id, store, lds, results_csv, store_name)
 
     print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '

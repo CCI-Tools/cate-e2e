@@ -7,10 +7,11 @@ from datetime import datetime
 from datetime import timedelta
 
 # header for CSV report
-header_row = ['ECV-Name', 'Dataset-ID', 'supported', 'Data-Type', 'open(1)',
-              'open_temp(2)', 'open_bbox(3)', 'cache(4)', 'map(5)', 'comment']
+HEADER_ROW = ['ECV-Name', 'Dataset-ID', 'Dataset-Title', 'supported',
+              'Data-Type', 'open(1)', 'open_temp(2)', 'open_bbox(3)',
+              'cache(4)', 'map(5)', 'comment']
 
-date_today = datetime.date(datetime.now())
+DATE_TODAY = datetime.date(datetime.now())
 
 
 def append_dict_as_row(file_name, dict_of_elem, field_names):
@@ -155,6 +156,7 @@ def create_json_of_ids_with_verification_flags(data_sets, results_dir):
     dict_with_verify_flags = {}
     for dataset in data_sets:
         data_type = dataset['Data-Type']
+        title = dataset['Dataset-Title']
         verify_flags = []
         if 'yes' in dataset['open(1)']:
             verify_flags.append('open')
@@ -167,16 +169,18 @@ def create_json_of_ids_with_verification_flags(data_sets, results_dir):
 
         dict_with_verify_flags[dataset['Dataset-ID']] = \
             {'data_type': data_type,
-             'verification_flags': verify_flags}
+             'verification_flags': verify_flags,
+             'title': title
+             }
 
     with open(f'{results_dir}/'
-              f'{date_today}_DrsID_verification_flags.json',
+              f'{DATE_TODAY}_DrsID_verification_flags.json',
               'w') as f:
         json.dump(dict_with_verify_flags, f, indent=4)
 
 
 def cleanup_result_outputs_older_than_14_days(path_to_check_for_cleanup):
-    date_to_be_kept = date_today - (timedelta(days=14))
+    date_to_be_kept = DATE_TODAY - (timedelta(days=14))
     for item in os.listdir(path_to_check_for_cleanup):
         try:
             date_of_item = datetime.strptime(item[:10], '%Y-%m-%d')
@@ -206,17 +210,17 @@ def main():
     if test_mode:
         results_dir = f'{test_mode}/{store_name}'
 
-    support_file_name = f'{date_today}_test_{store_name}_data_support'
+    support_file_name = f'{DATE_TODAY}_test_{store_name}_data_support'
     results_csv = f'{results_dir}/{support_file_name}.csv'
 
     results_sorted = sort_csv(results_csv)
-    test_data_sets = read_all_result_rows(results_sorted, header_row)
+    test_data_sets = read_all_result_rows(results_sorted, HEADER_ROW)
 
     ecvs = get_list_of_ecvs(test_data_sets)
     failed_csv = f'{results_dir}/{support_file_name}_failed.csv'
     failed_sorted = create_list_of_failed(test_data_sets,
                                           failed_csv,
-                                          header_row)
+                                          HEADER_ROW)
 
     summary_csv = f'{results_dir}/{support_file_name}_summary_sorted.csv'
     for ecv in ecvs:
@@ -230,7 +234,7 @@ def main():
     cleanup_result_outputs_older_than_14_days(f'{results_dir}/error_traceback')
 
     print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
-          f'Test run finished on {date_today}.')
+          f'Test run finished on {DATE_TODAY}.')
     print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] '
           f'Test run took {datetime.now() - start_time}')
 
